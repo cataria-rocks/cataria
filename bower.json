@@ -1,0 +1,14 @@
+{
+  "name": "xliff-editor",
+  "version": "0.0.0-beta",
+  "description": "xliff-editor",
+  "bugs": "https://github.com/bem-site/xliff-editor/issues",
+  "ignore": [
+    ".bem/cache",
+    "node_modules",
+    "libs"
+  ],
+  "dependencies": {
+    "bem-components": "3.0.0"
+  }
+}
