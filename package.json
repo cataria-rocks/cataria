@@ -10,25 +10,51 @@
     "node": ">=4"
   },
   "dependencies": {
-    "bower": "^1.7.9"
+    "base-64": "^0.1.0",
+    "body-parser": "~1.15.1",
+    "bower": "^1.7.9",
+    "connect": "^3.4.1",
+    "cookie-parser": "~1.4.3",
+    "cookie-session": "^2.0.0-alpha.1",
+    "debug": "~2.2.0",
+    "express": "~4.13.4",
+    "github-api": "^2.3.0",
+    "got": "^6.3.0",
+    "md2xliff": "https://github.com/tadatuta/md2xliff.git#tmx",
+    "mongodb": "^2.1.18",
+    "mongoose": "^4.5.2",
+    "morgan": "~1.7.0",
+    "nodemon": "^1.9.2",
+    "passport": "^0.3.2",
+    "passport-github2": "^0.1.10",
+    "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
     "enb": "^1.3.0",
     "enb-bem-techs": "^2.2.1",
     "enb-bemxjst": "^6.4.1",
     "enb-borschik": "^2.4.0",
+    "enb-bundle-postcss": "github:tadatuta/enb-bundle-postcss",
+    "enb-css": "^1.1.0",
     "enb-js": "^1.1.0",
-    "enb-stylus": "^2.3.2",
     "git-hooks": "^1.0.2",
     "jscs": "^2.9.0",
     "jshint": "^2.9.1",
-    "jshint-groups": "^0.8.0"
+    "jshint-groups": "^0.8.0",
+    "postcss-nested": "^1.0.0",
+    "rebem-css": "^0.2.0",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "watch-run": "^1.2.4"
   },
   "scripts": {
-    "start": "enb server",
+    "build": "npm i && npm run make",
+    "start": "node server",
     "make": "enb make",
     "postinstall": "npm run deps",
-    "deps": "bower i --allow-root"
+    "deps": "bower i --allow-root",
+    "test": "jscs . && jshint-groups",
+    "watch": "watch-run -p '*.blocks/**' enb make"
   },
   "private": true
 }

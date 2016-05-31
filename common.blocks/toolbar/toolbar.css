@@ -1,0 +1,16 @@
+:block(toolbar) {
+    padding: 9px;
+
+    background: #079;
+
+    text-align: right;
+
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+:block(toolbar):elem(button) {
+
+}

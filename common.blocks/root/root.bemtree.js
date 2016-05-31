@@ -1,7 +1,9 @@
-block('root').replace()(function() {
+block('root').replace()((node, ctx) => {
+    const data = node.data = ctx.data;
+
     return {
         block: 'page',
-        title: 'TODO',
+        title: data.title || 'xliff-editor',
         head: [
             { elem: 'css', url: 'index.min.css' }
         ],

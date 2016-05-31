@@ -16,7 +16,8 @@ module.exports = {
         sub : true,
         supernew : true,
         undef : true,
-        unused : true
+        unused : true,
+        esversion: 6
     },
 
     groups : {

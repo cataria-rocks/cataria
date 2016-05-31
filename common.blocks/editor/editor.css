@@ -1,0 +1,31 @@
+:block(editor) {
+    display: flex;
+    flex-direction: row;
+
+    flex: 1;
+    margin-bottom: 40px;
+
+    &:elem(side) {
+        display: inline-block;
+
+        box-sizing: border-box;
+        width: 50%;
+        padding: 10px;
+
+        &:mod(left) {
+            border-right: 1px solid #079;
+        }
+    }
+
+    &:elem(source) {
+        margin-bottom: 10px;
+
+        &:mod(focused) {
+            background: #ffffe0;
+        }
+    }
+
+    &:elem(target) {
+        margin-bottom: 10px;
+    }
+}

@@ -1,13 +1,5 @@
-block('page').content()(function() {
+block('page').content()(() => {
     return [
-        {
-            block: 'header'
-        },
-        {
-            block: 'main'
-        },
-        {
-            block: 'footer'
-        }
-    ];
+        'header', 'panel', 'editor', 'toolbar'
+    ].map(block => ({ block: block }));
 });
