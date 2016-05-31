@@ -1,0 +1,36 @@
+.editor
+{
+    display: flex;
+    flex-direction: row;
+
+    flex: 1;
+}
+
+.editor__side
+{
+    display: inline-block;
+
+    box-sizing: border-box;
+    width: 50%;
+    padding: 10px;
+}
+
+.editor__side_left
+{
+    border-right: 1px solid #079;
+}
+
+.editor__source-text
+{
+    margin-bottom: 10px;
+}
+
+.editor__target-text
+{
+    margin-bottom: 10px;
+}
+
+.editor__source-text_focused
+{
+    background: #ffffe0;
+}

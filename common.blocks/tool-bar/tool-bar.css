@@ -1,0 +1,20 @@
+.tool-bar
+{
+    height: 45px;
+
+    background: #079;
+}
+
+.tool-bar__button
+{
+    font-size: 14px;
+
+    float: right;
+
+    margin: 9px;
+    padding: 5px 10px;
+
+    border: 0;
+    border-radius: 4px;
+    background: white;
+}

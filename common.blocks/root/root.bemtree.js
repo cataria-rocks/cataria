@@ -7,7 +7,6 @@ block('root').replace()(function() {
         ],
         scripts: [
             { elem: 'js', url: 'index.min.js' }
-        ],
-        mods: { theme: 'islands' }
+        ]
     };
 });
