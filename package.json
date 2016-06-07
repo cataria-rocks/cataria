@@ -17,18 +17,22 @@
     "enb-bem-techs": "^2.2.1",
     "enb-bemxjst": "^6.4.1",
     "enb-borschik": "^2.4.0",
+    "enb-bundle-postcss": "github:tadatuta/enb-bundle-postcss",
+    "enb-css": "^1.1.0",
     "enb-js": "^1.1.0",
-    "enb-stylus": "^2.3.2",
     "git-hooks": "^1.0.2",
     "jscs": "^2.9.0",
     "jshint": "^2.9.1",
-    "jshint-groups": "^0.8.0"
+    "jshint-groups": "^0.8.0",
+    "postcss-nested": "^1.0.0",
+    "rebem-css": "^0.2.0"
   },
   "scripts": {
     "start": "enb server",
     "make": "enb make",
     "postinstall": "npm run deps",
-    "deps": "bower i --allow-root"
+    "deps": "bower i --allow-root",
+    "test": "jscs . && jshint-groups"
   },
   "private": true
 }

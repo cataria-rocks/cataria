@@ -1,16 +1,17 @@
-block('editor').content()(function() {
-    var data = this.ctx.data,
-        sources = [], targets = [];
+block('editor').content()((node) => {
+    const segments = node.data.segments;
+    const sources = [];
+    const targets = [];
 
-    data.forEach(function(item) {
+    segments.forEach(segments => {
         sources.push({
-            elem: 'source-text',
-            content: item.source
+            elem: 'source',
+            content: segments.source
         });
 
         targets.push({
-            elem: 'target-text',
-            content: item.target
+            elem: 'target',
+            content: segments.target
         });
     });
 

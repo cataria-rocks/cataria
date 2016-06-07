@@ -7,7 +7,8 @@ var techs = {
         borschik: require('enb-borschik/techs/borschik'),
 
         // css
-        stylus: require('enb-stylus/techs/stylus'),
+        css: require('enb-css/techs/css'),
+        postcss: require('enb-bundle-postcss/techs/enb-bundle-postcss'),
 
         // js
         browserJs: require('enb-js/techs/browser-js'),
@@ -27,8 +28,7 @@ var techs = {
         { path: 'libs/bem-components/desktop.blocks', check: false },
         { path: 'libs/bem-components/design/common.blocks', check: false },
         { path: 'libs/bem-components/design/desktop.blocks', check: false },
-        'common.blocks',
-        'desktop.blocks'
+        'common.blocks'
     ];
 
 module.exports = function(config) {
@@ -43,12 +43,15 @@ module.exports = function(config) {
             [enbBemTechs.files],
 
             // css
-            [techs.stylus, {
-                target: '?.css',
-                sourcemap: false,
-                autoprefixer: {
-                    browsers: ['ie >= 10', 'last 2 versions', 'opera 12.1', '> 2%']
-                }
+            [techs.css, {
+                target: '?.pre.css',
+                // TODO: move to postcss
+                autoprefixer: { browsers: ['ie >= 10', 'last 2 versions', 'opera 12.1', '> 2%'] }
+            }],
+
+            [techs.postcss, {
+                source: '?.pre.css',
+                plugins: [require('rebem-css'), require('postcss-nested')]
             }],
 
             // bemtree

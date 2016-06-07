@@ -1,3 +1,3 @@
 ({
-    shouldDeps: ['header', 'editor', 'tool-bar', 'panel']
+    shouldDeps: ['header', 'editor', 'toolbar', 'panel']
 })

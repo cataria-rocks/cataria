@@ -1,22 +1,5 @@
-block('page').content()(function() {
-    var data = JSON.parse(require('fs').readFileSync('stub/stub.json')),
-        lang = data[0],
-        content = data.splice(0,1);
-
+block('page').content()(() => {
     return [
-        {
-            block: 'header'
-        },
-        {
-            block: 'panel',
-            data: lang
-        },
-        {
-            block: 'editor',
-            data: content
-        },
-        {
-            block: 'tool-bar'
-        }
-    ];
+        'header', 'panel', 'editor', 'toolbar'
+    ].map(block => ({ block: block }));
 });

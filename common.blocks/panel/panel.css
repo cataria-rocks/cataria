@@ -1,5 +1,4 @@
-.panel__side
-{
+:block(panel):elem(side) {
     text-align: right;
 
     border-bottom: 1px solid #079;

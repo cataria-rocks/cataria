@@ -1,7 +1,6 @@
-.logo
-{
+:block(logo) {
+    width: 30px;
     height: 25px;
-    margin: 10px;
 
     background: url(logo.svg) no-repeat;
 }

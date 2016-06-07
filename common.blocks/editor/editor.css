@@ -1,36 +1,30 @@
-.editor
-{
+:block(editor) {
     display: flex;
     flex-direction: row;
 
     flex: 1;
-}
 
-.editor__side
-{
-    display: inline-block;
+    &:elem(side) {
+        display: inline-block;
 
-    box-sizing: border-box;
-    width: 50%;
-    padding: 10px;
-}
+        box-sizing: border-box;
+        width: 50%;
+        padding: 10px;
 
-.editor__side_left
-{
-    border-right: 1px solid #079;
-}
+        &:mod(left) {
+            border-right: 1px solid #079;
+        }
+    }
 
-.editor__source-text
-{
-    margin-bottom: 10px;
-}
+    &:elem(source) {
+        margin-bottom: 10px;
 
-.editor__target-text
-{
-    margin-bottom: 10px;
-}
+        &:mod(focused) {
+            background: #ffffe0;
+        }
+    }
 
-.editor__source-text_focused
-{
-    background: #ffffe0;
+    &:elem(target) {
+        margin-bottom: 10px;
+    }
 }
