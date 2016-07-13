@@ -13,6 +13,9 @@ const SegmentSchema = new Schema({
     date: Date
 });
 
+SegmentSchema.index({ source: 'text' });
+// db.collection.enshureIndex({field: value})
+
 const Segment = mongoose.model('Segment', SegmentSchema);
 
 module.exports = {

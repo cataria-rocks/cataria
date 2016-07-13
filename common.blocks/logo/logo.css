@@ -1,6 +1,7 @@
 :block(logo) {
     width: 30px;
     height: 25px;
+    display: inline-block;
 
     background: url(logo.svg) no-repeat;
 }

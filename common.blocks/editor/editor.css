@@ -1,31 +1,46 @@
 :block(editor) {
-    display: flex;
     flex-direction: row;
 
     flex: 1;
     margin-bottom: 40px;
 
-    &:elem(side) {
-        display: inline-block;
+     &:elem(wrapper) {
+         position: relative;
+         display: table;
+         width: 100%;
+         border-bottom: 1px solid #079
+     }
 
-        box-sizing: border-box;
-        width: 50%;
-        padding: 10px;
+     &:elem(source) {
+         display: inline-block;
+         width: 45%;
+         padding: 10px;
+         box-sizing: border-box;
+         border-right: 1px solid #079;
+         display: table-cell;
+           &:mod(focused) {
+               background: #ffffe0;
+           }
+     }
 
-        &:mod(left) {
-            border-right: 1px solid #079;
-        }
-    }
+     &:elem(target) {
+         display: table-cell;
+         width: 45%;
+         padding: 0 10px;
+         box-sizing: border-box;
+         border-right: 1px solid #079;
+     }
 
-    &:elem(source) {
-        margin-bottom: 10px;
+     &:elem(status) {
+         display: table-cell;
+         width: 10%;
+         padding: 10px;
+         box-sizing: border-box;
+     }
 
-        &:mod(focused) {
-            background: #ffffe0;
-        }
-    }
+     &:elem(textarea) {
+          vertical-align: middle;
+          width: 95%;
 
-    &:elem(target) {
-        margin-bottom: 10px;
-    }
+      }
 }

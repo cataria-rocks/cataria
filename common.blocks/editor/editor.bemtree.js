@@ -1,30 +1,34 @@
 block('editor').content()((node) => {
     const segments = node.data.segments || [];
-    const sources = [];
-    const targets = [];
 
-    segments.forEach(segments => {
-        sources.push({
-            elem: 'source',
-            content: segments.source.content
-        });
-
-        targets.push({
-            elem: 'target',
-            content: segments.target.content || ''
-        });
+    return segments.map(segment => {
+        return {
+            elem: 'wrapper',
+            content: [
+                {
+                    elem: 'source',
+                    content: segment.source.content
+                },
+                {
+                    elem: 'target',
+                    content:
+                    {
+                        block: 'textarea',
+                        mix: { block: 'editor', elem: 'textarea' },
+                        mods: { theme: 'islands', size: 'm', width: 'available' },
+                        val: segment.target.content || ''
+                    }
+                },
+                {
+                    elem: 'status',
+                    content: {
+                        block: 'checkbox',
+                        name: 'status',
+                        val: false,
+                        text: 'Проверено'
+                    }
+                }
+            ]
+        };
     });
-
-    return [
-        {
-            elem: 'side',
-            elemMods: { left: true },
-            content: sources
-        },
-        {
-            elem: 'side',
-            elemMods: { right: true },
-            content: targets
-        }
-    ];
 });

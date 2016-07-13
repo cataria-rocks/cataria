@@ -16,6 +16,12 @@ modules.define('toolbar',
                     .then((response) => {
                         console.log(response);
                     });
+            },
+            getTranslationMemory: () => {
+                $.get('/get-translation-memory' + location.search)
+                    .then((response) => {
+                        console.log(response);
+                    });
             }
 
         }, {
@@ -24,6 +30,7 @@ modules.define('toolbar',
 
                 this.liveBindTo('translate', 'click', ptp.getTranslation);
                 this.liveBindTo('send', 'click', ptp.send);
+                this.liveBindTo('memory', 'click', ptp.getTranslationMemory);
 
             }
         }));

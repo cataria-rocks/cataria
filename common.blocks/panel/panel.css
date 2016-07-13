@@ -1,5 +1,9 @@
-:block(panel):elem(side) {
-    text-align: right;
+:block(panel) {
+    display: table;
+    width: 100%;
+    border-bottom: 1px solid #079
+}
 
-    border-bottom: 1px solid #079;
+:block(panel):elem(side) {
+    text-align: left;
 }

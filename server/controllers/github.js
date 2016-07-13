@@ -1,21 +1,16 @@
 const renderer = require('../renderer');
 const md2xliff = require('md2xliff');
 const GitHub = require('github-api');
+const GitHubApi = require('../GitHubApi');
 
 function getContent(req, res) {
     const { owner, repo, path } = req.query;
-    // TODO: default_branch tree как узнать!!!!
-    const tree = 'bem-info-data';
+    const tree = 'bem-info-data'; // TODO: default_branch tree как узнать!!!!
+    const token = req.session.passport.user.token;
 
-    // TODO: перенести в другое место и вызывать один раз!
-    const gh = new GitHub({ token: req.session.passport.user.token });
-
-    gh
-        .getRepo(owner,repo) // Get repo
-        .getContents(tree, path, true, function(err, data) { // Get content
-            if (err) { res.redirect('/err')}
-
-            extract = md2xliff.extract(data);
+    GitHubApi.getContent(owner, repo, tree, path, token)
+        .then(function(data) {
+            extract = md2xliff.extract(data.data);
             const { srcLang, trgLang, units } = extract.data;
 
             renderer(req, res, {
@@ -25,7 +20,7 @@ function getContent(req, res) {
                 sourceLang: srcLang,
                 targetLang: trgLang
             });
-        });
+        })
 }
 
 function createPR(req, res) {

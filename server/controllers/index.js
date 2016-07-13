@@ -5,6 +5,6 @@ module.exports = {
         console.log(req.session.passport);
         res.send('Привет! Тут мы расскажем о нашем сервисе');
     },
-    GitHubApi: require('./GitHubApi'),
+    github: require('./github'),
     translator: require('./translator')
 };

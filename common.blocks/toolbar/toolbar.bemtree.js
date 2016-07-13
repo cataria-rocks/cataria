@@ -3,6 +3,13 @@ block('toolbar').content()(function() {
         {
             block: 'button',
             mods: { theme: 'islands', size: 'm' },
+            mix: { block: 'toolbar', elem: 'memory' },
+            type: 'submit',
+            text: 'Выгрузить память переводов'
+        },
+        {
+            block: 'button',
+            mods: { theme: 'islands', size: 'm' },
             mix: { block: 'toolbar', elem: 'translate' },
             type: 'submit',
             text: 'Перевести с помощью Я.Переводчика'
