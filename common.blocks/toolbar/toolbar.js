@@ -1,36 +1,24 @@
-modules.define('toolbar',
-    ['i-bem__dom', 'BEMHTML','jquery'],
-    function(provide, BEMDOM, BEMHTML, $) {
+modules.define('toolbar', ['i-bem__dom'],
+    function(provide, BEMDOM) {
 
         provide(BEMDOM.decl(this.name, {
+            onSetMod: {
+                js: {
+                    inited: function() {}
+                }
+            },
 
-            getTranslation: () => {
-                console.log('olol');
-                $.get('/translation' + location.search)
-                    .then((response) => {
-                        console.log(response);
-                    });
-            },
-            send: () => {
-                $.get('/send')
-                    .then((response) => {
-                        console.log(response);
-                    });
-            },
-            getTranslationMemory: () => {
-                $.get('/get-translation-memory' + location.search)
-                    .then((response) => {
-                        console.log(response);
-                    });
+            _onButtonClick: function(e) {
+                var action = e.target.getMod('toolbar-action');
+
+                this.emit(action);
             }
 
         }, {
             live: function() {
                 var ptp = this.prototype;
 
-                this.liveBindTo('translate', 'click', ptp.getTranslation);
-                this.liveBindTo('send', 'click', ptp.send);
-                this.liveBindTo('memory', 'click', ptp.getTranslationMemory);
+                this.liveInitOnBlockInsideEvent('click', 'button', ptp._onButtonClick);
 
             }
         }));

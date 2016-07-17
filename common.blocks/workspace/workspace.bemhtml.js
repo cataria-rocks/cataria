@@ -1,0 +1,1 @@
+block('workspace').js()(true);

@@ -18,7 +18,8 @@ function getContent(req, res) {
                 pageTitle: 'xliff-editor',
                 segments: units,
                 sourceLang: srcLang,
-                targetLang: trgLang
+                targetLang: trgLang,
+                user: req.session.passport.user
             });
         })
 }

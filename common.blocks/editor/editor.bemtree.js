@@ -20,13 +20,11 @@ block('editor').content()((node) => {
                     }
                 },
                 {
-                    elem: 'status',
-                    content: {
-                        block: 'checkbox',
-                        name: 'status',
-                        val: false,
-                        text: 'Проверено'
-                    }
+                    block: 'checkbox',
+                    mix: { block: 'editor', elem: 'status' },
+                    name: 'status',
+                    val: false,
+                    text: 'Проверено'
                 }
             ]
         };

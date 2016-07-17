@@ -30,7 +30,7 @@ router
 // Translator routes
 router
     .get('/get-translation-memory', controllers.translator.getMemory)
-    .get('/save-translation-memory', ensureAuthenticated, controllers.translator.saveMemory)
+    .post('/save-translation-memory', ensureAuthenticated, controllers.translator.saveMemory)
     .get('/translate',controllers.translator.getTranslate);
 
 function ensureAuthenticated(req, res, next) {
