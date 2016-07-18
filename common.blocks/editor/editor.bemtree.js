@@ -23,8 +23,7 @@ block('editor').content()((node) => {
                     block: 'checkbox',
                     mix: { block: 'editor', elem: 'status' },
                     name: 'status',
-                    val: false,
-                    text: 'Проверено'
+                    val: segment.status
                 }
             ]
         };

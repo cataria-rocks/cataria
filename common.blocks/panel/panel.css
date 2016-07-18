@@ -1,9 +1,21 @@
-:block(panel) {
+:block(panel):elem(header) {
     display: table;
     width: 100%;
     border-bottom: 1px solid #079
 }
 
 :block(panel):elem(side) {
-    text-align: left;
+    text-align: center;
+}
+
+:block(panel):elem(info) {
+    padding: 10px;
+    text-align: center;
+}
+
+:block(panel):elem(info-title) {
+    display: inline-block;
+    color: #079;
+    font-weight: 600;
+    padding: 0 5px 0 10px;
 }

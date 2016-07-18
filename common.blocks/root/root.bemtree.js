@@ -1,6 +1,8 @@
 block('root').replace()((node, ctx) => {
     const data = node.data = ctx.data;
 
+    if (ctx.context) return ctx.context;
+
     return {
         block: 'page',
         title: data.title || 'xliff-editor',

@@ -2,7 +2,7 @@
     flex-direction: row;
 
     flex: 1;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 
      &:elem(wrapper) {
          position: relative;
@@ -16,7 +16,6 @@
          width: 45%;
          padding: 10px;
          box-sizing: border-box;
-         border-right: 1px solid #079;
          display: table-cell;
            &:mod(focused) {
                background: #ffffe0;
@@ -28,7 +27,7 @@
          width: 45%;
          padding: 0 10px;
          box-sizing: border-box;
-         border-right: 1px solid #079;
+         position: relative;
      }
 
      &:elem(status) {
@@ -36,11 +35,17 @@
          width: 10%;
          padding: 10px;
          box-sizing: border-box;
+         text-align: center;
      }
 
      &:elem(textarea) {
           vertical-align: middle;
           width: 95%;
-
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          border-top: 0;
+          border-bottom: 0;
+          border-color: #079;
       }
 }

@@ -1,5 +1,5 @@
-modules.define('workspace', ['i-bem__dom', 'jquery'],
-    function(provide, BEMDOM, $) {
+modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
+    function(provide, BEMDOM, $, InfoModal) {
 
     provide(BEMDOM.decl(this.name, {
         onSetMod: {
@@ -13,7 +13,7 @@ modules.define('workspace', ['i-bem__dom', 'jquery'],
         _save: function() {
             $.post('/save-translation-memory', { data: JSON.stringify(this._editor.provideData()) })
                 .then((response) => {
-                    console.log(response);
+                    InfoModal.show(response);
                 });
         },
         _getTranslation: () => {
@@ -28,10 +28,10 @@ modules.define('workspace', ['i-bem__dom', 'jquery'],
                     console.log(response);
                 });
         },
-        _getTranslationMemory: () => {
+        _getTranslationMemory: function() {
             $.get('/get-translation-memory' + location.search)
                 .then((response) => {
-                    console.log(response);
+                    BEMDOM.replace(this._editor.domElem, response);
                 });
         }
 

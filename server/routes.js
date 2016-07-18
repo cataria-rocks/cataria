@@ -24,14 +24,14 @@ router
 
 // GitHub routes
 router
-    .get('/get', controllers.github.getContent) // Example: /get?owner=bem&repo=bem-method&path=method/key-concepts/key-concepts.ru.md
-    .get('/send', ensureAuthenticated, controllers.github.createPullRequest); // TODO: POST
+    .get('/get',  controllers.github.getContent) // Example: /get?owner=bem&repo=bem-method&path=method/key-concepts/key-concepts.ru.md
+    .post('/send', ensureAuthenticated, controllers.github.createPullRequest);
 
 // Translator routes
 router
     .get('/get-translation-memory', controllers.translator.getMemory)
     .post('/save-translation-memory', ensureAuthenticated, controllers.translator.saveMemory)
-    .get('/translate',controllers.translator.getTranslate);
+    .get('/translate', controllers.translator.getTranslate);
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }

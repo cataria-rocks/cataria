@@ -1,21 +1,42 @@
 block('panel').content()((node) => {
     const data = node.data;
+    const repo = data.repo || {};
 
     return [
         {
-            elem: 'side',
-            mix: { block: 'editor', elem: 'source' },
-            content: 'Text in the original language: ' + data.sourceLang
+            elem: 'info',
+            content: [
+                {
+                    elem: 'info-title',
+                    content: 'Repo: '
+                },
+                repo.name,
+                {
+                    elem: 'info-title',
+                    content: 'File path: '
+                },
+                repo.path
+            ]
         },
         {
-            elem: 'side',
-            mix: { block: 'editor', elem: 'source' },
-            content: 'Text in the target language: ' + data.targetLang
-        },
-        {
-            elem: 'side',
-            mix: { block: 'editor', elem: 'status' },
-            content: 'Status'
+            elem: 'header',
+            content: [
+                {
+                    elem: 'side',
+                    mix: { block: 'editor', elem: 'source' },
+                    content: 'Text in the original language: ' + data.sourceLang
+                },
+                {
+                    elem: 'side',
+                    mix: { block: 'editor', elem: 'source' },
+                    content: 'Text in the target language: ' + data.targetLang
+                },
+                {
+                    elem: 'side',
+                    mix: { block: 'editor', elem: 'status' },
+                    content: 'Verify:'
+                }
+            ]
         }
     ];
 });

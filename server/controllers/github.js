@@ -5,8 +5,9 @@ const GitHubApi = require('../GitHubApi');
 
 function getContent(req, res) {
     const { owner, repo, path } = req.query;
-    const tree = 'bem-info-data'; // TODO: default_branch tree как узнать!!!!
-    const token = req.session.passport.user.token;
+    const tree = 'bem-info-data'; // TODO:
+    const passport = req.session.passport || {};
+    const token = passport.user && passport.user.token;
 
     GitHubApi.getContent(owner, repo, tree, path, token)
         .then(function(data) {
@@ -19,7 +20,11 @@ function getContent(req, res) {
                 segments: units,
                 sourceLang: srcLang,
                 targetLang: trgLang,
-                user: req.session.passport.user
+                user: passport.user,
+                repo: {
+                    name: repo,
+                    path: path
+                }
             });
         })
 }

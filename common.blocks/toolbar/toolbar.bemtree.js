@@ -5,7 +5,7 @@ block('toolbar').content()(function() {
             mods: { theme: 'islands', size: 'm', 'toolbar-action': 'memory' },
             mix: { block: 'toolbar', elem: 'action' },
             type: 'submit',
-            text: 'Выгрузить память переводов'
+            text: 'Применить память переводов'
         },
         {
             block: 'button',

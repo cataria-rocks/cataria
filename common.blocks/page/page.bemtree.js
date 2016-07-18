@@ -1,5 +1,5 @@
 block('page').content()(() => {
     return [
-        'header', 'panel', 'workspace'
+        'header', 'workspace'
     ].map(block => ({ block: block }));
 });

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+// переопределяем на нативный промис
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/xliff-editor');
 
 const Schema = mongoose.Schema;
