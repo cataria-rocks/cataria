@@ -24,7 +24,7 @@ router
 
 // GitHub routes
 router
-    .get('/get',  controllers.github.getContent) // Example: /get?owner=bem&repo=bem-method&path=method/key-concepts/key-concepts.ru.md
+    .get('/get',  controllers.github.getContent) // Example: get?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     .post('/send', ensureAuthenticated, controllers.github.createPullRequest);
 
 // Translator routes

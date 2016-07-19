@@ -1,4 +1,4 @@
-const Segment = require('../db/index').Segment;
+const Segment = require('../db').Segment;
 const md2xliff = require('md2xliff');
 const GitHubApi = require('../GitHubApi');
 const Promise = require('pinkie-promise');
@@ -10,12 +10,13 @@ function getMemory(req, res) {
     const passport = req.session.passport || {};
     const token = passport.user && passport.user.token;
 
-    GitHubApi.getContent(owner, repo, tree, path, token)
+    return GitHubApi.getContent(owner, repo, tree, path, token)
         .then(function(data) {
-            extract = md2xliff.extract(data.data);
-            const { srcLang, trgLang, units } = extract.data;
+            const xliff = md2xliff.extract(data.data);
+            const { srcLang, trgLang, units } = xliff.data;
+            const context = { block: 'editor' };
 
-            let promises = units.map((unit) => {
+            return Promise.all(units.map(unit => {
                 const $search = `"${unit.source.content}"`;
                 const $text = { $search };
                 const target_lang = trgLang;
@@ -30,27 +31,19 @@ function getMemory(req, res) {
 
                         return unit;
                     })
+            })).then((data) => {
+                renderer(req, res, {
+                    segments: data,
+                    sourceLang: srcLang,
+                    targetLang: trgLang,
+                    user: passport.user,
+                    repo: {
+                        name: repo,
+                        path: path
+                    }
+                }, context);
             });
-            const context = { block: 'editor' };
-
-            Promise.all(promises)
-                .then((data) => {
-                    renderer(req, res, {
-                        segments: data,
-                        sourceLang: srcLang,
-                        targetLang: trgLang,
-                        user: passport.user,
-                        repo: {
-                            name: repo,
-                            path: path
-                        }
-                    }, context);
-                })
-                .catch(err => {
-                    console.log(err)
-                });
-
-        })
+        });
 }
 
 function saveMemory(req, res) {

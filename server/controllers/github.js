@@ -1,17 +1,19 @@
 const renderer = require('../renderer');
 const md2xliff = require('md2xliff');
+const parseGHUrl = require('parse-github-url');
 const GitHub = require('github-api');
 const GitHubApi = require('../GitHubApi');
 
 function getContent(req, res) {
-    const { owner, repo, path } = req.query;
-    const tree = 'bem-info-data'; // TODO:
+    const doc = req.query.doc;
+    const { owner, name, branch } = parseGHUrl(doc);
+    const pathToDoc = doc.split(branch)[1].substr(1);
     const passport = req.session.passport || {};
     const token = passport.user && passport.user.token;
 
-    GitHubApi.getContent(owner, repo, tree, path, token)
-        .then(function(data) {
-            extract = md2xliff.extract(data.data);
+    return GitHubApi.getContent(owner, name, branch, pathToDoc, token)
+        .then(function(response) {
+            extract = md2xliff.extract(response.data);
             const { srcLang, trgLang, units } = extract.data;
 
             renderer(req, res, {
@@ -22,20 +24,24 @@ function getContent(req, res) {
                 targetLang: trgLang,
                 user: passport.user,
                 repo: {
-                    name: repo,
-                    path: path
+                    name: name,
+                    path: pathToDoc
                 }
             });
         })
+        .catch(err => {
+            console.error(err);
+            res.send(500);
+        });
 }
 
 function createPR(req, res) {
     // TODO: брать из params
     var options = {
-        "title": "Amazing new feature",
-        "body": "Please pull this in!",
-        "head": "octocat:new-feature",
-        "base": "bem-info-data"
+        title: 'Amazing new feature',
+        body: 'Please pull this in!',
+        head: 'octocat:new-feature',
+        base: 'bem-info-data'
     };
 
     // TODO: перенести в другое место и вызывать один раз!
@@ -61,6 +67,6 @@ function createPR(req, res) {
 
 module.exports = {
     createPullRequest: createPR,
-    // get?owner=owner&repo=repo?path=path
+    // get?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent: getContent
 };
