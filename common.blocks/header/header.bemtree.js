@@ -1,7 +1,6 @@
 block('header').content()(function() {
     var block = this.block;
 
-    console.log(this.data);
     return [
         {
             block: 'logo'

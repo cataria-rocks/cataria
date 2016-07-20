@@ -7,7 +7,7 @@ function getContent(owner, repo, tree, path, token) {
 
     console.log(gh);
     return gh
-        .getRepo(owner,repo) // Get repo
+        .getRepo(owner, repo) // Get repo
         .getContents(tree, path, true);
 }
 
