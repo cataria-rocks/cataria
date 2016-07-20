@@ -1,5 +1,5 @@
 block('root').replace()((node, ctx) => {
-    const data = node.data = ctx.data;
+    const data = node.data = ctx.data || {};
 
     if (ctx.context) return ctx.context;
 

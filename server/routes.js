@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const got = require('got');
 
 const controllers = require('./controllers');
 const passportGitHub = require('./auth');
