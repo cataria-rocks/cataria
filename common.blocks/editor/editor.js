@@ -2,8 +2,7 @@ modules.define('editor', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) 
 
 provide(BEMDOM.decl(this.name, {
     _onFocus: function(e) {
-        // TODO: убрать это!!!
-        var target = $(e.target.parentElement.parentElement),
+        var target = $(e.target).parents('.editor__wrapper'), // TODO
             source = this.elem('source').eq(target.index());
 
         this
@@ -22,7 +21,7 @@ provide(BEMDOM.decl(this.name, {
             const target = _this.findBlockInside(jqueryItem, 'textarea').getVal();
             const status = _this.findBlockInside(jqueryItem, 'checkbox').getMod('checked');
 
-            target.length && status && data.push({
+            target.length && data.push({
                 target: target,
                 target_lang: 'en-US',
                 source: source,
@@ -30,7 +29,7 @@ provide(BEMDOM.decl(this.name, {
                 status: status
             });
         });
-
+    console.log(data);
         return data;
     }
 }, {

@@ -8,14 +8,16 @@ block('panel').content()((node) => {
             content: [
                 {
                     elem: 'info-title',
-                    content: 'Repo: '
-                },
-                repo.name,
-                {
-                    elem: 'info-title',
                     content: 'File path: '
                 },
-                repo.path
+                repo,
+                {
+                    block: 'checkbox',
+                    mix: { block: 'panel', elem: 'right' },
+                    name: 'status',
+                    text: 'Show unverified cases',
+                    val: true
+                }
             ]
         },
         {

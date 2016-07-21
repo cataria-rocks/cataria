@@ -11,7 +11,8 @@ modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
         },
 
         _save: function() {
-            $.post('/save-translation-memory', { data: JSON.stringify(this._editor.provideData()) })
+            const data = JSON.stringify(this._editor.provideData());
+            data && $.post('/tm', { data: data })
                 .then((response) => {
                     InfoModal.show(response);
                 });
@@ -29,7 +30,7 @@ modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
                 });
         },
         _getTranslationMemory: function() {
-            $.get('/get-translation-memory' + location.search)
+            $.get('/tm' + location.search)
                 .then((response) => {
                     BEMDOM.replace(this._editor.domElem, response);
                 });

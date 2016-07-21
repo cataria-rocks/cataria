@@ -1,40 +1,31 @@
 const router = require('express').Router();
-
 const controllers = require('./controllers');
 const passportGitHub = require('./auth');
-
-// Main route
-router
-    .get('/', controllers.index);
+const middleware = require('./middleware');
+const ensureAuthenticated = middleware.ensureAuthenticated;
+const keepRetpath = middleware.keepRetpath;
 
 // Login routes
 router
-    .get('/login', (req, res) => { res.redirect('/auth/github'); })
+    .get('/auth/github', passportGitHub.authenticate('github', { scope: ['repo'] }))
 
-    .get('/auth/github', passportGitHub.authenticate('github', { scope: ['user:email'] }))
-
-    .get('/auth/github/callback', passportGitHub.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
-        res.redirect('/')
+    .get('/auth/github/callback', passportGitHub.authenticate('github', { failureRedirect: '/error' }), (req, res) => {
+        res.redirect(req.session.retpath || '/')
     })
     .get('/logout', (req, res) => {
         req.logout();
-        res.redirect('/');
+        res.redirect(req.session.retpath || '/');
     });
 
 // GitHub routes
 router
-    .get('/get',  controllers.github.getContent) // Example: get?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
-    .post('/send', ensureAuthenticated, controllers.github.createPullRequest);
+    .get('/', keepRetpath, controllers.github.getContent) // Example: ?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
+    .post('/', ensureAuthenticated, controllers.github.createPullRequest);
 
 // Translator routes
 router
-    .get('/get-translation-memory', controllers.translator.getMemory)
-    .post('/save-translation-memory', ensureAuthenticated, controllers.translator.saveMemory)
+    .get('/tm', controllers.translator.getMemory)
+    .post('/tm', ensureAuthenticated, controllers.translator.saveMemory)
     .get('/translate', controllers.translator.getTranslate);
-
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    res.redirect('/login');
-}
 
 module.exports = router;

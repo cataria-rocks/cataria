@@ -10,7 +10,6 @@
 
 :block(panel):elem(info) {
     padding: 10px;
-    text-align: center;
 }
 
 :block(panel):elem(info-title) {
@@ -18,4 +17,9 @@
     color: #079;
     font-weight: 600;
     padding: 0 5px 0 10px;
+}
+
+:block(panel):elem(right) {
+    float: right;
+    padding-right: 10px;
 }

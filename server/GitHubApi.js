@@ -1,14 +1,18 @@
 const GitHub = require('github-api');
+const parseGHUrl = require('parse-github-url');
 
-function getContent(owner, repo, tree, path, token) {
-    const auth = token ? { token: token } : {};
+function getContent(doc, token) {
+    const { owner, name, branch } = parseGHUrl(doc);
+    const pathToDoc = doc.split(branch)[1].substr(1);
+
     // TODO: инициализировать один раз
+    const auth = token ? { token: token } : {};
     const gh = new GitHub(auth);
 
-    console.log(gh);
     return gh
-        .getRepo(owner, repo) // Get repo
-        .getContents(tree, path, true);
+        .getRepo(owner, name) // Get repo
+        .getContents(branch, pathToDoc, true);
+
 }
 
 module.exports = {

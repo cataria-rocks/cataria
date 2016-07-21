@@ -1,17 +1,16 @@
 const renderer = require('../renderer');
 const md2xliff = require('md2xliff');
-const parseGHUrl = require('parse-github-url');
 const GitHub = require('github-api');
 const GitHubApi = require('../GitHubApi');
 
 function getContent(req, res) {
     const doc = req.query.doc;
-    const { owner, name, branch } = parseGHUrl(doc);
-    const pathToDoc = doc.split(branch)[1].substr(1);
     const passport = req.session.passport || {};
     const token = passport.user && passport.user.token;
 
-    return GitHubApi.getContent(owner, name, branch, pathToDoc, token)
+    if (!doc) res.send('Привет! Тут мы расскажем о нашем сервисе');
+
+    return GitHubApi.getContent(doc, token)
         .then(function(response) {
             extract = md2xliff.extract(response.data);
             const { srcLang, trgLang, units } = extract.data;
@@ -23,10 +22,7 @@ function getContent(req, res) {
                 sourceLang: srcLang,
                 targetLang: trgLang,
                 user: passport.user,
-                repo: {
-                    name: name,
-                    path: pathToDoc
-                }
+                repo: req.query.doc
             });
         })
         .catch(err => {
@@ -67,6 +63,6 @@ function createPR(req, res) {
 
 module.exports = {
     createPullRequest: createPR,
-    // get?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
+    // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent: getContent
 };

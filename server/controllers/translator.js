@@ -5,12 +5,10 @@ const Promise = require('pinkie-promise');
 const renderer = require('../renderer');
 
 function getMemory(req, res) {
-    const { owner, repo, path } = req.query;
-    const tree = 'bem-info-data'; // TODO: default_branch tree как узнать!!!!
     const passport = req.session.passport || {};
     const token = passport.user && passport.user.token;
 
-    return GitHubApi.getContent(owner, repo, tree, path, token)
+    return GitHubApi.getContent(req.query.doc, token)
         .then(function(data) {
             const xliff = md2xliff.extract(data.data);
             const { srcLang, trgLang, units } = xliff.data;
@@ -37,10 +35,7 @@ function getMemory(req, res) {
                     sourceLang: srcLang,
                     targetLang: trgLang,
                     user: passport.user,
-                    repo: {
-                        name: repo,
-                        path: path
-                    }
+                    repo: req.query.doc
                 }, context);
             });
         });
@@ -48,7 +43,8 @@ function getMemory(req, res) {
 
 function saveMemory(req, res) {
     const data = JSON.parse(req.body.data);
-    Segment.collection.insert(data, (err, data) => {
+
+    Segment.collection.insert(data, (err) => {
         if (err) throw err;
 
         res.send('Segment successfully created!');

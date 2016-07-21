@@ -5,28 +5,28 @@ block('toolbar').content()(function() {
             mods: { theme: 'islands', size: 'm', 'toolbar-action': 'memory' },
             mix: { block: 'toolbar', elem: 'action' },
             type: 'submit',
-            text: 'Применить память переводов'
+            text: 'Apply translation memory'
         },
         {
             block: 'button',
             mods: { theme: 'islands', size: 'm', 'toolbar-action': 'translate' },
             mix: { block: 'toolbar', elem: 'action' },
             type: 'submit',
-            text: 'Перевести с помощью Я.Переводчика'
+            text: 'Translate via Yandex Translate'
         },
         {
             block: 'button',
             mods: { theme: 'islands', size: 'm', 'toolbar-action': 'save' },
             mix: { block: 'toolbar', elem: 'action' },
             type: 'submit',
-            text: 'Сохранить'
+            text: 'Save'
         },
         {
             block: 'button',
             mods: { theme: 'islands', size: 'm', 'toolbar-action': 'send' },
             mix: { block: 'toolbar', elem: 'action' },
             type: 'submit',
-            text: 'Отправить'
+            text: 'Send PR to GitHub'
         }
     ];
 });
