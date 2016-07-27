@@ -5,6 +5,7 @@
 ```sh
 npm i
 npm run make
-mongod --setParameter textSearchEnabled=true
+mkdir -p data/db
+mongod --dbpath data/db
 npm start
 ```

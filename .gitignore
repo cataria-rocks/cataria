@@ -6,6 +6,8 @@ node_modules/
 .svn
 npm-debug.log
 server/secret-config.js
+data/
+.env
 
 # bem
 .bem/cache/
