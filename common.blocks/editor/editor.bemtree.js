@@ -2,8 +2,11 @@ block('editor').content()((node) => {
     const segments = node.data.segments || [];
 
     return segments.map(segment => {
+        const status = segment.status;
+
         return {
             elem: 'wrapper',
+            elemMods: { verified: status },
             content: [
                 {
                     elem: 'source',
@@ -22,8 +25,9 @@ block('editor').content()((node) => {
                 {
                     block: 'checkbox',
                     mix: { block: 'editor', elem: 'status' },
+                    mods: { checked: status },
                     name: 'status',
-                    val: segment.status
+                    val: status
                 }
             ]
         };

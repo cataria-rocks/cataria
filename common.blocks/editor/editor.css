@@ -49,3 +49,10 @@
           border-color: #079;
       }
 }
+
+.editor_unverified .editor__wrapper_verified {
+    display: block;
+    height: 2px;
+    background: red;
+    overflow: hidden;
+}
