@@ -19,7 +19,7 @@
     padding: 0 5px 0 10px;
 }
 
-:block(panel):elem(right) {
+:block(panel):elem(show) {
     float: right;
     padding-right: 10px;
 }

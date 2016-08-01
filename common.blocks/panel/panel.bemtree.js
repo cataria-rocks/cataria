@@ -13,10 +13,10 @@ block('panel').content()((node) => {
                 repo,
                 {
                     block: 'checkbox',
-                    mix: { block: 'panel', elem: 'right' },
+                    mix: { block: 'panel', elem: 'show' },
                     name: 'status',
                     text: 'Show unverified cases',
-                    val: true
+                    val: false
                 }
             ]
         },

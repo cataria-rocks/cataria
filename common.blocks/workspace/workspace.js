@@ -33,7 +33,11 @@ modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
             $.get('/tm' + location.search)
                 .then((response) => {
                     BEMDOM.replace(this._editor.domElem, response);
+                    this._editor = this.findBlockInside('editor');
                 });
+        },
+        _showUnVerified: function() {
+            this._editor.toggleMod('unverified');
         }
 
     }, {
@@ -44,6 +48,7 @@ modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
             this.liveInitOnBlockInsideEvent('translate', 'toolbar', ptp._getTranslation);
             this.liveInitOnBlockInsideEvent('send', 'toolbar', ptp._send);
             this.liveInitOnBlockInsideEvent('memory', 'toolbar', ptp._getTranslationMemory);
+            this.liveInitOnBlockInsideEvent('showUnVerified', 'panel', ptp._showUnVerified);
         }
     }));
 

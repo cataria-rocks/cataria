@@ -25,11 +25,16 @@ function getMemory(req, res) {
                     .sort({ weight: { $meta: 'textScore' } })
                     .exec()
                     .then((data) => {
-                        if (data.length) unit.target.content = data[0].target;
+                        if (data.length) {
+                            const value = data[0];
+                            unit.target.content = value.target;
+                            (value.source === unit.source.content) && (unit.status = true);
+                        }
 
                         return unit;
                     })
             })).then((data) => {
+
                 renderer(req, res, {
                     segments: data,
                     sourceLang: srcLang,
