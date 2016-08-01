@@ -13,7 +13,7 @@ block('panel').content()((node) => {
                 repo,
                 {
                     block: 'checkbox',
-                    mix: { block: 'panel', elem: 'show' },
+                    mix: { block: 'panel', elem: 'toggle-verified' },
                     name: 'status',
                     text: 'Show unverified cases',
                     val: false

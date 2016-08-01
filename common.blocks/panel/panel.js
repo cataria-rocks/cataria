@@ -1,23 +1,19 @@
-modules.define('panel', ['i-bem__dom'],
-    function(provide, BEMDOM) {
+modules.define('panel', ['i-bem__dom'], function(provide, BEMDOM) {
+provide(BEMDOM.decl(this.name, {
+    onSetMod: {
+        js: {
+            inited: function() {}
+        }
+    },
 
-        provide(BEMDOM.decl(this.name, {
-            onSetMod: {
-                js: {
-                    inited: function() {}
-                }
-            },
+    toggleVerified: function() {
+        this.emit('toggleVerified');
+    }
 
-            _showUnVerified: function() {
-                this.emit('showUnVerified');
-            }
+}, {
+    live: function() {
+        this.liveBindTo('toggle-verified', 'change', this.prototype.toggleVerified);
+    }
+}));
 
-        }, {
-            live: function() {
-                var ptp = this.prototype;
-
-                this.liveBindTo('show', 'change', ptp._showUnVerified);
-            }
-        }));
-
-    });
+});

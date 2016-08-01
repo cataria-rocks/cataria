@@ -19,7 +19,7 @@
     padding: 0 5px 0 10px;
 }
 
-:block(panel):elem(show) {
+:block(panel):elem(toggle-verified) {
     float: right;
     padding-right: 10px;
 }

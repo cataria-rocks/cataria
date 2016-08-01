@@ -1,16 +1,24 @@
 modules.define('editor', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) {
 
 provide(BEMDOM.decl(this.name, {
-    _onFocus: function(e) {
-        var target = $(e.target).parents('.editor__wrapper'), // TODO
-            source = this.elem('source').eq(target.index());
+    _onFocusIn: function(e) {
+        this._target = $(e.target).parents('.editor__unit');
+        this._source = this.elem('source').eq(this._target.index());
 
         this
-            .toggleMod(target, 'focused')
-            .toggleMod(source, 'focused');
+            .setMod(this._target, 'focused')
+            .setMod(this._source, 'focused')
+            .emit('showAltTrans', { search: this._source.text(), unit: e.target });
     },
+
+    _onFocusOut: function() {
+        this
+            .delMod(this._target, 'focused')
+            .delMod(this._source, 'focused');
+    },
+
     provideData: function() {
-        const items = this.elem('wrapper');
+        const items = this.elem('unit');
         const _this = this;
 
         let data = [];
@@ -29,12 +37,14 @@ provide(BEMDOM.decl(this.name, {
                 status: status
             });
         });
-    console.log(data);
+
         return data;
     }
 }, {
     live: function() {
-        this.liveBindTo('target', 'focusin focusout', this.prototype._onFocus);
+        this.liveBindTo('target', 'focusin', this.prototype._onFocusIn);
+        this.liveBindTo('target', 'focusout', this.prototype._onFocusOut);
     }
 }));
+
 });

@@ -1,56 +1,62 @@
 const Segment = require('../db').Segment;
 const md2xliff = require('md2xliff');
-const GitHubApi = require('../GitHubApi');
+const helpers = require('../helpers');
 const Promise = require('pinkie-promise');
 const renderer = require('../renderer');
+const onAjaxError = helpers.onAjaxError;
 
 function getMemory(req, res) {
     const passport = req.session.passport || {};
     const token = passport.user && passport.user.token;
+    const context = { block: 'editor' };
+    const { doc } = req.query;
 
-    return GitHubApi.getContent(req.query.doc, token)
-        .then(function(data) {
-            const xliff = md2xliff.extract(data.data);
+    return helpers.getContent(doc, token)
+        .then(function(text) {
+            const xliff = md2xliff.extract(text.data);
             const { srcLang, trgLang, units } = xliff.data;
-            const context = { block: 'editor' };
 
             return Promise.all(units.map(unit => {
-                const $search = `"${unit.source.content}"`;
-                const $text = { $search };
-                const target_lang = trgLang;
-                const source_lang = srcLang;
-                const query = { target_lang, source_lang, $text };
+                return helpers.findSegment(trgLang, srcLang, unit.source.content)
+                    .then(data => {
+                        if (data.length > 0) {
+                            const value = data[0]; // element with a high percentage of matches
 
-                return Segment.find(query, { weight: { $meta: 'textScore' } })
-                    .sort({ weight: { $meta: 'textScore' } })
-                    .exec()
-                    .then((data) => {
-                        if (data.length) {
-                            const value = data[0];
-                            unit.target.content = value.target;
+                            unit.target.content = value.target; // insert translation in segment's field target
                             (value.source === unit.source.content) && (unit.status = true);
                         }
 
                         return unit;
                     })
-            })).then((data) => {
-
+            })).then(data => {
                 renderer(req, res, {
                     segments: data,
                     sourceLang: srcLang,
                     targetLang: trgLang,
                     user: passport.user,
-                    repo: req.query.doc
+                    repo: doc
                 }, context);
-            });
+            }).catch(function(err) { onAjaxError(req, res, err); });
         });
+}
+
+function getAltTranslate(req, res) {
+    const { segment, sourceLang, targetLang } = req.query;
+    const context = { block: 'alternative-translation' };
+
+    return helpers.findSegment(targetLang, sourceLang, segment)
+        .then(data => {
+            renderer(req, res, {
+                translations: data
+            }, context);
+        }).catch(function(err) { onAjaxError(req, res, err); });
 }
 
 function saveMemory(req, res) {
     const data = JSON.parse(req.body.data);
 
-    Segment.collection.insert(data, (err) => {
-        if (err) throw err;
+    Segment.collection.insert(data, err => {
+        if (err) onAjaxError(req, res, err);
 
         res.send('Segment successfully created!');
     });
@@ -63,5 +69,6 @@ function getTranslate(req, res) {
 module.exports = {
     getMemory: getMemory,
     saveMemory: saveMemory,
-    getTranslate: getTranslate
+    getTranslate: getTranslate,
+    getAltTranslate: getAltTranslate
 };

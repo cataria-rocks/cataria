@@ -1,0 +1,6 @@
+.workspace_mode_unverified-only .editor__unit_verified {
+    display: block;
+    height: 0;
+    border: 2px solid #012B38;
+    overflow: hidden;
+}
