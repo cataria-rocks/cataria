@@ -1,7 +1,7 @@
 block('editor').content()((node) => {
     const segments = node.data.segments || [];
 
-    return segments.map(segment => {
+    return segments.map((segment, idx) => {
         const status = segment.status;
 
         return {
@@ -10,7 +10,17 @@ block('editor').content()((node) => {
             content: [
                 {
                     elem: 'source',
-                    content: segment.source.content
+                    content: [
+                        {
+                            tag: 'input',
+                            attrs: {
+                                type: 'hidden',
+                                value: segment.source.content,
+                                name: 'source_' + idx
+                            }
+                        },
+                        segment.source.content
+                    ]
                 },
                 {
                     elem: 'target',
@@ -19,15 +29,16 @@ block('editor').content()((node) => {
                         block: 'textarea',
                         mix: { block: 'editor', elem: 'textarea' },
                         mods: { theme: 'islands', size: 'm', width: 'available' },
-                        val: segment.target.content || ''
+                        val: segment.target.content || '',
+                        name: 'target_' + idx
                     }
                 },
                 {
                     block: 'checkbox',
                     mix: { block: 'editor', elem: 'status' },
-                    mods: { checked: status },
-                    name: 'status',
-                    val: status
+                    mods: { checked: (status && status !== 'off') },
+                    name: 'status_' + idx,
+                    val: 'on'
                 }
             ]
         };

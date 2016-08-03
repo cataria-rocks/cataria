@@ -9,27 +9,25 @@ provide(BEMDOM.decl(this.name, {
             .toggleMod(target, 'focused')
             .toggleMod(source, 'focused');
     },
-    provideData: function() {
-        const items = this.elem('wrapper');
-        const _this = this;
+    provideData: function(options = {}) {
+        const items = this.domElem.serializeArray();
+        const onlyTranslated = options.onlyTranslated === undefined ? true : options.onlyTranslated;
+        const data = [];
+        // items is flat ordered array of form data
+        // take every 3 items and got every item of data
+        for (let i = 0; i < items.length; i += 3) {
+            const source = items[i].value;
+            const target = items[i + 1].value;
+            const status = items[i + 2].value;
 
-        let data = [];
-
-        items.each((index, item) => {
-            const jqueryItem = $(item);
-            const source = _this.findElem(jqueryItem, 'source').text();
-            const target = _this.findBlockInside(jqueryItem, 'textarea').getVal();
-            const status = _this.findBlockInside(jqueryItem, 'checkbox').getMod('checked');
-
-            target.length && data.push({
-                target: target,
+            (!onlyTranslated || target) && data.push({
+                target: target.trim(),
                 target_lang: 'en-US',
                 source: source,
                 source_lang: 'ru-RU',
                 status: status
             });
-        });
-    console.log(data);
+        }
         return data;
     }
 }, {

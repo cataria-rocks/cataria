@@ -35,12 +35,11 @@ passport.deserializeUser(function(user, done) {
 
 if (!clientID || !clientSecret) {
     console.error('Please provide clientID and clientSecret');
-    return;
+} else {
+    passport.use(new GitHubStrategy({
+        clientID: clientID,
+        clientSecret: clientSecret,
+        callbackURL: '/auth/github/callback',
+        passReqToCallback: true
+    }, verify));
 }
-
-passport.use(new GitHubStrategy({
-    clientID: clientID,
-    clientSecret: clientSecret,
-    callbackURL: '/auth/github/callback',
-    passReqToCallback: true
-}, verify));

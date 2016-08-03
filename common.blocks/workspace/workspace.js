@@ -17,18 +17,25 @@ modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
                     InfoModal.show(response);
                 });
         },
-        _getTranslation: () => {
-            $.get('/translation' + location.search)
-                .then((response) => {
-                    console.log(response);
+
+        _getTranslation: function() {
+            const editor = this.findBlockInside('editor');
+            const data   = editor.provideData({ onlyTranslated: false });
+            InfoModal.show('Loading');
+            $.post('/translate', { data: JSON.stringify(data) })
+                .then(response => {
+                    InfoModal.hide();
+                    BEMDOM.replace(editor.domElem, response);
                 });
         },
+
         _send: () => {
             $.get('/send')
                 .then((response) => {
                     console.log(response);
                 });
         },
+
         _getTranslationMemory: function() {
             $.get('/tm' + location.search)
                 .then((response) => {

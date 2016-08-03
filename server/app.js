@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const connect = require('connect');
@@ -18,8 +19,8 @@ const app = express();
 
 app
     // .use(favicon(path.join(path.join(rootDir, 'index'), 'favicon.ico')))
-    .use(bodyParser.json())
-    .use(bodyParser.urlencoded({ extended: false }))
+    .use(bodyParser.json({ limit: '3mb' }))
+    .use(bodyParser.urlencoded({ limit: '3mb', extended: false }))
     .use(cookieSession({ keys: ['secret1', 'secret2'] })) // TODO
     .use(passport.initialize())
     .use(passport.session())
