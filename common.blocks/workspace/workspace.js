@@ -1,4 +1,4 @@
-    modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
+modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
     function(provide, BEMDOM, $, InfoModal) {
 
     provide(BEMDOM.decl(this.name, {

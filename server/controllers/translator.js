@@ -59,8 +59,8 @@ function saveMemory(req, res) {
 function getTranslate(req, res) {
     const passport = req.session.passport || {};
     const data = JSON.parse(req.body.data);
-
-    return Promise.all(data.map((item) => {
+    // TODO: this should be in another place
+    return Promise.all(data.map(item => {
         return new Promise((resolve, reject) => {
             if (item.target) {
                 item.source = { content: item.source };
@@ -68,26 +68,27 @@ function getTranslate(req, res) {
                 return resolve(item);
             }
             translate.translate(item.source, {
-                // TODO: here we should think for better solution
-                // maybe we should use simplified format anywhere
-                from: item.source_lang.slice(0,2),
-                to:   item.target_lang.slice(0,2)
-            },
-            function(err, result) {
-                if (err) {
-                    console.error(err);
-                    reject({ code: 500, message: 'Something wrong happens' });
-                }
+                    // TODO: here we should think for better solution
+                    // maybe we should use simplified format anywhere
+                    from: item.source_lang.slice(0, 2),
+                    to:   item.target_lang.slice(0, 2)
+                },
+                function(err, result) {
+                    if (err) {
+                        console.error(err);
+                        return reject({ code: 500, message: err.message });
+                    }
 
-                if (result.code === 200) {
-                    item.target = { content: result.text[0] };
-                    item.source = { content: item.source };
-                    return resolve(item);
-                } else {
-                    console.log(result.code, result.message);
-                    reject(result);
+                    if (result.code === 200) {
+                        item.target = { content: result.text[0] };
+                        item.source = { content: item.source };
+                        return resolve(item);
+                    } else {
+                        console.error(result.code, result.message, 'from: translator.js:87');
+                        reject(result);
+                    }
                 }
-            });
+            );
         });
     }))
         .then(data => {
@@ -99,9 +100,7 @@ function getTranslate(req, res) {
                 repo: req.query.doc
             }, { block: 'editor' });
         })
-        .catch((reason) => {
-            res.status(reason.code).send(reason.message);
-        });
+        .catch(reason => res.status(reason.code).send(reason.message));
 }
 
 module.exports = {
