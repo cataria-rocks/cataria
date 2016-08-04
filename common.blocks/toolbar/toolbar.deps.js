@@ -1,3 +1,3 @@
 ({
-    shouldDeps: { block: 'button', mods: { theme: 'islands' } }
+    shouldDeps: [{ block: 'button', mods: { theme: 'islands' } }, 'alternative-translation']
 })

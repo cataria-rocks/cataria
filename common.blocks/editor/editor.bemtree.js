@@ -5,7 +5,7 @@ block('editor').content()((node) => {
         const status = segment.status;
 
         return {
-            elem: 'wrapper',
+            elem: 'unit',
             elemMods: { verified: status },
             content: [
                 {

@@ -1,7 +1,7 @@
 const renderer = require('../renderer');
 const md2xliff = require('md2xliff');
 const GitHub = require('github-api');
-const GitHubApi = require('../GitHubApi');
+const helpers = require('../helpers');
 
 function getContent(req, res) {
     const doc = req.query.doc;
@@ -10,7 +10,7 @@ function getContent(req, res) {
 
     if (!doc) res.send('Привет! Тут мы расскажем о нашем сервисе');
 
-    return GitHubApi.getContent(doc, token)
+    return helpers.getContent(doc, token)
         .then(function(response) {
             extract = md2xliff.extract(response.data);
             const { srcLang, trgLang, units } = extract.data;

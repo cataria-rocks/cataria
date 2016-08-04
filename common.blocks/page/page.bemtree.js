@@ -1,5 +1,6 @@
-block('page').content()(() => {
+block('page').content()((node) => {
     return [
-        'header', 'workspace'
-    ].map(block => ({ block: block }));
+        { block: 'header' },
+        { block: 'workspace', js: { sourceLang: node.data.sourceLang, targetLang: node.data.targetLang } }
+    ];
 });

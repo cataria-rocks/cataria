@@ -2,9 +2,9 @@
     flex-direction: row;
 
     flex: 1;
-    margin-bottom: 50px;
+    margin-bottom: 66px;
 
-     &:elem(wrapper) {
+     &:elem(unit) {
          position: relative;
          display: table;
          width: 100%;
@@ -48,11 +48,4 @@
           border-bottom: 0;
           border-color: #079;
       }
-}
-
-.editor_unverified .editor__wrapper_verified {
-    display: block;
-    height: 2px;
-    background: red;
-    overflow: hidden;
 }

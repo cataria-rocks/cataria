@@ -1,0 +1,15 @@
+:block(alternative-translation) {
+    background: #fff;
+    margin: 20px 0;
+    text-align: left;
+    display: block;
+    max-height: 200px;
+    overflow: scroll;
+
+    &:elem(translation) {
+         display: block;
+         box-sizing: border-box;
+         border: 1px solid #079;
+         padding: 10px;
+    }
+}

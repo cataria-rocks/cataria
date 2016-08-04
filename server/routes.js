@@ -26,6 +26,7 @@ router
 router
     .get('/tm', controllers.translator.getMemory)
     .post('/tm', ensureAuthenticated, controllers.translator.saveMemory)
-    .get('/translate', controllers.translator.getTranslate);
+    .get('/translate', controllers.translator.getTranslate)
+    .get('/alt', controllers.translator.getAltTranslate);
 
 module.exports = router;
