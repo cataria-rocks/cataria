@@ -46,15 +46,13 @@ provide(BEMDOM.decl(this.name, {
     },
 
     showAltTrans: function(e, data) {
-        const { search, unit } = data;
-        const { sourceLang, targetLang } = this.params;
+        const { unit } = data;
+        const index = $(unit).data('index');
+        const content = window.segments[index].altTrans;
 
-        $.get(`/alt?segment=${search}&sourceLang=${sourceLang}&targetLang=${targetLang}`)
-            .then((response) => {
-                BEMDOM.replace(this._altTransl.domElem, response);
-                this._altTransl = this.findBlockInside('alternative-translation');
-                this._editorUnit = unit;
-            }).fail((err) => InfoModal.show(err));
+        BEMDOM.replace(this._altTransl.domElem, content);
+        this._altTransl = this.findBlockInside('alternative-translation');
+        this._editorUnit = unit;
     },
 
     applyAltTrans: function(e, data) {

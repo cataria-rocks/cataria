@@ -5,12 +5,12 @@ const pathToBundle = path.join(__dirname, '..', 'desktop.bundles', bundleName);
 const BEMHTML = require(path.join(pathToBundle, bundleName + '.bemhtml.js')).BEMHTML;
 const bemtrees = require(path.join(pathToBundle, bundleName + '.bemtree.js')).BEMTREE;
 
-function render(req, res, data, context) {
+function render(req, res, data, context, send) {
     let bemjson;
 
-    data.query = req.query || {};
+    data.query = req && req.query || {};
 
-    if (req.query.hasOwnProperty('json')) return res.send('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
+    if (req && req.query.hasOwnProperty('json')) return res.send('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
 
     try {
         bemjson = (bemtrees).apply({
@@ -27,11 +27,11 @@ function render(req, res, data, context) {
 
     }
 
-    if (req.query.hasOwnProperty('bemjson')) return res.send('<pre>' + JSON.stringify(bemjson, null, 4) + '</pre>');
+    if (req && req.query.hasOwnProperty('bemjson')) return res.send('<pre>' + JSON.stringify(bemjson, null, 4) + '</pre>');
 
     const html = BEMHTML.apply(bemjson);
 
-    return res.send(html);
+    return !send ? res.send(html) : html;
 }
 
 module.exports = render;
