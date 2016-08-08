@@ -11,7 +11,7 @@ function getContent(req, res) {
     const passport = req.session.passport || {};
     const token = passport.user && passport.user.token;
 
-    if (!doc) res.send('Привет! Тут мы расскажем о нашем сервисе');
+    if (!doc) return res.redirect('/about');
 
     return helpers.github.getContent(doc, token)
         .then(function(response) {
@@ -34,18 +34,12 @@ function getContent(req, res) {
         })
 }
 
-function createPullRequest(req, res) {}
+function createPullRequest(req, res) {
+    // TODO: send PR
+}
 
 function getTranslate(req, res) {
-    const { segment, sourceLang, targetLang } = req.query;
-    const context = { block: 'alternative-translation' };
-
-    return helpers.translator.findSegment(targetLang, sourceLang, segment)
-        .then(data => {
-            renderer(req, res, {
-                translations: data
-            }, context);
-        }).catch(err => { onAjaxError(req, res, err); });
+    // TODO: ya translate
 }
 
 function saveMemory(req, res) {
@@ -58,10 +52,15 @@ function saveMemory(req, res) {
     });
 }
 
+function updateTM() {
+    // TODO: update TM
+}
+
 module.exports = {
     // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent: getContent,
     createPullRequest: createPullRequest,
     getTranslate: getTranslate,
-    saveMemory: saveMemory
+    saveMemory: saveMemory,
+    updateTM: updateTM
 };

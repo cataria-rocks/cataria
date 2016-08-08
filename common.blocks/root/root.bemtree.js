@@ -12,6 +12,6 @@ block('root').replace()((node, ctx) => {
         scripts: [
             { elem: 'js', url: 'index.min.js' }
         ],
-        mods: { theme: 'islands' }
+        mods: { theme: 'islands', view: data.view }
     };
 });

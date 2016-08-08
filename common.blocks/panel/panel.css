@@ -1,3 +1,6 @@
+:block(panel) {
+    width: 70%;
+}
 :block(panel):elem(header) {
     display: table;
     width: 100%;

@@ -2,6 +2,3 @@
     padding: 10px;
     background: #079;
 }
-:block(header):elem(button) {
-    float: right;
-}

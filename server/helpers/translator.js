@@ -1,5 +1,4 @@
 const Segment = require('../db').Segment;
-const renderer = require('../renderer');
 
 function findSegment(target_lang, source_lang, content) {
     const $search = `${content}`;
@@ -15,14 +14,14 @@ function getTM(trgLang, srcLang, units) {
     return Promise.all(units.map(unit => {
         return findSegment(trgLang, srcLang, unit.source.content)
             .then(data => {
-                unit.altTrans = renderer(null, null, data, { block: 'alternative-translation' }, true);
+                unit.altTrans = data;
 
                 if (data.length > 0) {
                     const value = data[0]; // element with a high percentage of matches
 
                     if (value.source === unit.source.content) {
                         unit.target.content = value.target; // insert translation in segment's field target
-                        unit.status = true
+                        unit.status = true; // TODO:
                     }
                 }
 

@@ -1,4 +1,4 @@
-block('editor').content()((node) => {
+block('editor').content()(node => {
     const segments = node.data.segments || [];
 
     return segments.map((segment, index) => {
@@ -32,8 +32,5 @@ block('editor').content()((node) => {
                 }
             ]
         };
-    }).concat({
-        tag: 'script',
-        content: 'var segments = ' + JSON.stringify(segments)
-    });
+    }).concat({ block: 'segments' });
 });

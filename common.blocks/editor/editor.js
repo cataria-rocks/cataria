@@ -3,18 +3,11 @@ modules.define('editor', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) 
 provide(BEMDOM.decl(this.name, {
     _onFocusIn: function(e) {
         this._target = $(e.target).parents('.editor__unit');
-        this._source = this.elem('source').eq(this._target.index());
-
-        this
-            .setMod(this._target, 'focused')
-            .setMod(this._source, 'focused')
-            .emit('showAltTrans', { search: this._source.text(), unit: e.target });
+        this.setMod(this._target, 'focused').emit('showAltTrans', e.target);
     },
 
     _onFocusOut: function() {
-        this
-            .delMod(this._target, 'focused')
-            .delMod(this._source, 'focused');
+        this.delMod(this._target, 'focused');
     },
 
     provideData: function() {

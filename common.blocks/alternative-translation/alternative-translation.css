@@ -1,10 +1,12 @@
 :block(alternative-translation) {
     background: #fff;
-    margin: 20px 0;
+    margin: 38px 0 20px;
     text-align: left;
     display: block;
-    max-height: 200px;
+    min-height: 200px;
+    max-height: 450px;
     overflow: scroll;
+    padding: 10px;
 
     &:elem(translation) {
          display: block;
