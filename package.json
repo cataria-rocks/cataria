@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-alpha.1",
     "debug": "^2.2.0",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "github-api": "^2.3.0",
     "got": "^6.3.0",

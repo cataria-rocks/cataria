@@ -44,16 +44,29 @@ function getTranslate(req, res) {
 
 function saveMemory(req, res) {
     const data = JSON.parse(req.body.data);
+    const promises = data.map(helpers.translator.saveTM);
 
-    Segment.collection.insert(data, err => {
-        if (err) onAjaxError(req, res, err);
+    return Promise.all(promises)
+        .then(() => {
+            res.send('Segment successfully created!');
+        })
 
-        res.send('Segment successfully created!');
-    });
 }
 
-function updateTM() {
-    // TODO: update TM
+function updateTM(req, res) {
+    const data = JSON.parse(req.body.data);
+    const srcLang = data[0].source.lang;
+    const trgLang = data[0].target.lang;
+
+    helpers.translator.getTM(trgLang, srcLang, data)
+        .then(units => {
+            renderer(req, res, {
+                segments: units,
+                sourceLang: srcLang,
+                targetLang: trgLang
+            }, { block: 'editor' })
+        })
+        .catch(err => { onError(req, res, err); });
 }
 
 module.exports = {

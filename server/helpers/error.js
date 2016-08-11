@@ -18,7 +18,6 @@ function onAjaxError(req, res, err) {
 
 function _renderErrorPage(req, res, err) {
     res.status(err.statusCode || 500);
-    console.log('p;p;');
     renderer(req, res, { errMessage: err.message, view: 'error' });
 }
 

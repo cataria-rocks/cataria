@@ -25,6 +25,7 @@ block('editor').content()(node => {
                 },
                 {
                     block: 'checkbox',
+                    attrs: { 'data-index': index },
                     mix: { block: 'editor', elem: 'status' },
                     mods: { checked: status },
                     name: 'status',

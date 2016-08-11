@@ -1,42 +1,32 @@
 modules.define('editor', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) {
 
 provide(BEMDOM.decl(this.name, {
-    _onFocusIn: function(e) {
+    onFocusIn: function(e) {
         this._target = $(e.target).parents('.editor__unit');
         this.setMod(this._target, 'focused').emit('showAltTrans', e.target);
     },
 
-    _onFocusOut: function() {
+    onFocusOut: function(e) {
+        const elem = this.findBlockInside($(e.target), 'textarea');
+        const index = elem.domElem.data('index');
+
+        window.segments[index].target.content = elem.getVal();
         this.delMod(this._target, 'focused');
     },
 
-    provideData: function() {
-        const items = this.elem('unit');
-        const _this = this;
+    setStatus: function(e) {
+        // TODO: $(e.target).parents('label') - ?
+        const elem  = this.findBlockInside($(e.target).parents('label'), 'checkbox');
+        const index = elem.domElem.data('index');
 
-        let data = [];
-
-        items.each((index, item) => {
-            const jqueryItem = $(item);
-            const source = _this.findElem(jqueryItem, 'source').text();
-            const target = _this.findBlockInside(jqueryItem, 'textarea').getVal();
-            const status = _this.findBlockInside(jqueryItem, 'checkbox').getMod('checked');
-
-            target.length && data.push({
-                target: target,
-                target_lang: 'en-US',
-                source: source,
-                source_lang: 'ru-RU',
-                status: status
-            });
-        });
-
-        return data;
+        window.segments[index].status = elem.getMod('checked');
+        console.log('segment:', window.segments[index]);
     }
 }, {
     live: function() {
-        this.liveBindTo('target', 'focusin', this.prototype._onFocusIn);
-        this.liveBindTo('target', 'focusout', this.prototype._onFocusOut);
+        this.liveBindTo('target', 'focusin', this.prototype.onFocusIn)
+            .liveBindTo('target', 'focusout', this.prototype.onFocusOut)
+            .liveBindTo('status', 'change', this.prototype.setStatus);
     }
 }));
 

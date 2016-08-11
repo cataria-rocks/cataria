@@ -11,7 +11,7 @@ provide(BEMDOM.decl(this.name, {
     },
 
     saveTm: function() {
-        const data = JSON.stringify(this._editor.provideData());
+        const data = JSON.stringify(this.getData());
 
         data && $.post('/saveTM', { data: data })
             .then((response) => {
@@ -27,18 +27,20 @@ provide(BEMDOM.decl(this.name, {
     },
 
     updateTM: function() {
-        $.get('/updateTM' + location.search)
+        $.post('/updateTM', { data: JSON.stringify(window.segments) })
             .then(response => {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
+                InfoModal.show('Update');// TODO:
             }).fail((err) => InfoModal.show(err));
     },
 
     getTranslation: function() {
-        $.get('/translate' + location.search)
+        $.post('/translate', { data: JSON.stringify(window.segments) })
             .then(response => {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
+                InfoModal.show('Update');// TODO:
             }).fail((err) => InfoModal.show(err));
     },
 
@@ -57,8 +59,30 @@ provide(BEMDOM.decl(this.name, {
 
     applyAltTrans: function(e, data) {
         const translation = $(data).text();
+        const elem = this.findBlockInside($(this._editorUnit), 'textarea');
+        const index = elem.domElem.data('index');
 
-        $(this._editorUnit).val(translation);
+        elem.setVal(translation);
+
+        window.segments[index].target.content = translation;
+        console.log(window.segments[index]);
+    },
+
+    getData: function() {
+        const data = [];
+
+        window.segments.map(segment => {
+            segment.target.content && data.push({
+                target: segment.target.content,
+                target_lang: segment.target.lang,
+                // save segment into db without tags bpt/ept, but save with '[]/()'
+                source: segment.source.content.replace(/<[^>]*>*/g,''),
+                source_lang: segment.source.lang,
+                status: segment.status
+            });
+        });
+
+        return data;
     }
 
 }, {
