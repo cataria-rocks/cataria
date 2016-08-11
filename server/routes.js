@@ -17,16 +17,12 @@ router
         res.redirect(req.session.retpath || '/');
     });
 
-// GitHub routes
 router
-    .get('/', keepRetpath, controllers.github.getContent) // Example: ?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
-    .post('/', ensureAuthenticated, controllers.github.createPullRequest);
-
-// Translator routes
-router
-    .get('/tm', controllers.translator.getMemory)
-    .post('/tm', ensureAuthenticated, controllers.translator.saveMemory)
-    .get('/translate', controllers.translator.getTranslate)
-    .get('/alt', controllers.translator.getAltTranslate);
+    .get('/', keepRetpath, controllers.getContent) // Example: ?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
+    .get('/about', keepRetpath, (req, res) => { res.send('Привет, тут мы расскажем о нашем сервисе') })
+    .post('/sendPR', ensureAuthenticated, controllers.createPullRequest)
+    .post('/translate', controllers.getTranslate)
+    .post('/updateTM', controllers.updateTM)
+    .post('/saveTM', controllers.saveMemory);
 
 module.exports = router;

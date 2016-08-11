@@ -1,7 +1,7 @@
-block('editor').content()((node) => {
+block('editor').content()(node => {
     const segments = node.data.segments || [];
 
-    return segments.map(segment => {
+    return segments.map((segment, index) => {
         const status = segment.status;
 
         return {
@@ -17,6 +17,7 @@ block('editor').content()((node) => {
                     content:
                     {
                         block: 'textarea',
+                        attrs: { 'data-index': index },
                         mix: { block: 'editor', elem: 'textarea' },
                         mods: { theme: 'islands', size: 'm', width: 'available' },
                         val: segment.target.content || ''
@@ -31,5 +32,5 @@ block('editor').content()((node) => {
                 }
             ]
         };
-    });
+    }).concat({ block: 'segments' });
 });

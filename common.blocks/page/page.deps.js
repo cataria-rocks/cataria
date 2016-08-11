@@ -1,3 +1,3 @@
 ({
-    shouldDeps: ['header', 'workspace', 'panel']
+    shouldDeps: ['header', 'workspace', 'panel', 'error']
 })

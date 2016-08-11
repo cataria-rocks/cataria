@@ -6,6 +6,7 @@ const BEMHTML = require(path.join(pathToBundle, bundleName + '.bemhtml.js')).BEM
 const bemtrees = require(path.join(pathToBundle, bundleName + '.bemtree.js')).BEMTREE;
 
 function render(req, res, data, context) {
+
     let bemjson;
 
     data.query = req.query || {};

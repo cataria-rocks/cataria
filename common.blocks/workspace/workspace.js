@@ -5,7 +5,7 @@ provide(BEMDOM.decl(this.name, {
         js: {
             inited: function() {
                 this._editor = this.findBlockInside('editor');
-                this._altTransl = this.findBlockInside('alternative-translation');
+                this._altTrans = this.findBlockInside('alternative-translation');
             }
         }
     },
@@ -13,28 +13,29 @@ provide(BEMDOM.decl(this.name, {
     saveTm: function() {
         const data = JSON.stringify(this._editor.provideData());
 
-        data && $.post('/tm', { data: data })
+        data && $.post('/saveTM', { data: data })
             .then((response) => {
                 InfoModal.show(response);
             }).fail((err) => InfoModal.show(err));
     },
 
-    _getTranslation: () => {
-        $.get('/translation' + location.search)
-            .then((response) => {
-                console.log(response);
-            });
-    },
-
     sendPR: () => {
-        $.get('/send')
+        $.get('/sendPR')
             .then((response) => {
                 console.log(response);
             });
     },
 
-    getTM: function() {
-        $.get('/tm' + location.search)
+    updateTM: function() {
+        $.get('/updateTM' + location.search)
+            .then(response => {
+                BEMDOM.replace(this._editor.domElem, response);
+                this._editor = this.findBlockInside('editor');
+            }).fail((err) => InfoModal.show(err));
+    },
+
+    getTranslation: function() {
+        $.get('/translate' + location.search)
             .then(response => {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
@@ -45,16 +46,13 @@ provide(BEMDOM.decl(this.name, {
         this.toggleMod('mode', 'unverified-only');
     },
 
-    showAltTrans: function(e, data) {
-        const { search, unit } = data;
-        const { sourceLang, targetLang } = this.params;
+    showAltTrans: function(e, unit) {
+        const index = $(unit).data('index');
+        const content = window.segments[index].altTrans;
 
-        $.get(`/alt?segment=${search}&sourceLang=${sourceLang}&targetLang=${targetLang}`)
-            .then((response) => {
-                BEMDOM.replace(this._altTransl.domElem, response);
-                this._altTransl = this.findBlockInside('alternative-translation');
-                this._editorUnit = unit;
-            }).fail((err) => InfoModal.show(err));
+        BEMDOM.replace(this._altTrans.domElem, content);
+        this._altTrans = this.findBlockInside('alternative-translation');
+        this._editorUnit = unit;
     },
 
     applyAltTrans: function(e, data) {
@@ -68,9 +66,9 @@ provide(BEMDOM.decl(this.name, {
         var ptp = this.prototype;
 
         this.liveInitOnBlockInsideEvent('saveTm', 'toolbar', ptp.saveTm)
-            .liveInitOnBlockInsideEvent('translate', 'toolbar', ptp._getTranslation)
+            .liveInitOnBlockInsideEvent('translate', 'toolbar', ptp.getTranslation)
             .liveInitOnBlockInsideEvent('sendPR', 'toolbar', ptp.sendPR)
-            .liveInitOnBlockInsideEvent('getTM', 'toolbar', ptp.getTM)
+            .liveInitOnBlockInsideEvent('updateTM', 'toolbar', ptp.updateTM)
             .liveInitOnBlockInsideEvent('toggleVerified', 'panel', ptp.toggleVerified)
             .liveInitOnBlockInsideEvent('showAltTrans', 'editor', ptp.showAltTrans)
             .liveInitOnBlockInsideEvent('applyAltTrans', 'alternative-translation', ptp.applyAltTrans);
