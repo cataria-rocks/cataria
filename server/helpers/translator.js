@@ -1,4 +1,6 @@
 const Segment = require('../db').Segment;
+const yandexTranlateKey = require('../../config.json').yandexTranlateKey;
+const yandexTranslator = require('yandex-translate')(yandexTranlateKey);
 
 function findSegment(target_lang, source_lang, content) {
     const $search = content.replace(/<[^>]*>*/g,'');
@@ -39,8 +41,34 @@ function saveTM(unit) {
     });
 }
 
+function getYaTranslate(item) {
+    return new Promise((resolve, reject) => {
+        if (item.target.content) return resolve(item);
+
+        const source = item.source;
+        const srcLang = source.lang.slice(0, 2);
+        const trgLang = item.target.lang.slice(0, 2);
+
+        yandexTranslator.translate(source.content.replace(/<[^>]*>*/g,''), { from: srcLang, to: trgLang }, (err, result) => {
+            if (err) {
+                console.error(err);
+                return reject({ code: 500, message: err.message });
+            }
+
+            if (result.code === 200) {
+                item.target.content = result.text[0];
+                return resolve(item);
+            } else {
+                console.error(result.code, result.message, 'from: translator.js:61');
+                reject(result);
+            }
+        })
+    })
+}
+
 module.exports = {
     findSegment: findSegment,
     getTM: getTM,
-    saveTM: saveTM
+    saveTM: saveTM,
+    getYaTranslate: getYaTranslate
 };

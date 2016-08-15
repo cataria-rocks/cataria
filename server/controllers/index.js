@@ -38,10 +38,6 @@ function createPullRequest(req, res) {
     // TODO: send PR
 }
 
-function getTranslate(req, res) {
-    // TODO: ya translate
-}
-
 function saveMemory(req, res) {
     const data = JSON.parse(req.body.data);
     const promises = data.map(helpers.translator.saveTM);
@@ -69,11 +65,29 @@ function updateTM(req, res) {
         .catch(err => { onError(req, res, err); });
 }
 
+function getYaTranslate(req, res) {
+    const data = JSON.parse(req.body.data);
+    const srcLang = data[0].source.lang;
+    const trgLang = data[0].target.lang;
+
+    const promises = data.map(helpers.translator.getYaTranslate);
+
+    return Promise.all(promises)
+        .then(units => {
+            renderer(req, res, {
+                segments: units,
+                sourceLang: srcLang,
+                targetLang: trgLang
+            }, { block: 'editor' })
+        })
+        .catch(err => { onError(req, res, err); });
+}
+
 module.exports = {
     // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent: getContent,
     createPullRequest: createPullRequest,
-    getTranslate: getTranslate,
     saveMemory: saveMemory,
-    updateTM: updateTM
+    updateTM: updateTM,
+    getYaTranslate: getYaTranslate
 };

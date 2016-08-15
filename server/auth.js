@@ -4,9 +4,9 @@ var passport = require('passport'),
     config = {};
 
 try {
-    config = require('./secret-config');
+    config = require('../config');
 } catch (err) {
-    // TODO
+    console.error('Add file config.json like config.example.json');
 }
 
 var clientID = env.EDITOR_CLIENT_ID || config.clientID,
@@ -35,12 +35,11 @@ passport.deserializeUser(function(user, done) {
 
 if (!clientID || !clientSecret) {
     console.error('Please provide clientID and clientSecret');
-    return;
+} else {
+    passport.use(new GitHubStrategy({
+        clientID: clientID,
+        clientSecret: clientSecret,
+        callbackURL: '/auth/github/callback',
+        passReqToCallback: true
+    }, verify));
 }
-
-passport.use(new GitHubStrategy({
-    clientID: clientID,
-    clientSecret: clientSecret,
-    callbackURL: '/auth/github/callback',
-    passReqToCallback: true
-}, verify));
