@@ -6,6 +6,7 @@ provide(BEMDOM.decl(this.name, {
             inited: function() {
                 this._editor = this.findBlockInside('editor');
                 this._altTrans = this.findBlockInside('alternative-translation');
+                this._spiner = this.findBlockInside('spiner');
             }
         }
     },
@@ -27,21 +28,29 @@ provide(BEMDOM.decl(this.name, {
     },
 
     updateTM: function() {
+        this._spiner.setMod('visible');
         $.post('/updateTM', { data: JSON.stringify(window.segments) })
             .then(response => {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
-                InfoModal.show('Update');// TODO:
-            }).fail((err) => InfoModal.show(err));
+                this._spiner.delMod('visible');
+            }).fail((err) => {
+                this._spiner.delMod('visible');
+                InfoModal.show(err);
+            });
     },
 
     getTranslation: function() {
+        this._spiner.setMod('visible');
         $.post('/translate', { data: JSON.stringify(window.segments) })
             .then(response => {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
-                InfoModal.show('Update');// TODO:
-            }).fail((err) => InfoModal.show(err));
+                this._spiner.delMod('visible');
+            }).fail((err) => {
+                this._spiner.delMod('visible');
+                InfoModal.show(err);
+            });
     },
 
     toggleVerified: function() {
