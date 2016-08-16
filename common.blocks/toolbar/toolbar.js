@@ -8,7 +8,7 @@ provide(BEMDOM.decl(this.name, {
     },
 
     _onButtonClick: function(e) {
-        const action = e.target.getMod('toolbar-action');
+        var action = e.target.getMod('toolbar-action');
 
         this.emit(action);
     }

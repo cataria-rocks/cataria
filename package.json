@@ -19,6 +19,7 @@
     "debug": "^2.2.0",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
+    "fuse.js": "^2.4.1",
     "github-api": "^2.3.0",
     "got": "^6.3.0",
     "md2xliff": "https://github.com/tadatuta/md2xliff.git#tmx",

@@ -6,9 +6,10 @@ const Schema = mongoose.Schema;
 
 const SegmentSchema = new Schema({
     target: String,
-    target_lang: String,
+    targetLang: String,
     source: { type: String, text: true },
-    source_lang: String,
+    sourceHtml: String,
+    sourceLang: String,
     status: Boolean,
     date: Date
 });

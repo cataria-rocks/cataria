@@ -2,6 +2,8 @@
     width: 70%;
     display: inline-block;
     box-sizing: border-box;
+    font-size: 14px;
+    line-height: 1.5;
 
      &:elem(unit) {
          position: relative;
@@ -24,6 +26,8 @@
          padding: 0 10px;
          box-sizing: border-box;
          position: relative;
+         font-size: 14px;
+         line-height: 1.5;
      }
 
      &:elem(status) {
@@ -36,16 +40,63 @@
 
      &:elem(textarea) {
           vertical-align: middle;
-          width: 95%;
-          position: absolute;
-          top: 0;
-          bottom: 0;
+          border: 1px solid #079;
           border-top: 0;
           border-bottom: 0;
-          border-color: #079;
       }
 }
 
-.editor__unit_focused .editor__source{
+.editor__unit_focused .editor__source
+{
     background: #ffffe0;
+}
+
+bpt, ept
+{
+    display: inline-block;
+    height: 0;
+    position: relative;
+}
+
+bpt:hover, ept:hover
+{
+    opacity: 0.6;
+}
+
+bpt
+{
+    margin: 2px 10px 2px -10px;
+}
+
+ept
+{
+    margin: 2px 5px 2px -5px;
+}
+
+bpt::before, ept::before
+{
+    content: attr(id);
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 16px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: initial;
+    padding-top: 1px;
+    color: #fff;
+    background-image: url("tags.png")
+}
+
+bpt::before
+{
+    left: 10px;
+    background-position: 4px 33px;
+}
+
+ept::before
+{
+    right: -10px;
+    background-position: 0px 0px;
 }

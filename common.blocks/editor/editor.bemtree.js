@@ -14,20 +14,15 @@ block('editor').content()(node => {
                 },
                 {
                     elem: 'target',
-                    content:
-                    {
-                        block: 'textarea',
-                        attrs: { 'data-index': index },
-                        mix: { block: 'editor', elem: 'textarea' },
-                        mods: { theme: 'islands', size: 'm', width: 'available' },
-                        val: segment.target.content || ''
-                    }
+                    content: segment.target.content || '',
+                    attrs: { 'data-index': index, contenteditable: true },
+                    mix: { block: 'editor', elem: 'textarea' }
                 },
                 {
                     block: 'checkbox',
                     attrs: { 'data-index': index },
                     mix: { block: 'editor', elem: 'status' },
-                    mods: { checked: status },
+                    mods: { theme: 'islands', size: 'm', checked: status },
                     name: 'status',
                     val: status
                 }
