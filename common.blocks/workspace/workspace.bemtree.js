@@ -3,7 +3,8 @@ block('workspace')(
         return [
             { block: 'panel' },
             { block: 'editor' },
-            { block: 'toolbar' }
+            { block: 'toolbar' },
+            { block: 'spiner' }
         ];
     })
 );
