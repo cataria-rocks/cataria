@@ -1,9 +1,9 @@
 const md2xliff = require('md2xliff');
-
 const renderer = require('../renderer');
-const Segment = require('../db').Segment;
 
+const Segment = require('../db').Segment;
 const helpers = require('../helpers');
+
 const { onError, onAjaxError } = helpers.error;
 
 function getContent(req, res) {
@@ -35,7 +35,18 @@ function getContent(req, res) {
 }
 
 function createPullRequest(req, res) {
-    // TODO: send PR
+    const { data, doc } = req.body;
+    const info = req.session.passport.user;
+    const lang = JSON.parse(data)[0].target.lang.slice(0, 2);
+
+    return helpers.github.getContent(doc, info.token)
+        .then(function(response) {
+            extract = md2xliff.extract(response.data);
+            segments = md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
+            helpers.github.createPr(doc, info, segments, lang)
+                .then(status => res.send('PR successfully created!'))
+                .catch(err => { onError(req, res, err); });
+        });
 }
 
 function saveMemory(req, res) {
@@ -85,9 +96,9 @@ function getYaTranslate(req, res) {
 
 module.exports = {
     // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
-    getContent: getContent,
-    createPullRequest: createPullRequest,
-    saveMemory: saveMemory,
-    updateTM: updateTM,
-    getYaTranslate: getYaTranslate
+    getContent,
+    createPullRequest,
+    saveMemory,
+    updateTM,
+    getYaTranslate
 };
