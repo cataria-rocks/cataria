@@ -12,7 +12,7 @@ provide(BEMDOM.decl(this.name, {
     },
 
     saveTm: function() {
-        const data = JSON.stringify(this.getData());
+        var data = JSON.stringify(this.getData());
 
         data && $.post('/saveTM', { data: data })
             .then((response) => {
@@ -58,8 +58,8 @@ provide(BEMDOM.decl(this.name, {
     },
 
     showAltTrans: function(e, unit) {
-        const index = $(unit).data('index');
-        const content = window.segments[index].altTrans;
+        var index = $(unit).data('index'),
+            content = window.segments[index].altTrans;
 
         BEMDOM.replace(this._altTrans.domElem, content);
         this._altTrans = this.findBlockInside('alternative-translation');
@@ -67,26 +67,27 @@ provide(BEMDOM.decl(this.name, {
     },
 
     applyAltTrans: function(e, data) {
-        const translation = $(data).text();
-        const elem = this.findBlockInside($(this._editorUnit), 'textarea');
-        const index = elem.domElem.data('index');
+        var translation = $(data).text(),
+            elem = $(this._editorUnit).eq(0),
+            index = elem.data('index');
 
-        elem.setVal(translation);
+        elem.text(translation);
 
         window.segments[index].target.content = translation;
-        console.log(window.segments[index]);
     },
 
     getData: function() {
-        const data = [];
+        var data = [];
 
         window.segments.map(segment => {
             segment.target.content && data.push({
                 target: segment.target.content,
-                target_lang: segment.target.lang,
-                // save segment into db without tags bpt/ept, but save with '[]/()'
-                source: segment.source.content.replace(/<[^>]*>*/g,''),
-                source_lang: segment.source.lang,
+                targetLang: segment.target.lang,
+                // clear source of the tags for full-text search
+                // ReqExp replace <bpt id=l1>[</bpt> etc.
+                source: segment.source.content.replace(/<[^>]*>[^>]*>/g, ''),
+                sourceHtml: segment.source.content,
+                sourceLang: segment.source.lang,
                 status: segment.status
             });
         });

@@ -1,11 +1,11 @@
 const Segment = require('../db').Segment;
 const yandexTranlateKey = require('../../config.json').yandexTranlateKey;
 const yandexTranslator = require('yandex-translate')(yandexTranlateKey);
-
-function findSegment(target_lang, source_lang, content) {
-    const $search = content.replace(/<[^>]*>*/g,'');
+const Fuse = require('fuse.js')
+function findSegment(targetLang, sourceLang, content) {
+    const $search = content;
     const $text = { $search };
-    const query = { target_lang, source_lang, $text };
+    const query = { targetLang, sourceLang, $text };
 
     return Segment.find(query, { weight: { $meta: 'textScore' } })
         .sort({ weight: { $meta: 'textScore' } })
@@ -14,19 +14,31 @@ function findSegment(target_lang, source_lang, content) {
 
 function getTM(trgLang, srcLang, units) {
     return Promise.all(units.map(unit => {
-        // segments are stored in the db without tags bpt/ept, but with '[]/()'
-        const source = unit.source.content.replace(/<[^>]*>*/g,'');
+        const sourceHtml = unit.source.content;
+        // ReqExp replace <bpt id=l1>[</bpt> etc.
+        const source = sourceHtml.replace(/<[^>]*>[^>]*>/g, '');
 
         return findSegment(trgLang, srcLang, source)
             .then(data => {
-                const value = data.length > 0 && data[0]; // element with a high percentage of matches
+                data.forEach(item => {
+                    if (item.source === source) {
+                        unit.target.content = item.target; // insert tm in segment's field - 'target'
+                        if (item.sourceHtml === sourceHtml && item.status) unit.status = true;
+                    }
+                });
 
-                if (value && (value.source === source)) {
-                    unit.target.content = value.target; // insert tm in segment's field - 'target'
-                    unit.status = true; // TODO:
-                }
-
-                unit.altTrans = data; // data for block 'alt. translation'
+                /*
+                params for Fuse search:
+                @keys - List of properties that will be searched.
+                    This supports nested properties, weighted search, searching in arrays
+                @threshold - At what point does the match algorithm give up.
+                    A threshold of 0.0 requires a perfect match (of both letters and location),
+                    a threshold of 1.0 would match anything.
+                @maxPatternLength - The maximum length of the pattern.
+                 */
+                const fuse = new Fuse(data, { keys: ['source'], threshold: 0.2, distance: 10, maxPatternLength: 250 });
+                unit.altTrans = fuse.search(source) || [];
+                unit.keys = sourceHtml.match(/<[^>]*>[^>]*>/g);
 
                 return unit;
             })
@@ -49,7 +61,7 @@ function getYaTranslate(item) {
         const srcLang = source.lang.slice(0, 2);
         const trgLang = item.target.lang.slice(0, 2);
 
-        yandexTranslator.translate(source.content.replace(/<[^>]*>*/g,''), { from: srcLang, to: trgLang }, (err, result) => {
+        yandexTranslator.translate(source.content, { from: srcLang, to: trgLang }, (err, result) => {
             if (err) {
                 console.error(err);
                 return reject({ code: 500, message: err.message });
@@ -59,7 +71,7 @@ function getYaTranslate(item) {
                 item.target.content = result.text[0];
                 return resolve(item);
             } else {
-                console.error(result.code, result.message, 'from: translator.js:61');
+                console.error(result.code, result.message);
                 reject(result);
             }
         })
