@@ -21,6 +21,7 @@
     "express": "^4.14.0",
     "fuse.js": "^2.4.1",
     "github-api": "^2.3.0",
+    "github-basic": "^6.0.0",
     "got": "^6.3.0",
     "md2xliff": "https://github.com/tadatuta/md2xliff.git#tmx",
     "mongodb": "^2.1.18",

@@ -15,16 +15,23 @@ provide(BEMDOM.decl(this.name, {
         var data = JSON.stringify(this.getData());
 
         data && $.post('/saveTM', { data: data })
-            .then((response) => {
+            .then(response => {
                 InfoModal.show(response);
-            }).fail((err) => InfoModal.show(err));
+            }).fail(err => InfoModal.show(err));
     },
 
-    sendPR: () => {
-        $.get('/sendPR')
-            .then((response) => {
-                console.log(response);
-            });
+    sendPR: function() {
+        this._spiner.setMod('visible');
+        $.post('/sendPR', {
+            doc: window.location.search.replace('?doc=', ''),
+            data: JSON.stringify(window.segments)
+        }).then(response => {
+            this._spiner.delMod('visible');
+            InfoModal.show(response);
+        }).fail(err => {
+            this._spiner.delMod('visible');
+            InfoModal.show(err);
+        });
     },
 
     updateTM: function() {
@@ -34,7 +41,7 @@ provide(BEMDOM.decl(this.name, {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
                 this._spiner.delMod('visible');
-            }).fail((err) => {
+            }).fail(err => {
                 this._spiner.delMod('visible');
                 InfoModal.show(err);
             });
@@ -47,7 +54,7 @@ provide(BEMDOM.decl(this.name, {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
                 this._spiner.delMod('visible');
-            }).fail((err) => {
+            }).fail(err => {
                 this._spiner.delMod('visible');
                 InfoModal.show(err);
             });

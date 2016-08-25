@@ -48,7 +48,7 @@ provide(BEMDOM.decl(this.name, {
         // key codes for 'ALT + [1-9]' combinations
         var keyCode = { 49: 1, 50: 2, 51: 3, 52: 4, 53: 5, 54: 6, 55: 7, 56: 8, 57: 9 }[e.keyCode];
 
-        if (!e.altKey && !keyCode) return;
+        if (!(e.altKey && keyCode)) return;
 
         var elem = this.findElem($(e.target), 'textarea'),
             index = elem.data('index'),
