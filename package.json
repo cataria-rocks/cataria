@@ -57,7 +57,10 @@
     "postinstall": "npm run deps",
     "deps": "bower i --allow-root",
     "test": "jscs . && jshint-groups",
-    "watch": "watch-run -p '*.blocks/**' enb make"
+    "watch": "watch-run -p '*.blocks/**' enb make",
+    "docker-build": "docker build -t registry.ape.yandex.net/bem/saas-xliff-farm-server ./",
+    "docker-push": "docker push registry.ape.yandex.net/bem/saas-xliff-farm-server"
+
   },
   "private": true
 }
