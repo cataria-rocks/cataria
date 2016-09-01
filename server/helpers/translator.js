@@ -1,7 +1,8 @@
 const Segment = require('../db').Segment;
-const yandexTranlateKey = require('../../config.json').yandexTranlateKey;
+const yandexTranlateKey = process.env.EDITOR_YANDEX_TRANSLATOR_KEY || require('../../config.json').yandexTranlateKey;
 const yandexTranslator = require('yandex-translate')(yandexTranlateKey);
-const Fuse = require('fuse.js')
+const Fuse = require('fuse.js');
+
 function findSegment(targetLang, sourceLang, content) {
     const $search = content;
     const $text = { $search };

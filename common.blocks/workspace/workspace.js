@@ -22,6 +22,7 @@ provide(BEMDOM.decl(this.name, {
 
     sendPR: function() {
         this._spiner.setMod('visible');
+
         $.post('/sendPR', {
             doc: window.location.search.replace('?doc=', ''),
             data: JSON.stringify(window.segments)
@@ -36,6 +37,7 @@ provide(BEMDOM.decl(this.name, {
 
     updateTM: function() {
         this._spiner.setMod('visible');
+
         $.post('/updateTM', { data: JSON.stringify(window.segments) })
             .then(response => {
                 BEMDOM.replace(this._editor.domElem, response);
@@ -49,6 +51,7 @@ provide(BEMDOM.decl(this.name, {
 
     getTranslation: function() {
         this._spiner.setMod('visible');
+
         $.post('/translate', { data: JSON.stringify(window.segments) })
             .then(response => {
                 BEMDOM.replace(this._editor.domElem, response);
