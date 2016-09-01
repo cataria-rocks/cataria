@@ -77,11 +77,11 @@ provide(BEMDOM.decl(this.name, {
     },
 
     applyAltTrans: function(e, data) {
-        var translation = $(data).text(),
+        var translation = $(data).html(),
             elem = $(this._editorUnit).eq(0),
             index = elem.data('index');
 
-        elem.text(translation);
+        elem.html(translation);
 
         window.segments[index].target.content = translation;
     },
