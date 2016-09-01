@@ -23,6 +23,6 @@ router
     .post('/sendPR', ensureAuthenticated, controllers.createPullRequest)
     .post('/translate', controllers.getYaTranslate)
     .post('/updateTM', controllers.updateTM)
-    .post('/saveTM', controllers.saveMemory);
+    .post('/saveTM', ensureAuthenticated, controllers.saveMemory);
 
 module.exports = router;
