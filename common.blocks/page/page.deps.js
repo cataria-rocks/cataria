@@ -1,3 +1,13 @@
 ({
-    shouldDeps: ['header', 'workspace', 'panel', 'error']
+    shouldDeps: [
+        'header', 'workspace', 'panel', 'error', 'form',
+        {
+            block: 'input',
+            mods: { theme: 'islands', size: 'm' }
+        },
+        {
+            block: 'button',
+            mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action' }
+        }
+    ]
 })

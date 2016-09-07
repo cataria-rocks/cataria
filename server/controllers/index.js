@@ -11,7 +11,10 @@ function getContent(req, res) {
     const passport = req.session.passport || {};
     const token = passport.user && passport.user.token;
 
-    if (!doc) return res.redirect('/about');
+    if (!doc) return renderer(req, res, {
+        view: 'blank',
+        pageTitle: 'cataria'
+    });
 
     return helpers.github.getContent(doc, token)
         .then(function(response) {
@@ -22,7 +25,7 @@ function getContent(req, res) {
                 .then(units => {
                     renderer(req, res, {
                         view: 'index-page',
-                        pageTitle: 'xliff-editor',
+                        pageTitle: 'cataria',
                         segments: units,
                         sourceLang: srcLang,
                         targetLang: trgLang,
