@@ -14,16 +14,26 @@ function getContent(doc, token) {
         .getContents(branch, pathToDoc, true);
 }
 
-function createPr(doc, info, file, lang) {
+function createPr(req, content, lang) {
+    const doc = req.body.doc;
+    const user = req.session.passport.user;
     const { owner, name, branch } = parseGHUrl(doc);
-    const { token, login } = info;
+    const { token, login } = user;
     const client = ghClient({ version: 3, auth: token });
+    let pathToDoc;
 
-    let pathToDoc = doc.split(branch)[1].substr(1).split('.');
+    if (req.query.target) {
+        const docUrlArr = doc.split('/');
+        docUrlArr.pop();
+        docUrlArr.push(req.query.target)
+        pathToDoc = docUrlArr.join('/');
+    } else {
+        pathToDoc = doc.split(branch)[1].substr(1).split('.');
 
-    // change doc lang
-    pathToDoc.splice(pathToDoc.length - 1, 1, lang, pathToDoc[pathToDoc.length - 1]);
-    pathToDoc = pathToDoc.join('.');
+        // change doc lang
+        pathToDoc.splice(pathToDoc.length - 1, 1, lang, pathToDoc[pathToDoc.length - 1]);
+        pathToDoc = pathToDoc.join('.');
+    }
 
     client.fork(owner, name);
 
@@ -32,7 +42,7 @@ function createPr(doc, info, file, lang) {
         message: `Update translate for ${pathToDoc}`,
         updates: [{
             path: pathToDoc,
-            content: file
+            content: content
         }]
     }).then(() => {
             return client.pull(

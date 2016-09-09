@@ -5,7 +5,7 @@ block('root').replace()((node, ctx) => {
 
     return {
         block: 'page',
-        title: data.title || 'xliff-editor',
+        title: data.pageTitle || 'cataria',
         head: [
             { elem: 'css', url: 'index.min.css' }
         ],

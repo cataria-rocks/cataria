@@ -6,6 +6,6 @@ module.exports = {
     ensureAuthenticated: function(req, res, next) {
         if (req.isAuthenticated()) return next();
 
-        return res.send('You need to logIn');
+        return res.send('You need to log in');
     }
 };

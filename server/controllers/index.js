@@ -7,7 +7,8 @@ const helpers = require('../helpers');
 const { onError, onAjaxError } = helpers.error;
 
 function getContent(req, res) {
-    const doc = req.query.doc;
+    const query = req.query;
+    const doc = query.doc;
     const passport = req.session.passport || {};
     const token = passport.user && passport.user.token;
 
@@ -18,7 +19,8 @@ function getContent(req, res) {
 
     return helpers.github.getContent(doc, token)
         .then(function(response) {
-            extract = md2xliff.extract(response.data, doc.split('/').pop(), doc.split('/').pop().replace(/\.md$/, '.skl'), req.query.sourceLang, req.query.targetLang);
+            const filename = doc.split('/').pop();
+            const extract = md2xliff.extract(response.data, filename, filename.replace(/\.md$/, '.skl'), query.sourceLang, query.targetLang);
             const { srcLang, trgLang, units } = extract.data;
 
             helpers.translator.getTM(trgLang, srcLang, units)
@@ -39,14 +41,15 @@ function getContent(req, res) {
 
 function createPullRequest(req, res) {
     const { data, doc } = req.body;
-    const info = req.session.passport.user;
-    const lang = JSON.parse(data)[0].target.lang.slice(0, 2);
+    const user = req.session.passport.user;
+    const lang = JSON.parse(data)[0].target.lang.slice(0, 2); // ru-Ru -> ru
 
-    return helpers.github.getContent(doc, info.token)
+    return helpers.github.getContent(doc, user.token)
         .then(function(response) {
-            extract = md2xliff.extract(response.data, doc.split('/').pop(), doc.split('/').pop().replace(/\.md$/, '.skl'), req.query.sourceLang, req.query.targetLang);
-            segments = md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
-            helpers.github.createPr(doc, info, segments, lang)
+            const filename = doc.split('/').pop();
+            const extract = md2xliff.extract(response.data, filename, filename.replace(/\.md$/, '.skl'), req.query.sourceLang, req.query.targetLang);
+            const translatedText = md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
+            helpers.github.createPr(req, translatedText, lang)
                 .then(status => res.send('PR successfully created!'))
                 .catch(err => { onError(req, res, err); });
         });
@@ -59,7 +62,7 @@ function saveMemory(req, res) {
     return Promise.all(promises)
         .then(() => {
             res.send('Segment successfully created!');
-        })
+        });
 
 }
 
