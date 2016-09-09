@@ -18,7 +18,7 @@ function getContent(req, res) {
 
     return helpers.github.getContent(doc, token)
         .then(function(response) {
-            extract = md2xliff.extract(response.data);
+            extract = md2xliff.extract(response.data, doc.split('/').pop(), doc.split('/').pop().replace(/\.md$/, '.skl'), req.query.sourceLang, req.query.targetLang);
             const { srcLang, trgLang, units } = extract.data;
 
             helpers.translator.getTM(trgLang, srcLang, units)
@@ -44,7 +44,7 @@ function createPullRequest(req, res) {
 
     return helpers.github.getContent(doc, info.token)
         .then(function(response) {
-            extract = md2xliff.extract(response.data);
+            extract = md2xliff.extract(response.data, doc.split('/').pop(), doc.split('/').pop().replace(/\.md$/, '.skl'), req.query.sourceLang, req.query.targetLang);
             segments = md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
             helpers.github.createPr(doc, info, segments, lang)
                 .then(status => res.send('PR successfully created!'))

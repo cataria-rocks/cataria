@@ -18,13 +18,19 @@ block('page').mod('view', 'blank').content()(() => {
             {
                 block: 'input',
                 mods: { theme: 'islands', size: 'm', width: 'available', 'has-clear': true },
-                name: 'target',
+                name: 'sourceLang',
                 placeholder: 'Язык исходного документа'
             },
             {
                 block: 'input',
                 mods: { theme: 'islands', size: 'm', width: 'available', 'has-clear': true },
                 name: 'target',
+                placeholder: 'Файл перевода'
+            },
+            {
+                block: 'input',
+                mods: { theme: 'islands', size: 'm', width: 'available', 'has-clear': true },
+                name: 'targetLang',
                 placeholder: 'Язык перевода'
             },
             {
