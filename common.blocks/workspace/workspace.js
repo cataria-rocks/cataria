@@ -1,5 +1,5 @@
-modules.define('workspace', ['i-bem__dom', 'jquery', 'info-modal'],
-    function(provide, BEMDOM, $, InfoModal) {
+modules.define('workspace', ['i-bem__dom', 'querystring', 'jquery', 'info-modal'],
+    function(provide, BEMDOM, qs, $, InfoModal) {
 provide(BEMDOM.decl(this.name, {
     onSetMod: {
         js: {
@@ -24,7 +24,7 @@ provide(BEMDOM.decl(this.name, {
         this._spiner.setMod('visible');
 
         $.post('/sendPR', {
-            doc: window.location.search.replace('?doc=', ''),
+            doc: qs.parse(window.location.search).doc,
             data: JSON.stringify(window.segments)
         }).then(response => {
             this._spiner.delMod('visible');

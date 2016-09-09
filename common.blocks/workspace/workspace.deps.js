@@ -1,3 +1,7 @@
 ({
-    shouldDeps: ['editor', 'toolbar', 'info-modal', 'spiner']
+    mustDeps: {
+        block: 'i-bem',
+        elem: 'dom'
+    },
+    shouldDeps: ['querystring', 'editor', 'toolbar', 'info-modal', 'spiner']
 })
