@@ -21,11 +21,12 @@ function createPr(req, content, lang) {
     const { token, login } = user;
     const client = ghClient({ version: 3, auth: token });
     let pathToDoc;
+    let newBranch;
 
     if (req.query.target) {
         const docUrlArr = doc.split('/');
         docUrlArr.pop();
-        docUrlArr.push(req.query.target)
+        docUrlArr.push(req.query.target);
         pathToDoc = docUrlArr.join('/');
     } else {
         pathToDoc = doc.split(branch)[1].substr(1).split('.');
@@ -35,10 +36,14 @@ function createPr(req, content, lang) {
         pathToDoc = pathToDoc.join('.');
     }
 
+    newBranch = `translate_${pathToDoc}`;
+
     client.fork(owner, name);
 
+    client.branch(login, name, branch, newBranch);
+
     return client.commit(login, name, {
-        branch: branch,
+        branch: newBranch,
         message: `Update translate for ${pathToDoc}`,
         updates: [{
             path: pathToDoc,
@@ -46,7 +51,7 @@ function createPr(req, content, lang) {
         }]
     }).then(() => {
             return client.pull(
-                { user: login, repo: name, branch },
+                { user: login, repo: name, branch: newBranch },
                 { user: owner, repo: name, branch },
                 { title: `Update translate for ${pathToDoc}`, body: `Update translate for ${pathToDoc}` })
         })

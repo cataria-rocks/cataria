@@ -24,7 +24,7 @@ provide(BEMDOM.decl(this.name, {
         this._spiner.setMod('visible');
 
         $.post('/sendPR', {
-            doc: qs.parse(window.location.search).doc,
+            doc: qs.parse(window.location.search.substr(1)).doc,
             data: JSON.stringify(window.segments)
         }).then(response => {
             this._spiner.delMod('visible');
