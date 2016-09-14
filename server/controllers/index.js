@@ -51,8 +51,8 @@ function createPullRequest(req, res) {
             const translatedText = md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
             helpers.github.createPr(req, translatedText, lang)
                 .then(status => res.send('PR successfully created!'))
-                .catch(err => { onError(req, res, err); });
-        });
+                .catch(err => { onAjaxError(req, res, err); });
+        }).catch(err => { onAjaxError(req, res, err); });
 }
 
 function saveMemory(req, res) {
