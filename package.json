@@ -32,6 +32,7 @@
     "passport": "^0.3.2",
     "passport-github2": "^0.1.10",
     "serve-favicon": "^2.3.0",
+    "serve-static": "^1.11.1",
     "yandex-translate": "^2.1.0"
   },
   "devDependencies": {
@@ -60,7 +61,6 @@
     "watch": "watch-run -p '*.blocks/**' enb make",
     "docker-build": "docker build -t registry.ape.yandex.net/bem/saas-xliff-farm-server ./",
     "docker-push": "docker push registry.ape.yandex.net/bem/saas-xliff-farm-server"
-
   },
   "private": true
 }
