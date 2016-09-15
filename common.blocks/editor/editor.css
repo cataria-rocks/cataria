@@ -5,98 +5,78 @@
     font-size: 14px;
     line-height: 1.5;
 
-     &:elem(unit) {
-         position: relative;
-         display: table;
-         width: 100%;
-         border-bottom: 1px solid #079
-     }
+    &:elem(unit) {
+        position: relative;
+        display: table;
+        width: 100%;
+        border-bottom: 1px solid #079
 
-     &:elem(source) {
-         width: 45%;
-         padding: 10px;
-         box-sizing: border-box;
-         display: table-cell;
-         max-width: 1px;
-     }
+        &:mod(focused) :block(editor):elem(source) {
+            background: #ffffe0;
+        }
+    }
 
-     &:elem(target) {
-         display: table-cell;
-         width: 45%;
-         padding: 0 10px;
-         box-sizing: border-box;
-         position: relative;
-         font-size: 14px;
-         line-height: 1.5;
-     }
+    &:elem(source) {
+        width: 45%;
+        padding: 10px;
+        box-sizing: border-box;
+        display: table-cell;
+        max-width: 1px;
+    }
 
-     &:elem(status) {
-         display: table-cell;
-         width: 10%;
-         padding: 10px;
-         box-sizing: border-box;
-         text-align: center;
-     }
+    &:elem(target) {
+        display: table-cell;
+        width: 45%;
+        padding: 0 10px;
+        box-sizing: border-box;
+        position: relative;
+        font-size: 14px;
+        line-height: 1.5;
+    }
 
-     &:elem(textarea) {
-          vertical-align: middle;
-          border: 1px solid #079;
-          border-top: 0;
-          border-bottom: 0;
-      }
+    &:elem(status) {
+        display: table-cell;
+        width: 10%;
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    &:elem(textarea) {
+        vertical-align: middle;
+        border: 1px solid #079;
+        border-top: 0;
+        border-bottom: 0;
+    }
 }
 
-.editor__unit_focused .editor__source
-{
-    background: #ffffe0;
-}
-
-bpt, ept
-{
-    display: inline-block;
-    height: 0;
+bpt, ept {
     position: relative;
+
+    font-size: 0;
 }
 
-bpt:hover, ept:hover
-{
+bpt:hover, ept:hover {
     opacity: 0.6;
 }
 
-bpt
-{
-    margin: 2px 10px 2px -10px;
-}
-
-ept
-{
-    margin: 2px 5px 2px -5px;
-}
-
-bpt::before, ept::before
-{
-    content: attr(id);
-    position: relative;
+bpt::before, ept::before {
+    width: 24px;
     display: inline-block;
-    width: 25px;
-    height: 16px;
+
+    content: attr(id);
+
+    font-size: 14px;
+    line-height: 17px;
     text-align: center;
-    font-weight: bold;
-    font-size: 13px;
-    line-height: initial;
-    padding-top: 1px;
-    color: #fff;
-    background-image: url("tags.png")
+
+    background-image: url(tags.png);
 }
 
-bpt::before
-{
-    left: 10px;
-    background-position: 4px 33px;
+bpt::before {
+    background-position: 2px 33px;
 }
 
-ept::before
-{
-    right: -10px;
+ept::before {
     background-position: 0px 0px;
 }
