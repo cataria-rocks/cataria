@@ -11,11 +11,10 @@ const SegmentSchema = new Schema({
     sourceHtml: String,
     sourceLang: String,
     status: Boolean,
-    date: Date
+    date: Number
 });
 
 SegmentSchema.index({ source: 'text' });
-// db.collection.enshureIndex({field: value})
 
 const Segment = mongoose.model('Segment', SegmentSchema);
 
