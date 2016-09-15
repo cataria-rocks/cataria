@@ -62,7 +62,7 @@ function saveMemory(req, res) {
 
     return Promise.all(promises)
         .then(() => res.send('Segment successfully created!'))
-        .catch((err) => onAjaxError(req, res, err));
+        .catch(err => onAjaxError(req, res, err));
 
 }
 

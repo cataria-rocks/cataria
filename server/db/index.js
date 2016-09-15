@@ -11,7 +11,7 @@ const SegmentSchema = new Schema({
     sourceHtml: String,
     sourceLang: String,
     status: Boolean,
-    date: Number
+    date: Number // timestamp
 });
 
 SegmentSchema.index({ source: 'text' });

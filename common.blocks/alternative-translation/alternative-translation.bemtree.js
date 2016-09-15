@@ -5,6 +5,7 @@ block('alternative-translation')(
         return translations.length > 0 ? translations.map(translation => {
             return {
                 elem: 'translation',
+                elemMods: { bestMatch: translation.bestMatch },
                 content: translation.target
             };
         }) :  [

@@ -46,6 +46,12 @@ function getTM(trgLang, srcLang, units) {
                 const fuse = new Fuse(data, { keys: ['source'], threshold: 0.2, distance: 10, maxPatternLength: 250 });
 
                 unit.altTrans = fuse.search(source) || [];
+                unit.altTrans.map(result => {
+                    if (result.source === source && result.date === lastDate) {
+                        result.bestMatch = true;
+                    }
+                });
+
                 unit.keys = sourceHtml.match(/<[^>]*>[^>]*>/g);
 
                 return unit;

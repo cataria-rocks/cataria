@@ -13,5 +13,9 @@
          box-sizing: border-box;
          border: 1px solid #079;
          padding: 10px;
-    }
+     }
+}
+
+.alternative-translation__translation_bestMatch {
+    background: #ffdb4d;
 }
