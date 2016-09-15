@@ -49,6 +49,7 @@ function createPullRequest(req, res) {
             const filename = doc.split('/').pop();
             const extract = md2xliff.extract(response.data, filename, filename.replace(/\.md$/, '.skl'), req.query.sourceLang, req.query.targetLang);
             const translatedText = md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
+
             helpers.github.createPr(req, translatedText, lang)
                 .then(status => res.send('PR successfully created!'))
                 .catch(err => { onAjaxError(req, res, err); });
@@ -60,9 +61,8 @@ function saveMemory(req, res) {
     const promises = data.map(helpers.translator.saveTM);
 
     return Promise.all(promises)
-        .then(() => {
-            res.send('Segment successfully created!');
-        });
+        .then(() => res.send('Segment successfully created!'))
+        .catch(err => onAjaxError(req, res, err));
 
 }
 

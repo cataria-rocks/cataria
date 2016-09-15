@@ -16,15 +16,21 @@ function findSegment(targetLang, sourceLang, content) {
 function getTM(trgLang, srcLang, units) {
     return Promise.all(units.map(unit => {
         const sourceHtml = unit.source.content;
+
         // ReqExp replace <bpt id=l1>[</bpt> etc.
         const source = sourceHtml.replace(/<[^>]*>[^>]*>/g, '');
 
         return findSegment(trgLang, srcLang, source)
             .then(data => {
+                let lastDate = 0; // last actual date
+
                 data.forEach(item => {
-                    if (item.source === source) {
+                    if (item.source === source && item.date >= lastDate) {
+
+                        lastDate = item.date;
+
                         unit.target.content = item.target; // insert tm in segment's field - 'target'
-                        if (item.sourceHtml === sourceHtml && item.status) unit.status = true;
+                        unit.status = item.sourceHtml === sourceHtml && item.status;
                     }
                 });
 
@@ -38,7 +44,14 @@ function getTM(trgLang, srcLang, units) {
                 @maxPatternLength - The maximum length of the pattern.
                  */
                 const fuse = new Fuse(data, { keys: ['source'], threshold: 0.2, distance: 10, maxPatternLength: 250 });
+
                 unit.altTrans = fuse.search(source) || [];
+                unit.altTrans.map(result => {
+                    if (result.source === source && result.date === lastDate) {
+                        result.bestMatch = true;
+                    }
+                });
+
                 unit.keys = sourceHtml.match(/<[^>]*>[^>]*>/g);
 
                 return unit;
@@ -47,11 +60,15 @@ function getTM(trgLang, srcLang, units) {
 }
 
 function saveTM(unit) {
-    return Segment.collection.update(unit, unit, { upsert: true }, err => {
-        if (err) onAjaxError(req, res, err);
+    unit.date = new Date().getTime(); // update date every time
 
-        return unit;
-    });
+    return Segment.collection.update({
+        target: unit.target,
+        targetLang: unit.targetLang,
+        source: unit.source,
+        sourceHtml: unit.sourceHtml,
+        sourceLang: unit.sourceLang
+    }, unit, { upsert: true });
 }
 
 function getYaTranslate(item) {
