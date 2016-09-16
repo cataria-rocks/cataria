@@ -1,5 +1,10 @@
 ({
     shouldDeps: [
+        {
+            mods: {
+                view: ['blank', 'error']
+            }
+        },
         'header', 'workspace', 'panel', 'error', 'form',
         {
             block: 'input',
