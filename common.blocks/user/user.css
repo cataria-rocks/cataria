@@ -1,0 +1,7 @@
+:block(user) {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    color: inherit;
+    justify-content: flex-end;
+}
