@@ -15,17 +15,17 @@ block('main').mod('view', 'blank').content()(() => {
                 {
                     label: 'Язык исходного документа',
                     name: 'sourceLang',
-                    placeholder: 'Язык исходного документа'
+                    placeholder: 'en'
                 },
                 {
                     label: 'Файл перевода',
                     name: 'target',
-                    placeholder: 'Файл перевода'
+                    placeholder: 'README.ru.md'
                 },
                 {
                     label: 'Язык перевода',
                     name: 'targetLang',
-                    placeholder: 'Язык перевода'
+                    placeholder: 'ru'
                 }
             ].map(input => [
                 {
