@@ -8,12 +8,13 @@ provide(BEMDOM.decl(this.name, {
             }
         }
     },
+
     /**
      * method for insert tags as html node into div contenteditable = true
      * @param tag {String}
      * @private
      */
-    _insertTag: function(tag) {
+    _insertTag: function(tag, param, keyCode) {
         var selection = window.getSelection(),
             range = (selection.getRangeAt && selection.rangeCount) && selection.getRangeAt(0);
 
@@ -24,7 +25,8 @@ provide(BEMDOM.decl(this.name, {
             frag = document.createDocumentFragment(),
             node, lastNode;
 
-        el.innerHTML = tag;
+        el.innerHTML = `<hr class='markup-tag markup-tag_type_${param} markup-tag_code_${keyCode}'
+            data-value='${tag}'>`;
 
         while ((node = el.firstChild)) {
             lastNode = frag.appendChild(node);
@@ -59,7 +61,7 @@ provide(BEMDOM.decl(this.name, {
 
         if (!keys.length || !openTag) return false; // if button doesn't have tags
 
-        var text = elem.html(),
+        var text = elem.html().replace(new RegExp('&quot;','g'),'"'), // hack for find elem in text
             caretPos = window.getSelection().getRangeAt(0).startOffset,
             availableTags = [
                 { tag: openTag, position: text.indexOf(openTag) },
@@ -68,9 +70,9 @@ provide(BEMDOM.decl(this.name, {
 
         if (availableTags[0].position === -1) {
             if (availableTags[1].position > -1 && (caretPos > availableTags[1].position)) return false;
-            this._insertTag(availableTags[0].tag);
+            this._insertTag(availableTags[0].tag, 'open', keyCode);
         } else if (availableTags[1].position === -1) {
-            this._insertTag(availableTags[1].tag);
+            this._insertTag(availableTags[1].tag, 'close', keyCode);
         }
 
         e.preventDefault();
@@ -82,9 +84,17 @@ provide(BEMDOM.decl(this.name, {
 
     onFocusOut: function(e) {
         var elem = $(e.target),
-            index = elem.data('index');
+            index = elem.data('index'),
+            text = elem.html();
 
-        window.segments[index].target.content = elem.html();
+        var tagsHr = text.match(/<hr[^>]*>[^>]*>[^>]*>/g);
+        var tagBptEpt = text.match(/data-value="<[^>]*>*[^>]*>/g);
+
+        tagsHr && tagsHr.forEach(function(value, index) {
+            text = text.replace(value, tagBptEpt[index].replace('data-value="', ''));
+        });
+
+        window.segments[index].target.content = text.replace(new RegExp('&quot;','g'),'"');
         this.delMod($(e.target.parentNode), 'focused');
     },
 

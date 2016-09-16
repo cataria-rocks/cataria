@@ -1,4 +1,5 @@
 block('editor').content()(node => {
+    const helpers = require('../../server/helpers/markup-helper.js');
     const segments = node.data.segments || [];
 
     return segments.map((segment, index) => {
@@ -10,11 +11,11 @@ block('editor').content()(node => {
             content: [
                 {
                     elem: 'source',
-                    content: segment.source.content
+                    content: helpers.createTags(segment.source.content)
                 },
                 {
                     elem: 'target',
-                    content: segment.target.content || '',
+                    content: helpers.createTags(segment.target.content || ''),
                     attrs: { 'data-index': index, contenteditable: true },
                     mix: { block: 'editor', elem: 'textarea' }
                 },
