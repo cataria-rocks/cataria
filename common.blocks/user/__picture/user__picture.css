@@ -1,0 +1,5 @@
+:block(user):elem(picture) {
+    border-radius: 50%;
+    width: 40px;
+    margin-right: 12px;
+}

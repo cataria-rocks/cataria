@@ -1,0 +1,6 @@
+:block(user):elem(name) {
+    font-size: 15px;
+    text-decoration: none;
+    color: inherit;
+    margin-right: 20px;
+}
