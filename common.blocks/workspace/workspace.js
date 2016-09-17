@@ -64,7 +64,7 @@ provide(BEMDOM.decl(this.name, {
                 this._editor = this.findBlockInside('editor');
                 this._spiner.delMod('visible');
             })
-            .fail(err => {
+            .fail(function(err) {
                 this._spiner.delMod('visible');
                 InfoModal.show(err);
             });
