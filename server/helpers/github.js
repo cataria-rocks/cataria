@@ -38,25 +38,34 @@ function createPr(req, content, lang) {
 
     newBranch = `translate_${pathToDoc}`;
 
-    client.fork(owner, name);
-
-    client.branch(login, name, branch, newBranch);
-
-    return client.commit(login, name, {
-        branch: newBranch,
-        message: `Update translate for ${pathToDoc}`,
-        updates: [{
-            path: pathToDoc,
-            content: content
-        }]
-    }).then(() => {
+    return client
+        .fork(owner, name)
+        .then(() => {
+            console.log('before branch');
+            return client.branch(login, name, branch, newBranch);
+        })
+        .then(() => {
+            console.log('before commit');
+            return client.commit(login, name, {
+                branch: newBranch,
+                message: `Update translate for ${pathToDoc}`,
+                updates: [{
+                    path: pathToDoc,
+                    content: content
+                }]
+            });
+        })
+        .then(() => {
+            console.log('before pull');
             return client.pull(
                 { user: login, repo: name, branch: newBranch },
                 { user: owner, repo: name, branch },
-                { title: `Update translate for ${pathToDoc}`, body: `Update translate for ${pathToDoc}` })
+                { title: `Update translate for ${pathToDoc}`, body: `Update translate for ${pathToDoc}` }
+            );
         })
-        .catch(err => { console.log('Err commit', err) })
+        .catch(err => { console.log('Err commit', err); });
 }
+
 module.exports = {
     getContent,
     createPr

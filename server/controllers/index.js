@@ -51,7 +51,11 @@ function createPullRequest(req, res) {
             const translatedText = md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
 
             helpers.github.createPr(req, translatedText, lang)
-                .then(status => res.send('PR successfully created!'))
+                .then(status => {
+                    status.html_url ?
+                        res.send('<a href="' + status.html_url + '">Pull request</a> was successfully created!') :
+                        res.send(status.message);
+                })
                 .catch(err => { onAjaxError(req, res, err); });
         }).catch(err => { onAjaxError(req, res, err); });
 }
@@ -61,9 +65,9 @@ function saveMemory(req, res) {
     const promises = data.map(helpers.translator.saveTM);
 
     return Promise.all(promises)
-        .then(() => res.send('Segment successfully created!'))
-        .catch(err => onAjaxError(req, res, err));
-
+        .then(() => {
+            res.send('Segments are successfully stored in TM');
+        });
 }
 
 function updateTM(req, res) {

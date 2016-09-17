@@ -19,12 +19,14 @@ provide(BEMDOM.decl(this.name, {
 
         range.deleteContents();
 
-        // prepare document fragment with tag for insert to Range-object
+        // prepare document fragment with tag to insert to Range-object
         var el = document.createElement('div'),
             frag = document.createDocumentFragment(),
             node, lastNode;
 
-        el.innerHTML = tag;
+        // &#8203; is zero-width space to set caret outside of a tag
+        // see http://stackoverflow.com/questions/21574522/contenteditable-put-caret-outside-inserted-span
+        el.innerHTML = tag + '&#8203;';
 
         while ((node = el.firstChild)) {
             lastNode = frag.appendChild(node);
@@ -41,7 +43,6 @@ provide(BEMDOM.decl(this.name, {
 
         selection.removeAllRanges();
         selection.addRange(range);
-
     },
 
     onKeyDown: function(e) {
@@ -84,7 +85,7 @@ provide(BEMDOM.decl(this.name, {
         var elem = $(e.target),
             index = elem.data('index');
 
-        window.segments[index].target.content = elem.html();
+        window.segments[index].target.content = elem.html().replace(/&#8203;/g, '');
         this.delMod($(e.target.parentNode), 'focused');
     },
 
