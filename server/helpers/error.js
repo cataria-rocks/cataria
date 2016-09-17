@@ -7,7 +7,7 @@ function onError(req, res, err, url) {
 }
 
 function onAjaxError(req, res, err) {
-    var errBody = err.response ? err.response.body : '',
+    var errBody = err.response && err.response.body || err.message,
         code = err.statusCode;
 
     console.log('Ajax url: ', req.path);

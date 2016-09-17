@@ -10,7 +10,7 @@ router
     .get('/auth/github', passportGitHub.authenticate('github', { scope: ['repo'] }))
 
     .get('/auth/github/callback', passportGitHub.authenticate('github', { failureRedirect: '/error' }), (req, res) => {
-        res.redirect(req.session.retpath || '/')
+        res.redirect(req.session.retpath || '/');
     })
     .get('/logout', (req, res) => {
         req.logout();
