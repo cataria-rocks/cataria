@@ -56,13 +56,10 @@ bpt, ept {
     font-size: 0;
 }
 
-bpt:hover, ept:hover {
-    opacity: 0.6;
-}
-
 bpt::before, ept::before {
-    width: 24px;
     display: inline-block;
+    width: 24px;
+    margin: 0 1px;
 
     content: attr(id);
 
@@ -70,13 +67,15 @@ bpt::before, ept::before {
     line-height: 17px;
     text-align: center;
 
-    background-image: url(tags.png);
+    background: #ffdb4d;
 }
 
 bpt::before {
-    background-position: 2px 33px;
+    padding: 0 7px 0 2px;
+    border-radius: 0 100% 100% 0;
 }
 
 ept::before {
-    background-position: 0px 0px;
+    padding: 0 2px 0 7px;
+    border-radius: 100% 0 0 100%;
 }
