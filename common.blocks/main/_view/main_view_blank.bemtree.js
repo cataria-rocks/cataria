@@ -1,4 +1,4 @@
-block('page').mod('view', 'blank').content()(() => {
+block('main').mod('view', 'blank').content()(() => {
     return {
         block: 'form',
         content: [
