@@ -1,8 +1,10 @@
-const express = require('express');
 const path = require('path');
+
+const express = require('express');
 const connect = require('connect');
 const favicon = require('serve-favicon');
 const serveStatic = require('serve-static');
+const morgan = require('morgan');
 
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
@@ -16,8 +18,14 @@ const rootDir = path.join(__dirname, '../desktop.bundles/');
 
 const app = express();
 
+require('debug-http')();
+
 app
-    // .use(favicon(path.join(path.join(rootDir, 'index'), 'favicon.ico')))
+    .disable('x-powered-by')
+    .enable('trust proxy')
+    // .use(favicon(path.join(rootDir, 'favicon.ico')))
+    .get('/ping', (req, res) => res.end())
+    .use(morgan('combined'))
     .use(bodyParser.json({ limit: '5mb' }))
     .use(bodyParser.urlencoded({ limit: '5mb', extended: false }))
     .use(cookieSession({ keys: ['secret1', 'secret2'] })) // TODO
