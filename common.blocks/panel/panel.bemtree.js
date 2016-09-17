@@ -16,7 +16,7 @@ block('panel').content()((node) => {
                     mods: { checked: true },
                     mix: { block: 'panel', elem: 'toggle-verified' },
                     name: 'status',
-                    text: 'Show verified segments only'
+                    text: 'Show unverified segments only'
                 }
             ]
         },
