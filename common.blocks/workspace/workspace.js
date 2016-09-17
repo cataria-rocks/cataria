@@ -15,9 +15,12 @@ provide(BEMDOM.decl(this.name, {
         var data = JSON.stringify(this.getData());
 
         data && $.post('/saveTM', { data: data })
-            .then(response => {
+            .then(function(response) {
                 InfoModal.show(response);
-            }).fail(err => InfoModal.show(err));
+            })
+            .fail(function(err) {
+                InfoModal.show(err);
+            });
     },
 
     sendPR: function() {
@@ -26,10 +29,12 @@ provide(BEMDOM.decl(this.name, {
         $.post('/sendPR', {
             doc: qs.parse(window.location.search.substr(1)).doc,
             data: JSON.stringify(window.segments)
-        }).then(response => {
+        })
+        .then(function(response) {
             this._spiner.delMod('visible');
             InfoModal.show(response);
-        }).fail(err => {
+        })
+        .fail(function(err) {
             this._spiner.delMod('visible');
             InfoModal.show(err);
         });
@@ -39,11 +44,12 @@ provide(BEMDOM.decl(this.name, {
         this._spiner.setMod('visible');
 
         $.post('/updateTM', { data: JSON.stringify(window.segments) })
-            .then(response => {
+            .then(function(response) {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
                 this._spiner.delMod('visible');
-            }).fail(err => {
+            })
+            .fail(function(err) {
                 this._spiner.delMod('visible');
                 InfoModal.show(err);
             });
@@ -53,11 +59,12 @@ provide(BEMDOM.decl(this.name, {
         this._spiner.setMod('visible');
 
         $.post('/translate', { data: JSON.stringify(window.segments) })
-            .then(response => {
+            .then(function(response) {
                 BEMDOM.replace(this._editor.domElem, response);
                 this._editor = this.findBlockInside('editor');
                 this._spiner.delMod('visible');
-            }).fail(err => {
+            })
+            .fail(err => {
                 this._spiner.delMod('visible');
                 InfoModal.show(err);
             });
@@ -89,7 +96,7 @@ provide(BEMDOM.decl(this.name, {
     getData: function() {
         var data = [];
 
-        window.segments.map(segment => {
+        window.segments.map(function(segment) {
             segment.target.content && data.push({
                 target: segment.target.content,
                 targetLang: segment.target.lang,
