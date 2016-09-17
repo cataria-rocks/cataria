@@ -78,5 +78,49 @@ bpt::before {
 }
 
 ept::before {
-    background-position: 0px 0px;
+    background-position: 0 0;
 }
+
+.markup-tag {
+    margin: 0 1px;
+    width: 21px;
+    height: 16px;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    border: 0;
+}
+
+.markup-tag_type_open {
+    background-image:  url(1-9.png), url(tags.png);
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, auto;
+}
+
+.markup-tag_type_close {
+    background-image:  url(1-9.png), url(tags.png);
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, auto;
+}
+
+/* Selectors for open/close arrows with numbers */
+.markup-tag_type_open.markup-tag_code_1 { background-position: 0 center, 0 -17px;  }
+.markup-tag_type_open.markup-tag_code_2 { background-position: -23px center, 0 -17px;  }
+.markup-tag_type_open.markup-tag_code_3 { background-position: -46px center, 0 -17px;  }
+.markup-tag_type_open.markup-tag_code_4 { background-position: -69px center, 0 -17px;  }
+.markup-tag_type_open.markup-tag_code_5 { background-position: -92px center, 0 -17px;  }
+.markup-tag_type_open.markup-tag_code_6 { background-position: -114px center, 0 -17px;  }
+.markup-tag_type_open.markup-tag_code_7 { background-position: -136px center, 0 -17px;  }
+.markup-tag_type_open.markup-tag_code_8 { background-position: -159px center, 0 -17px;  }
+.markup-tag_type_open.markup-tag_code_9 { background-position: -181px center, 0 -17px;  }
+
+.markup-tag_type_close.markup-tag_code_1 { background-position: 1px center, 0 0;  }
+.markup-tag_type_close.markup-tag_code_2 { background-position: -21px center, 0 0;  }
+.markup-tag_type_close.markup-tag_code_3 { background-position: -44px center, 0 0;  }
+.markup-tag_type_close.markup-tag_code_4 { background-position: -66px center, 0 0;  }
+.markup-tag_type_close.markup-tag_code_5 { background-position: -88px center, 0 0;  }
+.markup-tag_type_close.markup-tag_code_6 { background-position: -111px center, 0 0;  }
+.markup-tag_type_close.markup-tag_code_7 { background-position: -133px center, 0 0;  }
+.markup-tag_type_close.markup-tag_code_8 { background-position: -156px center, 0 0;  }
+.markup-tag_type_close.markup-tag_code_9 { background-position: -178px center, 0 0;  }
+/* Selectors for open/close arrows with numbers */
