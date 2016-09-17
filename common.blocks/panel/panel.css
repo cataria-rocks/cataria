@@ -1,28 +1,29 @@
 :block(panel) {
     width: 70%;
-}
-:block(panel):elem(header) {
-    display: table;
-    width: 100%;
-    border-bottom: 1px solid #079
-}
 
-:block(panel):elem(side) {
-    text-align: center;
-}
+    &:elem(header) {
+        display: table;
+        width: 100%;
+        border-bottom: 1px solid #079
+    }
 
-:block(panel):elem(info) {
-    padding: 10px;
-}
+    &:elem(side) {
+        text-align: center;
+    }
 
-:block(panel):elem(info-title) {
-    display: inline-block;
-    color: #079;
-    font-weight: 600;
-    padding: 0 5px 0 10px;
-}
+    &:elem(info) {
+        padding: 10px;
+    }
 
-:block(panel):elem(toggle-verified) {
-    float: right;
-    padding-right: 10px;
+    &:elem(info-title) {
+        display: inline-block;
+        color: #079;
+        font-weight: 600;
+        padding: 0 5px 0 10px;
+    }
+
+    &:elem(toggle-verified) {
+        float: right;
+        padding-right: 10px;
+    }
 }

@@ -1,21 +1,21 @@
-.spiner
-{
-    background: rgba(50,50,50,.2);
+:block(spiner) {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    text-align: center;
+
     display: none;
-}
 
-.spiner_visible
-{
-    display: block;
-}
+    text-align: center;
 
-.spiner__spin
-{
-    top: 300px;
+    background: rgba(50,50,50,.2);
+
+    &:mod(visible) {
+        display: block;
+    }
+
+    &:elem(spin) {
+        top: 300px;
+    }
 }

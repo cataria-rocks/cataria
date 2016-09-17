@@ -1,21 +1,24 @@
 :block(alternative-translation) {
-    background: #fff;
-    margin: 8px 0 20px;
-    text-align: left;
     display: block;
     min-height: 200px;
     max-height: 450px;
-    overflow: scroll;
+    margin: 8px 0 20px;
     padding: 10px;
 
-    &:elem(translation) {
-         display: block;
-         box-sizing: border-box;
-         border: 1px solid #079;
-         padding: 10px;
-     }
-}
+    overflow: scroll;
 
-.alternative-translation__translation_bestMatch {
-    background: #ffdb4d;
+    background: #fff;
+
+    text-align: left;
+
+    &:elem(translation) {
+        display: block;
+        box-sizing: border-box;
+        padding: 10px;
+        border: 1px solid #079;
+
+        &:mod(bestMatch) {
+            background: #ffdb4d;
+        }
+     }
 }

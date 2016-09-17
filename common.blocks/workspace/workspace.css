@@ -1,6 +1,6 @@
-.workspace_mode_unverified-only .editor__unit_verified {
+:block(workspace):mod(mode unverified-only) :block(editor):elem(unit):mod(verified) {
     display: block;
     height: 2px;
-    border: 2px solid #FFAF41;
+    border: 2px solid #ffaf41;
     overflow: hidden;
 }

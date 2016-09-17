@@ -1,4 +1,3 @@
-.modal__content
-{
+:block(modal):elem(content) {
     padding: 20px;
 }
