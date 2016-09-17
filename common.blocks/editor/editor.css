@@ -9,7 +9,7 @@
         position: relative;
         display: table;
         width: 100%;
-        border-bottom: 1px solid #079
+        border-bottom: 1px solid #079;
 
         &:mod(focused) :block(editor):elem(source) {
             background: #ffffe0;
