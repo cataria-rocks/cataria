@@ -88,6 +88,14 @@ provide(BEMDOM.decl(this.name, {
         this.delMod($(e.target.parentNode), 'focused');
     },
 
+    onInput: function(e) {
+        e.preventDefault();
+
+        var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+
+        document.execCommand('insertHTML', false, text);
+    },
+
     setStatus: function(e) {
         var index = $(e.target.domElem).data('index');
 
@@ -97,6 +105,7 @@ provide(BEMDOM.decl(this.name, {
     live: function() {
         this.liveBindTo('target', 'focusin', this.prototype.onFocusIn)
             .liveBindTo('target', 'focusout', this.prototype.onFocusOut)
+            .liveBindTo('target', 'paste', this.prototype.onInput)
             .liveInitOnBlockInsideEvent({ modName: 'checked', modVal: '*' }, 'checkbox', this.prototype.setStatus);
     }
 }));
