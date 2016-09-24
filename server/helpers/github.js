@@ -1,63 +1,48 @@
-const GitHub = require('github-api');
+const gna = require('github-node-api')();
 const parseGHUrl = require('parse-github-url');
-const ghClient = require('github-basic');
 
-function getContent(doc, token) {
-    const { owner, name, branch } = parseGHUrl(doc);
-    const pathToDoc = doc.split(branch)[1].substr(1);
+function getContent(url) {
+    const { owner, name: repo, branch } = parseGHUrl(url);
+    const pathToDoc = url.split(branch)[1].substr(1);
 
-    const auth = token ? { token: token } : {};
-    const gh = new GitHub(auth);
-
-    return gh
-        .getRepo(owner, name)
-        .getContents(branch, pathToDoc, true);
+    return gna.getContentsStr(owner, repo, pathToDoc, branch);
 }
 
-function createPr(req, content, lang) {
-    const doc = req.body.doc;
-    const user = req.session.passport.user;
-    const { owner, name, branch } = parseGHUrl(doc);
-    const { token, login } = user;
-    const client = ghClient({ version: 3, auth: token });
-    let pathToDoc;
-    let newBranch;
+// fork a repo -> create new branch in a fork -> commit a file -> make pull request
+// update.content
+// update.message
+function createPR(doc, newOwner, newBranch, update) {
+    const { owner, name: repo, branch: sourceBranch } = parseGHUrl(doc);
 
-    if (req.query.target) {
-        const docUrlArr = doc.split('/');
-        docUrlArr.pop();
-        docUrlArr.push(req.query.target);
-        pathToDoc = docUrlArr.join('/');
-    } else {
-        pathToDoc = doc.split(branch)[1].substr(1).split('.');
+    return gna.fork(owner, repo)
+        .then(() => gna.branch(newOwner, repo, sourceBranch, newBranch)
+            .catch(err => {
+                if (err.code === 422) {
+                    // TODO: branch already exists
+                    // use force?
+                    return;
+                }
 
-        // change doc lang
-        pathToDoc.splice(pathToDoc.length - 1, 1, lang, pathToDoc[pathToDoc.length - 1]);
-        pathToDoc = pathToDoc.join('.');
-    }
-
-    newBranch = `translate_${pathToDoc}`;
-
-    client.fork(owner, name);
-
-    client.branch(login, name, branch, newBranch);
-
-    return client.commit(login, name, {
-        branch: newBranch,
-        message: `Update translate for ${pathToDoc}`,
-        updates: [{
-            path: pathToDoc,
-            content: content
-        }]
-    }).then(() => {
-            return client.pull(
-                { user: login, repo: name, branch: newBranch },
-                { user: owner, repo: name, branch },
-                { title: `Update translate for ${pathToDoc}`, body: `Update translate for ${pathToDoc}` })
-        })
-        .catch(err => { console.log('Err commit', err) })
+                throw err;
+            })
+        )
+        .then(() => gna.commit(newOwner, repo, {
+            branch: newBranch,
+            message: update.message,
+            updates: [{
+                path: update.path,
+                content: update.content
+            }]
+        }))
+        .then(() => gna.pull(
+            { owner: newOwner, repo, branch: newBranch },
+            { owner, repo, branch: sourceBranch },
+            { title: update.message })
+        )
+        .catch(err => { console.error('Error creating PR', err.stack || err); });
 }
+
 module.exports = {
     getContent,
-    createPr
+    createPR
 };

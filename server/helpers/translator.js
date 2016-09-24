@@ -88,17 +88,17 @@ function getYaTranslate(item) {
             if (result.code === 200) {
                 item.target.content = result.text[0];
                 return resolve(item);
-            } else {
-                console.error(result.code, result.message);
-                reject(result);
             }
+
+            console.error(result.code, result.message);
+            reject(result);
         })
     })
 }
 
 module.exports = {
-    findSegment: findSegment,
-    getTM: getTM,
-    saveTM: saveTM,
-    getYaTranslate: getYaTranslate
+    findSegment,
+    getTM,
+    saveTM,
+    getYaTranslate
 };

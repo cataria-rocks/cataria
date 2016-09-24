@@ -3,5 +3,5 @@
         block: 'i-bem',
         elem: 'dom'
     },
-    shouldDeps: ['querystring', 'editor', 'toolbar', 'info-modal', 'spiner']
+    shouldDeps: ['querystring', 'editor', 'toolbar', 'info-modal', 'spinner']
 })

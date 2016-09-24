@@ -6,7 +6,7 @@ provide(BEMDOM.decl(this.name, {
             inited: function() {
                 this._editor = this.findBlockInside('editor');
                 this._altTrans = this.findBlockInside('alternative-translation');
-                this._spiner = this.findBlockInside('spiner');
+                this._spinner = this.findBlockInside('spinner');
             }
         }
     },
@@ -24,48 +24,54 @@ provide(BEMDOM.decl(this.name, {
     },
 
     sendPR: function() {
-        this._spiner.setMod('visible');
+        var _this = this,
+            query = qs.parse(window.location.search.substr(1));
+
+        this._spinner.setMod('visible');
 
         $.post('/sendPR', {
-            doc: qs.parse(window.location.search.substr(1)).doc,
+            targetFile: query.target,
+            doc: query.doc,
             data: JSON.stringify(window.segments)
         })
         .then(function(response) {
-            this._spiner.delMod('visible');
+            _this._spinner.delMod('visible');
             InfoModal.show(response);
         })
         .fail(function(err) {
-            this._spiner.delMod('visible');
+            _this._spinner.delMod('visible');
             InfoModal.show(err);
         });
     },
 
     updateTM: function() {
-        this._spiner.setMod('visible');
+        var _this = this;
+        this._spinner.setMod('visible');
 
         $.post('/updateTM', { data: JSON.stringify(window.segments) })
             .then(function(response) {
-                BEMDOM.replace(this._editor.domElem, response);
-                this._editor = this.findBlockInside('editor');
-                this._spiner.delMod('visible');
+                BEMDOM.replace(_this._editor.domElem, response);
+                _this._editor = _this.findBlockInside('editor');
+                _this._spinner.delMod('visible');
             })
             .fail(function(err) {
-                this._spiner.delMod('visible');
+                _this._spinner.delMod('visible');
                 InfoModal.show(err);
             });
     },
 
     getTranslation: function() {
-        this._spiner.setMod('visible');
+        var _this = this;
+        this._spinner.setMod('visible');
 
         $.post('/translate', { data: JSON.stringify(window.segments) })
             .then(function(response) {
-                BEMDOM.replace(this._editor.domElem, response);
-                this._editor = this.findBlockInside('editor');
-                this._spiner.delMod('visible');
+                BEMDOM.replace(_this._editor.domElem, response);
+                _this._editor = _this.findBlockInside('editor');
+                _this._spinner.delMod('visible');
             })
             .fail(function(err) {
-                this._spiner.delMod('visible');
+                _this._spinner.delMod('visible');
                 InfoModal.show(err);
             });
     },
