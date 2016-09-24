@@ -8,12 +8,12 @@ function onError(req, res, err, url) {
 
 function onAjaxError(req, res, err) {
     var errBody = err.response && err.response.body || err.message,
-        code = err.statusCode;
+        code = err.statusCode || 500;
 
     console.log('Ajax url: ', req.path);
     _logError(err);
 
-    res.status(code).send(errBody);
+    res.status(code).send(errBody || 'Something went wrong');
 }
 
 function _renderErrorPage(req, res, err) {
@@ -27,7 +27,8 @@ function _logError(err) {
     console.error('ERR.message:' + err.message + '; ERR.host: ' + err.host + '; ERR.path: ' + err.path);
     console.error(err.stack);
 }
+
 module.exports = {
-    onError: onError,
-    onAjaxError: onAjaxError
+    onError,
+    onAjaxError
 };

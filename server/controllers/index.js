@@ -1,29 +1,33 @@
+const parseGHUrl = require('parse-github-url');
 const md2xliff = require('md2xliff');
 const renderer = require('../renderer');
 
 const Segment = require('../db').Segment;
 const helpers = require('../helpers');
 
-const { onError, onAjaxError } = helpers.error;
+const { env } = process;
+
+const { onError, onAjaxError } = helpers.errors;
 
 function getContent(req, res) {
     const query = req.query;
     const doc = query.doc;
+    const filename = doc.split('/').pop();
+
     const passport = req.session.passport || {};
-    const token = passport.user && passport.user.token;
+    env.GITHUB_TOKEN || (env.GITHUB_TOKEN = passport.user && passport.user.token);
 
     if (!doc) return renderer(req, res, {
         view: 'blank',
         pageTitle: 'cataria'
     });
 
-    return helpers.github.getContent(doc, token)
-        .then(function(response) {
-            const filename = doc.split('/').pop();
-            const extract = md2xliff.extract(response.data, filename, filename.replace(/\.md$/, '.skl'), query.sourceLang, query.targetLang);
+    return helpers.github.getContent(doc)
+        .then(function(docText) {
+            const extract = md2xliff.extract(docText, filename, filename.replace(/\.md$/, '.skl'), query.sourceLang, query.targetLang);
             const { srcLang, trgLang, units } = extract.data;
 
-            helpers.translator.getTM(trgLang, srcLang, units)
+            return helpers.translator.getTM(trgLang, srcLang, units)
                 .then(units => {
                     renderer(req, res, {
                         view: 'index-page',
@@ -33,27 +37,39 @@ function getContent(req, res) {
                         targetLang: trgLang,
                         user: passport.user,
                         repo: doc
-                    })
-                })
-                .catch(err => { onError(req, res, err); });
+                    });
+                });
         })
+        .catch(err => { onError(req, res, err); });
 }
 
 function createPullRequest(req, res) {
-    const { data, doc } = req.body;
+    const { data, doc, targetFile } = req.body;
     const user = req.session.passport.user;
-    const lang = JSON.parse(data)[0].target.lang.slice(0, 2); // ru-Ru -> ru
+    const firstSegment = JSON.parse(data)[0];
+    const sourceLang = firstSegment.source.lang.slice(0, 2); // ru-Ru -> ru
+    const targetLang = firstSegment.target.lang.slice(0, 2);
 
-    return helpers.github.getContent(doc, user.token)
-        .then(function(response) {
-            const filename = doc.split('/').pop();
-            const extract = md2xliff.extract(response.data, filename, filename.replace(/\.md$/, '.skl'), req.query.sourceLang, req.query.targetLang);
-            const translatedText = md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
+    const pathToDoc = doc.split(parseGHUrl(doc).branch)[1].substr(1);
+    const filename = pathToDoc.split('/').pop();
 
-            helpers.github.createPr(req, translatedText, lang)
-                .then(status => res.send('PR successfully created!'))
-                .catch(err => { onAjaxError(req, res, err); });
-        }).catch(err => { onAjaxError(req, res, err); });
+    const translationFilename = filename.replace('.' + sourceLang + '.', '.' + targetLang  + '.');
+    const newBranch = `cat_${filename}`;
+
+    env.GITHUB_TOKEN || (env.GITHUB_TOKEN = user.token);
+
+    return helpers.github.getContent(doc)
+        .then(docText => {
+            const extract = md2xliff.extract(docText, filename, filename.replace(/\.md$/, '.skl'), req.query.sourceLang, req.query.targetLang);
+            return md2xliff.reconstruct(JSON.parse(data), extract.skeleton);
+        })
+        .then(translatedText => helpers.github.createPR(doc, user.login, newBranch, {
+            path: targetFile || pathToDoc.replace(filename, '') + translationFilename,
+            content: translatedText,
+            message: `Update translation for ${filename}`
+        }))
+        .then(status => res.send(`<a href="${status.html_url}">Pull request</a> successfully created.`))
+        .catch(err => { onAjaxError(req, res, err); });
 }
 
 function saveMemory(req, res) {
@@ -61,9 +77,8 @@ function saveMemory(req, res) {
     const promises = data.map(helpers.translator.saveTM);
 
     return Promise.all(promises)
-        .then(() => res.send('Segment successfully created!'))
+        .then(() => res.send('Segments successfully created!'))
         .catch(err => onAjaxError(req, res, err));
-
 }
 
 function updateTM(req, res) {

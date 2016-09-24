@@ -1,5 +1,5 @@
 module.exports = {
-    error: require('./error'),
+    errors: require('./errors'),
     github: require('./github'),
     translator: require('./translator')
 };

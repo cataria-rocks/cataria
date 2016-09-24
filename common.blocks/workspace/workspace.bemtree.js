@@ -4,7 +4,7 @@ block('workspace')(
             { block: 'panel' },
             { block: 'editor' },
             { block: 'toolbar' },
-            { block: 'spiner' }
+            { block: 'spinner' }
         ];
     })
 );
