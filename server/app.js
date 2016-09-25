@@ -26,8 +26,8 @@ app
     // .use(favicon(path.join(rootDir, 'favicon.ico')))
     .get('/ping', (req, res) => res.end())
     .use(morgan('combined'))
-    .use(bodyParser.json({ limit: '5mb' }))
-    .use(bodyParser.urlencoded({ limit: '5mb', extended: false }))
+    .use(bodyParser.json({ limit: '25mb' }))
+    .use(bodyParser.urlencoded({ limit: '25mb', extended: false }))
     .use(cookieSession({ keys: ['secret1', 'secret2'] })) // TODO
     .use(passport.initialize())
     .use(passport.session())
