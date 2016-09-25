@@ -19,7 +19,7 @@ provide(BEMDOM.decl(this.name, {
                 InfoModal.show(response);
             })
             .fail(function(err) {
-                InfoModal.show(err);
+                InfoModal.show(err.responseText || err);
             });
     },
 
@@ -40,24 +40,30 @@ provide(BEMDOM.decl(this.name, {
         })
         .fail(function(err) {
             _this._spinner.delMod('visible');
-            InfoModal.show(err);
+            InfoModal.show(err.responseText || err);
         });
     },
 
     updateTM: function() {
-        var _this = this;
+        var _this = this,
+            query = qs.parse(window.location.search.substr(1));
+
         this._spinner.setMod('visible');
 
-        $.post('/updateTM', { data: JSON.stringify(window.segments) })
-            .then(function(response) {
-                BEMDOM.replace(_this._editor.domElem, response);
-                _this._editor = _this.findBlockInside('editor');
-                _this._spinner.delMod('visible');
-            })
-            .fail(function(err) {
-                _this._spinner.delMod('visible');
-                InfoModal.show(err);
-            });
+        $.post('/updateTM', {
+            targetFile: query.target,
+            data: JSON.stringify(window.segments)
+        })
+        .then(function(response) {
+            BEMDOM.replace(_this._editor.domElem, response);
+            _this._editor = _this.findBlockInside('editor');
+            _this._spinner.delMod('visible');
+        })
+        .fail(function(err) {
+            console.log('arguments', arguments);
+            _this._spinner.delMod('visible');
+            InfoModal.show(err.responseText || err);
+        });
     },
 
     getTranslation: function() {
@@ -72,7 +78,7 @@ provide(BEMDOM.decl(this.name, {
             })
             .fail(function(err) {
                 _this._spinner.delMod('visible');
-                InfoModal.show(err);
+                InfoModal.show(err.responseText || err);
             });
     },
 

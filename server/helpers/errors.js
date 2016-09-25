@@ -7,25 +7,25 @@ function onError(req, res, err, url) {
 }
 
 function onAjaxError(req, res, err) {
-    var errBody = err.response && err.response.body || err.message,
-        code = err.statusCode || 500;
+    const errBody = err.response ? err.response.body : '';
+    const code = err.statusCode || 500;
 
     console.log('Ajax url: ', req.path);
     _logError(err);
 
-    res.status(code).send(errBody || 'Something went wrong');
+    res.status(code).send(typeof err === 'string' ? err : errBody || err.message || 'Something went wrong');
 }
 
 function _renderErrorPage(req, res, err) {
     res.status(err.statusCode || 500);
-    renderer(req, res, { errMessage: err.message, view: 'error' });
+    renderer(req, res, { errMessage: err.message || 'Something went wrong', view: 'error' });
 }
 
 function _logError(err) {
-    err.response && console.error('err.response.body:', err.response.body);
+    err.response && err.response.body && console.error('err.response.body:', err.response.body);
     err.body && console.error('err.body:', err.body);
-    console.error('ERR.message:' + err.message + '; ERR.host: ' + err.host + '; ERR.path: ' + err.path);
-    console.error(err.stack);
+    typeof err !== 'string' && console.error('ERR.message:' + err.message + '; ERR.host: ' + err.host + '; ERR.path: ' + err.path);
+    console.error(err.stack || err);
 }
 
 module.exports = {

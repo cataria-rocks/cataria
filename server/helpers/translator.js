@@ -43,9 +43,14 @@ function getTM(trgLang, srcLang, units) {
                     a threshold of 1.0 would match anything.
                 @maxPatternLength - The maximum length of the pattern.
                  */
-                const fuse = new Fuse(data, { keys: ['source'], threshold: 0.2, distance: 10, maxPatternLength: 250 });
 
-                unit.altTrans = fuse.search(source) || [];
+                if (data.length) {
+                    const fuse = new Fuse(data, { keys: ['source'], threshold: 0.2, distance: 10, maxPatternLength: 250, tokenSeparator: 'ЪЪЪЪЪЪ' });
+                    unit.altTrans = fuse.search(source);
+                } else {
+                    unit.altTrans = [];
+                }
+
                 unit.altTrans.map(result => {
                     if (result.source === source && result.date === lastDate) {
                         result.bestMatch = true;
@@ -74,6 +79,7 @@ function saveTM(unit) {
 function getYaTranslate(item) {
     return new Promise((resolve, reject) => {
         if (item.target.content) return resolve(item);
+        if (!yandexTranlateKey) return reject('Yandex Translate API key is invalid');
 
         const source = item.source;
         const srcLang = source.lang.slice(0, 2);
@@ -92,8 +98,8 @@ function getYaTranslate(item) {
 
             console.error(result.code, result.message);
             reject(result);
-        })
-    })
+        });
+    });
 }
 
 module.exports = {
