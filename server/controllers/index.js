@@ -12,19 +12,19 @@ const { onError, onAjaxError } = helpers.errors;
 function getContent(req, res) {
     const query = req.query;
     const doc = query.doc;
-    const filename = doc.split('/').pop();
-
-    const passport = req.session.passport || {};
-    env.GITHUB_TOKEN || (env.GITHUB_TOKEN = passport.user && passport.user.token);
 
     if (!doc) return renderer(req, res, {
         view: 'blank',
         pageTitle: 'cataria'
     });
 
+    const filename = doc.split('/').pop();
+    const passport = req.session.passport || {};
+    env.GITHUB_TOKEN || (env.GITHUB_TOKEN = passport.user && passport.user.token);
+
     return helpers.github.getContent(doc)
         .then(function(docText) {
-            const extract = md2xliff.extract(docText, filename, filename.replace(/\.md$/, '.skl'), query.sourceLang, query.targetLang);
+            const extract = md2xliff.extract(docText, filename, filename.replace(/\.md$/, '.skl'), query.sourceLang || 'en', query.targetLang);
             const { srcLang, trgLang, units } = extract.data;
 
             return helpers.translator.getTM(trgLang, srcLang, units)
