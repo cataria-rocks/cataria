@@ -94,7 +94,7 @@ function updateTM(req, res) {
                 targetLang: trgLang
             }, { block: 'editor' })
         })
-        .catch(err => { onError(req, res, err); });
+        .catch(err => { onAjaxError(req, res, err); });
 }
 
 function getYaTranslate(req, res) {
@@ -112,7 +112,7 @@ function getYaTranslate(req, res) {
                 targetLang: trgLang
             }, { block: 'editor' })
         })
-        .catch(err => { onError(req, res, err); });
+        .catch(err => { onAjaxError(req, res, err); });
 }
 
 module.exports = {

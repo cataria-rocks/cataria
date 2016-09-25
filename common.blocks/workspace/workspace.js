@@ -68,7 +68,8 @@ provide(BEMDOM.decl(this.name, {
 
     getTranslation: function() {
         var _this = this;
-        this._spinner.setMod('visible');
+        // TODO: WTF?
+        this._spinner && this._spinner.setMod('visible');
 
         $.post('/translate', { data: JSON.stringify(window.segments) })
             .then(function(response) {
@@ -90,8 +91,8 @@ provide(BEMDOM.decl(this.name, {
         var index = $(unit).data('index'),
             content = window.segments[index].altTrans;
 
-        BEMDOM.replace(this._altTrans.domElem, content);
         this._altTrans = this.findBlockInside('alternative-translation');
+        BEMDOM.replace(this._altTrans.domElem, content);
         this._editorUnit = unit;
     },
 

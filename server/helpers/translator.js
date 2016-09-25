@@ -46,7 +46,12 @@ function getTM(trgLang, srcLang, units) {
 
                 if (data.length) {
                     const fuse = new Fuse(data, { keys: ['source'], threshold: 0.2, distance: 10, maxPatternLength: 250, tokenSeparator: 'ЪЪЪЪЪЪ' });
-                    unit.altTrans = fuse.search(source);
+                    try {
+                        unit.altTrans = fuse.search(source);
+                    } catch (err) {
+                        console.error(err);
+                        unit.altTrans = [];
+                    }
                 } else {
                     unit.altTrans = [];
                 }
