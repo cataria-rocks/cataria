@@ -90,7 +90,7 @@ function getYaTranslate(item) {
         const srcLang = source.lang.slice(0, 2);
         const trgLang = item.target.lang.slice(0, 2);
 
-        yandexTranslator.translate(source.content, { from: srcLang, to: trgLang }, (err, result) => {
+        yandexTranslator.translate(source.content, { from: srcLang, to: trgLang, format: 'html' }, (err, result) => {
             if (err) {
                 console.error(err);
                 return reject({ code: 500, message: err.message });
