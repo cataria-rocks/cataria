@@ -21,7 +21,7 @@
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "fuse.js": "^2.4.1",
-    "github-node-api": "github:tadatuta/github-node-api",
+    "github-node-api": "^0.0.2",
     "got": "^6.3.0",
     "md2xliff": "https://github.com/tadatuta/md2xliff.git#tmx",
     "mongodb": "^2.1.18",
