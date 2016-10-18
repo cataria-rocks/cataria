@@ -1,0 +1,7 @@
+:block(input):mod(theme islands)  {
+
+    &:block(input):mod(error){
+        background: red;
+    }
+}
+

@@ -1,6 +1,10 @@
-:block(error) {
-    font-size: 18px;
-    line-height: 24px;
+:block(error){
+    display: none;
+    color: #dd4b39;
+    line-height: 17px;
+    padding-left: 15px;
 
-    padding: 20px;
+    &:mod(missingvalue) {
+        display: inline-block;
+    }
 }

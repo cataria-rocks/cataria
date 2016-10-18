@@ -4,6 +4,7 @@ provide(bemDom.declBlock(this.name, {
     onSetMod: {
         js: {
             inited: function() {
+
                 if (this.__self.getModal()) return;
 
                 this.__self._modal = this.findChildBlock(Modal);
@@ -12,7 +13,7 @@ provide(bemDom.declBlock(this.name, {
     }
 }, {
     show: function(content) {
-        this.getModal()
+          this.getModal()
             .setContent(content)
             .setMod('visible');
 
