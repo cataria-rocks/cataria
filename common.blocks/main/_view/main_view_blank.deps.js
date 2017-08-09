@@ -1,3 +1,3 @@
 ({
-	shouldDeps: 'heading'
+	shouldDeps: ['heading', 'user']
 })

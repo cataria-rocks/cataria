@@ -15,7 +15,8 @@ function getContent(req, res) {
 
     if (!doc) return renderer(req, res, {
         view: 'blank',
-        pageTitle: 'cataria'
+        pageTitle: 'cataria',
+        user: (req.session.passport || {}).user // TODO: move to renderer
     });
 
     const filename = doc.split('/').pop();
@@ -68,7 +69,7 @@ function createPullRequest(req, res) {
             content: translatedText,
             message: `Update translation for ${filename}`
         }))
-        .then(status => res.send(`<a href="${status.html_url}">Pull request</a> successfully created.`))
+        .then(status => res.send(status ? `<a href="${status.html_url}">Pull request</a> successfully created.` : 'Something went wrong!'))
         .catch(err => { onAjaxError(req, res, err); });
 }
 
