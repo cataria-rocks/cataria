@@ -1,5 +1,5 @@
-block('main').mod('view', 'blank').content()(() => {
-    return {
+block('main').mod('view', 'blank').content()(node => {
+    return !node.data.user ? { block: 'user' } : {
         block: 'form',
         content: [
             {
@@ -10,7 +10,7 @@ block('main').mod('view', 'blank').content()(() => {
                 {
                     label: 'URL исходного документа',
                     name: 'doc',
-                    placeholder: 'https://github.com/bem-site/cataria/blob/master/README.md'
+                    placeholder: 'https://github.com/cataria-rocks/cataria/blob/master/README.md'
                 },
                 {
                     label: 'Язык исходного документа',
