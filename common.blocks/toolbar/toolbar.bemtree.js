@@ -37,6 +37,13 @@ block('toolbar').content()(function() {
                     mix: { block: 'toolbar', elem: 'action' },
                     type: 'submit',
                     text: 'Send PR'
+                },
+                {
+                    block: 'button',
+                    mods: { theme: 'islands', size: 'm', type: 'link' },
+                    mix: { block: 'toolbar', elem: 'action' },
+                    url: '/downloadTrans',
+                    text: 'Download'
                 }
             ]
         }
