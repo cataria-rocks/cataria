@@ -116,11 +116,20 @@ function getYaTranslate(req, res) {
         .catch(err => { onAjaxError(req, res, err); });
 }
 
+function downloadTrans(req, res) {
+    return helpers.translator.findAll().then(jsonData => {
+        res
+            .set({ 'Content-Disposition': 'attachment; filename="TM.tmx"' })
+            .send(helpers.json2tmx(jsonData));
+    });
+}
+
 module.exports = {
     // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent,
     createPullRequest,
     saveMemory,
     updateTM,
-    getYaTranslate
+    getYaTranslate,
+    downloadTrans
 };
