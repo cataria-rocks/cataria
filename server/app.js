@@ -13,6 +13,7 @@ const passport = require('passport');
 const routes = require('./routes');
 const controllers = require('./controllers/index');
 
+const isDev = process.env.NODE_ENV === 'development';
 const baseUrl = '/';
 const rootDir = path.join(__dirname, '../desktop.bundles/');
 
@@ -33,6 +34,8 @@ app
     .use(passport.session())
     .use(baseUrl, routes)
     .use(baseUrl, serveStatic(path.join(rootDir, 'index')));
+
+isDev && require('./rebuild')(app);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
