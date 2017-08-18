@@ -53,6 +53,7 @@
     "jscs": "^3.0.7",
     "jshint": "^2.9.1",
     "jshint-groups": "^0.8.0",
+    "node-notifier-cli": "^1.0.1",
     "nodemon": "^1.11.0",
     "postcss-nested": "^1.0.0",
     "rebem-css": "^0.2.0",

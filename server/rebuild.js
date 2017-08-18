@@ -49,11 +49,13 @@ process.env.NO_AUTOMAKE || watch([
 
 // livereload
 process.env.NO_LIVERELOAD || watch([
-    path.join(rootDir, 'static', '*.min.*'),
+    // path.join(rootDir, 'static', '*.min.*'),
+    path.join(bundlesDir, '*',  '*.min.*'),
     path.join(bundlesDir, '*', '*.bemtree.js'),
 ].concat(bundles.map(function(bundle) {
     return path.join(bundlesDir, bundle, bundle + '.bemhtml.js');
 })), watchOpts).on('all', function(event, file) {
+    console.log(file);
     tinyLr.changed(file);
 });
 
