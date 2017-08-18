@@ -29,7 +29,8 @@ var techs = {
         { path: 'node_modules/bem-components/design/common.blocks', check: false },
         { path: 'node_modules/bem-components/design/desktop.blocks', check: false },
         { path: 'node_modules/bem-stat-counters/common.blocks', check: false },
-        'common.blocks'
+        'common.blocks',
+        'development.blocks'
     ];
 
 module.exports = function(config) {

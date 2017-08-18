@@ -1,4 +1,4 @@
-const renderer = require('../renderer');
+const renderer = require('../renderer').render;
 
 function onError(req, res, err, url) {
     console.log('requested url:', url);
