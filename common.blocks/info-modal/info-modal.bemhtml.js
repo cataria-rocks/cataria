@@ -5,7 +5,7 @@ block('page').content()(function() {
 });
 
 block('info-modal')(
-    js()(true),
+    addJs()(true),
     content()({
         block: 'modal',
         mods: { autoclosable: true, theme: 'islands' }

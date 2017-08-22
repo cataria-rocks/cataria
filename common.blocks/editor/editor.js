@@ -1,16 +1,16 @@
-modules.define('editor', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) {
+modules.define('editor', ['i-bem-dom', 'jquery', 'checkbox'], function(provide, bemDom, $, Checkbox) {
 
-provide(BEMDOM.decl(this.name, {
+provide(bemDom.declBlock(this.name, {
     onSetMod: {
         'js': {
             inited: function() {
-                this.bindTo('keydown', this.onKeyDown);
+                this._domEvents().on('keydown', this.onKeyDown);
             }
         }
     },
     /**
      * method for insert tags as html node into div contenteditable = true
-     * @param tag {String}
+     * @param {String} tag
      * @private
      */
     _insertTag: function(tag) {
@@ -102,11 +102,16 @@ provide(BEMDOM.decl(this.name, {
         window.segments[index].status = e.target.getMod('checked');
     }
 }, {
-    live: function() {
-        this.liveBindTo('target', 'focusin', this.prototype.onFocusIn)
-            .liveBindTo('target', 'focusout', this.prototype.onFocusOut)
-            .liveBindTo('target', 'paste', this.prototype.onInput)
-            .liveInitOnBlockInsideEvent({ modName: 'checked', modVal: '*' }, 'checkbox', this.prototype.setStatus);
+    lazyInit: true,
+    onInit: function() {
+        var ptp = this.prototype;
+
+        this._events('target')
+            .on('focusin', ptp.onFocusIn)
+            .on('focusout', ptp.onFocusOut)
+            .on('paste', ptp.onInput);
+
+        this._events(Checkbox).on({ modName: 'checked', modVal: '*' }, this.prototype.setStatus);
     }
 }));
 

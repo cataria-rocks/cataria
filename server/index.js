@@ -26,7 +26,9 @@ if (!module.parent) {
     if (fs.existsSync(portOrSocket)) {
         try {
             fs.unlinkSync(portOrSocket);
-        } catch (e) {}
+        } catch (e) {
+            //
+        }
     }
 
     exports.start();

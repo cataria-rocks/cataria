@@ -1,5 +1,5 @@
 ({
-    mustDeps: { block: 'i-bem', elem: 'dom' },
+    mustDeps: ['i-bem-dom'],
     shouldDeps: [
         'jquery',
         {
@@ -9,4 +9,4 @@
         'textarea',
         'segments'
     ]
-})
+});

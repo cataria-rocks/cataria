@@ -1,1 +1,1 @@
-block('workspace').js()(true);
+block('workspace').addJs()(true);

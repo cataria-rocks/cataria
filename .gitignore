@@ -6,9 +6,9 @@ node_modules/
 .svn
 npm-debug.log
 config.json
+package-lock.json
 
 # bem
-.bem/cache/
 .enb/tmp/
 *bundles*/*/*.*
 !*bundles*/*/*.bemdecl.js

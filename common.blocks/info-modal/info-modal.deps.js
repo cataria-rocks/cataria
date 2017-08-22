@@ -1,10 +1,6 @@
 ({
     mustDeps: [
-        {
-            block: 'i-bem',
-            elem: 'dom'
-        },
-        'i18n'
+        'i-bem-dom'
     ],
     shouldDeps: {
         block: 'modal',

@@ -1,16 +1,16 @@
-modules.define('toolbar', ['i-bem__dom'], function(provide, BEMDOM) {
+modules.define('toolbar', ['i-bem-dom', 'button'], function(provide, bemDom, Button) {
 
-provide(BEMDOM.decl(this.name, {
+provide(bemDom.declBlock(this.name, {
     _onButtonClick: function(e) {
-        var action = e.target.getMod('toolbar-action');
+        var action = e.bemTarget.getMod('toolbar-action');
 
-        this.emit(action);
+        this._emit(action);
     }
 
 }, {
-    live: function() {
-        this.liveInitOnBlockInsideEvent('click', 'button', this.prototype._onButtonClick);
-
+    lazyInit: true,
+    onInit: function() {
+        this._events(Button).on('click', this.prototype._onButtonClick);
     }
 }));
 

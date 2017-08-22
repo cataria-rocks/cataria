@@ -2,7 +2,6 @@ const parseGHUrl = require('parse-github-url');
 const md2xliff = require('md2xliff');
 const renderer = require('../renderer').render;
 
-const Segment = require('../db').Segment;
 const helpers = require('../helpers');
 
 const { env } = process;
@@ -13,11 +12,13 @@ function getContent(req, res) {
     const query = req.query;
     const doc = query.doc;
 
-    if (!doc) return renderer(req, res, {
-        view: 'blank',
-        pageTitle: 'cataria',
-        user: (req.session.passport || {}).user // TODO: move to renderer
-    });
+    if (!doc) {
+        return renderer(req, res, {
+            view: 'blank',
+            pageTitle: 'cataria',
+            user: (req.session.passport || {}).user // TODO: move to renderer
+        });
+    }
 
     const filename = doc.split('/').pop();
     const passport = req.session.passport || {};
@@ -29,11 +30,11 @@ function getContent(req, res) {
             const { srcLang, trgLang, units } = extract.data;
 
             return helpers.translator.getTM(trgLang, srcLang, units)
-                .then(units => {
+                .then(segments => {
                     renderer(req, res, {
                         view: 'index-page',
                         pageTitle: 'cataria',
-                        segments: units,
+                        segments: segments,
                         sourceLang: srcLang,
                         targetLang: trgLang,
                         user: passport.user,

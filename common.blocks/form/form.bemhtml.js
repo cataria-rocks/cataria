@@ -1,6 +1,6 @@
 block('form')(
     tag()('form'),
-    attrs()(function() {
+    addAttrs()(function() {
         var ctx = this.ctx;
 
         return {

@@ -1,8 +1,7 @@
 const path = require('path');
 
 const express = require('express');
-const connect = require('connect');
-const favicon = require('serve-favicon');
+// const favicon = require('serve-favicon');
 const serveStatic = require('serve-static');
 const morgan = require('morgan');
 
@@ -11,7 +10,6 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const routes = require('./routes');
-const controllers = require('./controllers/index');
 
 const isDev = process.env.NODE_ENV === 'development';
 const baseUrl = '/';
@@ -38,7 +36,7 @@ app
 isDev && require('./rebuild')(app);
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
+app.use((req, res) => {
     const err = new Error('Not Found');
     err.status = 404;
     res.send(err);

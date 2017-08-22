@@ -1,1 +1,1 @@
-block('panel').js()(true);
+block('panel').addJs()(true);

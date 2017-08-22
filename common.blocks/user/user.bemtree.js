@@ -13,15 +13,15 @@ block('user').content()(function() {
         },
         {
             block: 'button',
-            mix: { block: 'toolbar', elem: 'button' },
             mods: { theme: 'islands', size: 'm', view: 'action', type: 'link' },
+            mix: { block: 'toolbar', elem: 'button' },
             text: 'Logout',
             url: '/logout'
         }
     ] : {
         block: 'button',
-        mix: { block: 'toolbar', elem: 'button' },
         mods: { theme: 'islands', size: 'm', view: 'action', type: 'link' },
+        mix: { block: 'toolbar', elem: 'button' },
         text: 'Login with GitHub',
         url: '/auth/github'
     };

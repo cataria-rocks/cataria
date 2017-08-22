@@ -7,8 +7,18 @@ var techs = {
         borschik: require('enb-borschik/techs/borschik'),
 
         // css
-        css: require('enb-css/techs/css'),
-        postcss: require('enb-bundle-postcss/techs/enb-bundle-postcss'),
+        postcss: require('enb-postcss/techs/enb-postcss'),
+        postcssPlugins: [
+            require('postcss-import')(),
+            require('postcss-each'),
+            require('postcss-for'),
+            require('postcss-simple-vars')(),
+            require('postcss-calc')(),
+            require('postcss-nested'),
+            require('rebem-css'),
+            require('postcss-url')({ url: 'inline' }),
+            require('autoprefixer')()
+        ],
 
         // js
         browserJs: require('enb-js/techs/browser-js'),
@@ -45,15 +55,10 @@ module.exports = function(config) {
             [enbBemTechs.files],
 
             // css
-            [techs.css, {
-                target: '?.pre.css',
-                // TODO: move to postcss
-                autoprefixer: { browsers: ['ie >= 10', 'last 2 versions', 'opera 12.1', '> 2%'] }
-            }],
-
             [techs.postcss, {
-                source: '?.pre.css',
-                plugins: [require('rebem-css'), require('postcss-nested')]
+                target: '?.css',
+                oneOfSourceSuffixes: ['post.css', 'css'],
+                plugins: techs.postcssPlugins
             }],
 
             // bemtree

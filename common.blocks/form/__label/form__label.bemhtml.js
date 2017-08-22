@@ -1,6 +1,6 @@
 block('form').elem('label')(
     tag()('label'),
-    attrs()(function() {
+    addAttrs()(function() {
         return {
             'for': this.ctx.for
         };
