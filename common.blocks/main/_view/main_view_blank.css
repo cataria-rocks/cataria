@@ -1,0 +1,6 @@
+:block(main) {
+   &__flex-wrapper{
+       display:flex;
+       justify-content: center;
+   }
+}
