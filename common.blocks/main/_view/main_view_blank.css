@@ -1,6 +1,20 @@
 :block(main) {
    &__flex-wrapper{
        display:flex;
-       justify-content: center;
+    }
+   &__image{
+       width:30%;
+       background: red;
+       top: 50%;
+       left: 50%;
+       width: 20px;
+       height: 20px;
+       margin: -10px 0 0 -10px;
+       content: "";
+       opacity: .4;
+       display: block;
+       position: absolute;
+       background: url(../i/tr_text.svg);
+       pointer-events: none;
    }
 }

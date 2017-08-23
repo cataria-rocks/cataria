@@ -82,6 +82,9 @@ block('main')(
                                 placeholder: 'en'
                             },
                             {
+                                block: 'logo',
+                            },
+                            {
                                 elem: 'item',
                                 label: 'Язык перевода',
                                 name: 'targetLang',
