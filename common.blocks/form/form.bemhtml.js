@@ -1,11 +1,13 @@
 block('form')(
+    addJs()(true),
     tag()('form'),
     addAttrs()(function() {
         var ctx = this.ctx;
 
         return {
             method: ctx.method,
-            action: ctx.action || '/'
+            action: ctx.action || '/',
+            enctype: ctx.enctype
         };
     })
 );

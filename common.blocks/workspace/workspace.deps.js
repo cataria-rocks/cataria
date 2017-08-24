@@ -9,6 +9,7 @@
         'editor',
         'toolbar',
         'spinner',
+        'attach',
         'jquery',
         'info-modal'
     ]

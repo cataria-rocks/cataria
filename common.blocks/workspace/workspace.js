@@ -1,7 +1,7 @@
 modules.define('workspace', [
     'i-bem-dom', 'uri__querystring', 'jquery', 'info-modal',
-    'editor', 'alternative-translation', 'spinner', 'toolbar', 'panel'
-], function(provide, bemDom, qs, $, InfoModal, Editor, AlternativeTranslation, Spinner, Toolbar, Panel) {
+    'editor', 'alternative-translation', 'spinner', 'toolbar', 'panel', 'attach'
+], function(provide, bemDom, qs, $, InfoModal, Editor, AlternativeTranslation, Spinner, Toolbar, Panel, Attach) {
 
 provide(bemDom.declBlock(this.name, {
     onSetMod: {
@@ -10,6 +10,8 @@ provide(bemDom.declBlock(this.name, {
                 this._editor = this.findChildBlock(Editor);
                 this._altTrans = this.findChildBlock(AlternativeTranslation);
                 this._spinner = this.findChildBlock(Spinner);
+                this._attach = this.findChildBlock(Attach);
+
             }
         }
     },
@@ -123,8 +125,27 @@ provide(bemDom.declBlock(this.name, {
 
             return acc;
         }, []);
-    }
+    },
 
+    uploadTM: function(event, data) {
+        var _this = this;
+
+        $.ajax({
+            url: '/uploadTM',
+            data: data,
+            type: 'POST',
+            contentType: false,
+            processData: false
+        })
+        .then(function(response) {
+            InfoModal.show(response);
+            _this._attach.clear();
+        })
+        .fail(function(err) {
+            console.error(err.responseText || err);
+            InfoModal.show('The File Upload was not successful');
+        });
+    }
 }, {
     lazyInit: true,
     onInit: function() {
@@ -134,7 +155,8 @@ provide(bemDom.declBlock(this.name, {
             .on('saveTm', ptp.saveTm)
             .on('translate', ptp.getTranslation)
             .on('sendPR', ptp.sendPR)
-            .on('updateTM', ptp.updateTM);
+            .on('updateTM', ptp.updateTM)
+            .on('submit', ptp.uploadTM)
 
         this._events(Panel).on('toggleVerified', ptp.toggleVerified);
         this._events(Editor).on('showAltTrans', ptp.showAltTrans);
