@@ -74,18 +74,19 @@ block('main')(
                     {
                         block,
                         elem: 'flex-wrapper',
+                     //   elemMods: { column: 2 }, //__flex-wrapper_column_2
                         content: [
                             {
-                                elem: 'item',
+                                elem: 'item', // __flex-wrapper_column_2 __iem:first-child { padding-right: 100500px }
+                                elemMods: { column: 2 },
                                 label: 'Язык исходного документа',
                                 name: 'sourceLang',
                                 placeholder: 'en'
                             },
                             {
-                                block: 'logo',
-                            },
-                            {
-                                elem: 'item',
+
+                                elem: 'item', // __flex-wrapper_column_2 __iem + __iem { padding-left: 100500px }
+                                elemMods: { column: 2 },
                                 label: 'Язык перевода',
                                 name: 'targetLang',
                                 placeholder: 'ru'

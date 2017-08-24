@@ -1,20 +1,13 @@
 :block(main) {
-   &__flex-wrapper{
-       display:flex;
-    }
-   &__image{
-       width:30%;
-       background: red;
-       top: 50%;
-       left: 50%;
-       width: 20px;
-       height: 20px;
-       margin: -10px 0 0 -10px;
-       content: "";
-       opacity: .4;
-       display: block;
-       position: absolute;
-       background: url(../i/tr_text.svg);
-       pointer-events: none;
+   &__item{
+        margin: 10px 0;
    }
+   &__flex-wrapper {
+        display:flex;
+    }
+    &__item_column_2 {
+        width:50%;
+    }
+    &__item_column_2:first-child {
+        padding-right: 20px}
 }
