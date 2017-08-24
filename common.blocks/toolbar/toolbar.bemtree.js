@@ -66,6 +66,13 @@ block('toolbar').content()(function() {
                     mix: { block: 'toolbar', elem: 'action' },
                     url: '/downloadTrans',
                     text: 'Download'
+                },
+                {
+                    block: 'button',
+                    mods: { theme: 'islands', size: 'm', type: 'link' },
+                    mix: { block: 'toolbar', elem: 'action' },
+                    url: '/downloadXliff',
+                    text: 'Download Xliff'
                 }
             ]
         }

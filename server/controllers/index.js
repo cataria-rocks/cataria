@@ -28,7 +28,7 @@ function getContent(req, res) {
         .then(function(docText) {
             const extract = md2xliff.extract(docText, filename, filename.replace(/\.md$/, '.skl'), query.sourceLang || 'en', query.targetLang);
             const { srcLang, trgLang, units } = extract.data;
-
+            console.log(extract.xliff);
             return helpers.translator.getTM(trgLang, srcLang, units)
                 .then(segments => {
                     renderer(req, res, {
@@ -133,6 +133,14 @@ function uploadTM(req, res) {
         })
         .catch(err => { onAjaxError(req, res, err); });
 }
+function downloadXliff(req, res) {
+    return helpers.translator.findAll().then(jsonData => {
+        res
+            .set({ 'Content-Disposition': 'attachment; filename="TM.xliff"' })
+            .send(helpers.json2xliff(jsonData));
+    });
+}
+
 module.exports = {
     // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent,
@@ -141,5 +149,6 @@ module.exports = {
     updateTM,
     getYaTranslate,
     downloadTrans,
-    uploadTM
+    uploadTM,
+    downloadXliff
 };
