@@ -6,6 +6,9 @@
         },
         'user',
         'alternative-translation',
-        { block: 'button', mods: { theme: 'islands' } }
+        'form',
+        'heading',
+        { block: 'button', mods: { theme: 'islands' } },
+        { block: 'attach', mods: { theme: 'islands', size: 'm' } }
     ]
 })

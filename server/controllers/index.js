@@ -1,7 +1,7 @@
 const parseGHUrl = require('parse-github-url');
 const md2xliff = require('md2xliff');
-const renderer = require('../renderer').render;
 
+const renderer = require('../renderer').render;
 const helpers = require('../helpers');
 
 const { env } = process;
@@ -125,6 +125,14 @@ function downloadTrans(req, res) {
     });
 }
 
+function uploadTM(req, res) {
+    helpers.tmx2json(req.file.buffer.toString())
+        .then(data => {
+            data.forEach(helpers.translator.saveTM);
+            res.send('File uploaded');
+        })
+        .catch(err => { onAjaxError(req, res, err); });
+}
 module.exports = {
     // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent,
@@ -132,5 +140,6 @@ module.exports = {
     saveMemory,
     updateTM,
     getYaTranslate,
-    downloadTrans
+    downloadTrans,
+    uploadTM
 };

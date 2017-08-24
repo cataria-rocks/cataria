@@ -8,6 +8,28 @@ block('toolbar').content()(function() {
             block: 'alternative-translation'
         },
         {
+            block: 'form',
+            content: [
+                {
+                    block: 'heading',
+                    mods: { level: 3 },
+                    content: 'Download translation memory'
+                },
+                {
+                    block: 'attach',
+                    mods: { theme: 'islands', size: 'm' },
+                    name: 'file',
+                    button: 'Choose file'
+                },
+                {
+                    block: 'button',
+                    mix: { block: 'form', elem: 'button-upload' },
+                    mods: { theme: 'islands', size: 'm', disabled : true, type: 'submit' },
+                    text: 'Upload file'
+                }
+            ]
+        },
+        {
             elem: 'buttons',
             content: [
                 {
