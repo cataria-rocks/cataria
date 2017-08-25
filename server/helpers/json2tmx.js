@@ -1,3 +1,4 @@
+const sanitize = require('sanitize-html');
 var  creationdate = new Date().toISOString();
 
 module.exports = function(jsonData) {
@@ -20,10 +21,10 @@ module.exports = function(jsonData) {
             return [
                 '        <tu creationdate="' + (unit.date || creationdate) + '">',
                 '            <tuv xml:lang="' + unit.sourceLang + '">',
-                '                <seg>' + unit.source + '</seg>',
+                '                <seg>' + sanitize(unit.source) + '</seg>',
                 '            </tuv>',
                 '            <tuv xml:lang="' + unit.targetLang + '">',
-                '                <seg>' + unit.target + '</seg>',
+                '                <seg>' + sanitize(unit.target) + '</seg>',
                 '            </tuv>',
                 '        </tu>'
             ].join('\n');
