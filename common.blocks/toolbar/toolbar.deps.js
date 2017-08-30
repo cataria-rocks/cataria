@@ -2,12 +2,13 @@
     mustDeps: ['i-bem-dom'],
     shouldDeps: [
         {
-            elem: 'user'
+            elems: ['user', 'form']
         },
         'user',
         'alternative-translation',
         'form',
         'heading',
+        { block: 'select', mods: { mode: 'radio', theme: 'islands', size: 's'} },
         { block: 'button', mods: { theme: 'islands' } },
         { block: 'attach', mods: { theme: 'islands', size: 'm' } }
     ]

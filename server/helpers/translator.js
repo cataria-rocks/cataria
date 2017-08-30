@@ -17,6 +17,10 @@ function findAll() {
     return Segment.find().exec();
 }
 
+function findUnits(sourceLang,targetLang) {
+   return Segment.find({targetLang: targetLang , sourceLang: sourceLang}).distinct('source').exec();
+}
+
 function getTM(trgLang, srcLang, units) {
     return Promise.all(units.map(unit => {
         const sourceHtml = unit.source.content;
@@ -116,5 +120,6 @@ module.exports = {
     getTM,
     saveTM,
     getYaTranslate,
-    findAll
+    findAll,
+    findUnits
 };

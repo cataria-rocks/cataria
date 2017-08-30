@@ -77,7 +77,6 @@ provide(bemDom.declBlock(this.name, {
     },
 
     onFocusIn: function(e) {
-        console.log('********************',e.target);
         this.setMod($(e.target.parentNode), 'focused').emit('showAltTrans', e.target);
     },
 

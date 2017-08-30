@@ -11,7 +11,6 @@ const { onError, onAjaxError } = helpers.errors;
 function getContent(req, res) {
     const query = req.query;
     const doc = query.doc;
-
     if (!doc) {
         return renderer(req, res, {
             view: 'blank',
@@ -28,7 +27,6 @@ function getContent(req, res) {
         .then(function(docText) {
             const extract = md2xliff.extract(docText, filename, filename.replace(/\.md$/, '.skl'), query.sourceLang || 'en', query.targetLang);
             const { srcLang, trgLang, units } = extract.data;
-            console.log(extract.xliff);
             return helpers.translator.getTM(trgLang, srcLang, units)
                 .then(segments => {
                     renderer(req, res, {
@@ -133,12 +131,35 @@ function uploadTM(req, res) {
         })
         .catch(err => { onAjaxError(req, res, err); });
 }
+
 function downloadXliff(req, res) {
-    return helpers.translator.findAll().then(jsonData => {
-        res
-            .set({ 'Content-Disposition': 'attachment; filename="TM.xliff"' })
-            .send(helpers.json2xliff(jsonData));
-    });
+    var unitsArr = [],
+        segmentCounter = 0,
+        sourceLang = req.query.sourceLang,
+        targetLang = req.query.targetLang;
+
+    return helpers.translator.findUnits(sourceLang, targetLang)
+        .then(units => {
+            units.forEach(unit => {
+                unitsArr.push({
+                    id: ++segmentCounter,
+                    source: {
+                        lang: sourceLang,
+                        content: unit
+                    },
+                    target: {
+                        lang: targetLang
+                    }
+                });
+           });
+        return helpers.translator.getTM( targetLang, sourceLang, unitsArr)
+            .then(transUnits => {
+                console.log('***',helpers.json2xliff(sourceLang, targetLang, transUnits));
+                res
+                    .set({ 'Content-Disposition': 'attachment; filename="TM.tmx"' })
+                    .send(helpers.json2xliff(sourceLang, targetLang, transUnits));
+            })
+        })
 }
 
 module.exports = {

@@ -1,4 +1,6 @@
 block('toolbar').content()(function() {
+    const block = this.block;
+
     return [
         {
             block: 'user',
@@ -9,11 +11,12 @@ block('toolbar').content()(function() {
         },
         {
             block: 'form',
+            mix: { block, elem: 'form', elemMods: { type: 'upload' }, js: true },
             content: [
                 {
                     block: 'heading',
                     mods: { level: 3 },
-                    content: 'Download translation memory'
+                    content: 'Upload translation memory'
                 },
                 {
                     block: 'attach',
@@ -26,6 +29,38 @@ block('toolbar').content()(function() {
                     mix: { block: 'form', elem: 'button-upload' },
                     mods: { theme: 'islands', size: 'm', disabled : true, type: 'submit' },
                     text: 'Upload file'
+                }
+            ]
+        },
+        {
+            block: 'form',
+            mix: { block, elem: 'form', elemMods: { type: 'download' }, js: true },
+            content: [
+                {
+                    block: 'heading',
+                    mods: { level: 3 },
+                    content: 'Download translation memory'
+                },
+                {
+                    block: 'select',
+                    mods: { mode: 'radio', theme: 'islands', size: 's'},
+                    name: 'sourceLang',
+                    text: "Язык перевода",
+                    val: 'en',
+                    options: [ { val: 'en', text: 'en' }, { val: 'ru', text: 'ru' }]
+                },
+                {
+                    block: 'select',
+                    mods: { mode: 'radio', theme: 'islands', size: 's'},
+                    name: 'targetLang',
+                    val: 'ru',
+                    options: [ { val: 'ru', text: 'ru' }, { val: 'en', text: 'en' }]
+                },
+                {
+                    block: 'button',
+                    mix: { block: 'form', elem: 'button-download' },
+                    mods: { theme: 'islands', size: 'm', type: 'submit' },
+                    text: 'Download Xliff'
                 }
             ]
         },
@@ -67,13 +102,13 @@ block('toolbar').content()(function() {
                     url: '/downloadTrans',
                     text: 'Download'
                 },
-                {
-                    block: 'button',
-                    mods: { theme: 'islands', size: 'm', type: 'link' },
-                    mix: { block: 'toolbar', elem: 'action' },
-                    url: '/downloadXliff',
-                    text: 'Download Xliff'
-                }
+                // {
+                //     block: 'button',
+                //     mods: { theme: 'islands', size: 'm', type: 'link' },
+                //     mix: { block: 'toolbar', elem: 'action' },
+                //     url: '/downloadXliff',
+                //     text: 'Download Xliff'
+                // }
             ]
         }
     ];
