@@ -13,12 +13,8 @@ function findSegment(targetLang, sourceLang, content) {
         .exec();
 }
 
-function findAll() {
-    return Segment.find().exec();
-}
-
-function findUnits(sourceLang,targetLang) {
-   return Segment.find({targetLang: targetLang , sourceLang: sourceLang}).distinct('source').exec();
+function find(predicat) {
+    return Segment.find(predicat).exec();
 }
 
 function getTM(trgLang, srcLang, units) {
@@ -120,6 +116,5 @@ module.exports = {
     getTM,
     saveTM,
     getYaTranslate,
-    findAll,
-    findUnits
+    find
 };

@@ -43,7 +43,7 @@ block('toolbar').content()(function() {
                 },
                 {
                     block: 'select',
-                    mods: { mode: 'radio', theme: 'islands', size: 's'},
+                    mods: { mode: 'radio', theme: 'islands', size: 'm'},
                     name: 'sourceLang',
                     text: "Язык перевода",
                     val: 'en',
@@ -51,7 +51,7 @@ block('toolbar').content()(function() {
                 },
                 {
                     block: 'select',
-                    mods: { mode: 'radio', theme: 'islands', size: 's'},
+                    mods: { mode: 'radio', theme: 'islands', size: 'm'},
                     name: 'targetLang',
                     val: 'ru',
                     options: [ { val: 'ru', text: 'ru' }, { val: 'en', text: 'en' }]

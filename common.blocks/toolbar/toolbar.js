@@ -16,20 +16,27 @@ provide(bemDom.declBlock(this.name, {
     },
     _onSubmitDownload: function(e){
         e.preventDefault();
-        var formData =  e.bemTarget.findMixedBlock(Form).domElem.serialize();
-
+        var formData =  e.bemTarget.findMixedBlock(Form).serializeToJson();
         this._emit('downloadXliff', formData);
     },
     _onChangeUpload: function(e) {
         e.bemTarget.findMixedBlock(Form).findChildElem('button-upload').findMixedBlock(Button).toggleMod('disabled');
+    },
+    _onChangeDownload: function() {
+        //e.bemTarget.findMixedBlock(Form).findChildElem('button-upload').findMixedBlock(Button).toggleMod('disabled');
     }
 },  {
     lazyInit: true,
     onInit: function() {
-        this._events(FormElem).on('change-upload', this.prototype._onChangeUpload);
-        this._events(FormElem).on('submit-upload', this.prototype._onSubmitUpload);
-        this._events(FormElem).on('submit-download', this.prototype._onSubmitDownload);
-        this._events(Button).on('click', this.prototype._onButtonClick);
+        var ptp = this.prototype;
+
+        this._events(FormElem)
+            .on('change-upload', ptp._onChangeUpload)
+            .on('change-download', ptp._onChangeUpload)
+            .on('submit-upload', ptp._onSubmitUpload)
+            .on('submit-download', ptp._onSubmitDownload);
+
+        this._events(Button).on('click', ptp._onButtonClick);
     }
 }));
 

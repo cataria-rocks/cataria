@@ -133,33 +133,28 @@ function uploadTM(req, res) {
 }
 
 function downloadXliff(req, res) {
-    var unitsArr = [],
-        segmentCounter = 0,
+    var segmentCounter = 0,
         sourceLang = req.query.sourceLang,
         targetLang = req.query.targetLang;
 
     return helpers.translator.findUnits(sourceLang, targetLang)
-        .then(units => {
-            units.forEach(unit => {
-                unitsArr.push({
-                    id: ++segmentCounter,
-                    source: {
-                        lang: sourceLang,
-                        content: unit
-                    },
-                    target: {
-                        lang: targetLang
-                    }
-                });
-           });
-        return helpers.translator.getTM( targetLang, sourceLang, unitsArr)
-            .then(transUnits => {
-                console.log('***',helpers.json2xliff(sourceLang, targetLang, transUnits));
-                res
-                    .set({ 'Content-Disposition': 'attachment; filename="TM.tmx"' })
-                    .send(helpers.json2xliff(sourceLang, targetLang, transUnits));
-            })
-        })
+        .then(units => units.map(unit => ({
+            id: ++segmentCounter,
+            source: {
+                lang: sourceLang,
+                content: unit
+            },
+            target: {
+                lang: targetLang
+            }
+        })))
+        .then(unitsArr => helpers.translator.getTM(targetLang, sourceLang, unitsArr))
+        .then(transUnits => {
+            console.log('***',helpers.json2xliff(sourceLang, targetLang, transUnits));
+            res
+                .set({ 'Content-Disposition': 'attachment; filename="TM.tmx"' })
+                .send(helpers.json2xliff(sourceLang, targetLang, transUnits));
+        });
 }
 
 module.exports = {

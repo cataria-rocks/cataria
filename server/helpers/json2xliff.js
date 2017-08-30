@@ -1,6 +1,6 @@
 var EOL = require('os').EOL;
 
-module.exports = function( sourceLang, targetLang, jsonData) {
+module.exports = function(sourceLang, targetLang, jsonData) {
         return [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">',
