@@ -1,11 +1,11 @@
 :block(main) {
-    &:elem(item){
+    &:elem(item) {
         margin: 10px 0;
 
         &:mod(column 2) {
             width:50%;
 
-            &:first-child{
+            &:first-child {
                 padding-right: 20px;
             }
         }
