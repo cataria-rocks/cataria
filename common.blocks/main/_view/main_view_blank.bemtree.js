@@ -19,7 +19,7 @@ block('main')(
                     },
                     {
                         block,
-                        elem: 'flex-wrapper',
+                        elem: 'group',
                         content: [
                             {
                                 elem: 'item',

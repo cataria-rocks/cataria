@@ -1,13 +1,16 @@
 :block(main) {
-   &__item{
+    &:elem(item){
         margin: 10px 0;
-   }
-   &__flex-wrapper {
+
+        &:mod(column 2) {
+            width:50%;
+
+            &:first-child{
+                padding-right: 20px;
+            }
+        }
+    }
+    &:elem(group) {
         display:flex;
     }
-    &__item_column_2 {
-        width:50%;
-    }
-    &__item_column_2:first-child {
-        padding-right: 20px}
 }
