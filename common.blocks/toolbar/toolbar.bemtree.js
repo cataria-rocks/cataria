@@ -34,6 +34,7 @@ block('toolbar').content()(function() {
         },
         {
             block: 'form',
+            action: '/downloadXliff',
             mix: { block, elem: 'form', elemMods: { type: 'download' }, js: true },
             content: [
                 {
@@ -58,8 +59,8 @@ block('toolbar').content()(function() {
                 },
                 {
                     block: 'button',
-                    mix: { block: 'form', elem: 'button-download' },
                     mods: { theme: 'islands', size: 'm', type: 'submit' },
+                    mix: { block: 'form', elem: 'button-download' },
                     text: 'Download Xliff'
                 }
             ]

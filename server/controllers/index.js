@@ -1,5 +1,6 @@
 const parseGHUrl = require('parse-github-url');
 const md2xliff = require('md2xliff');
+const json2xliff = require('md2xliff/lib/xliff-serialize');
 
 const renderer = require('../renderer').render;
 const helpers = require('../helpers');
@@ -116,7 +117,7 @@ function getYaTranslate(req, res) {
 }
 
 function downloadTrans(req, res) {
-    return helpers.translator.findAll().then(jsonData => {
+    return helpers.translator.find().then(jsonData => {
         res
             .set({ 'Content-Disposition': 'attachment; filename="TM.tmx"' })
             .send(helpers.json2tmx(jsonData));
@@ -133,28 +134,43 @@ function uploadTM(req, res) {
 }
 
 function downloadXliff(req, res) {
-    var segmentCounter = 0,
-        sourceLang = req.query.sourceLang,
-        targetLang = req.query.targetLang;
+    return helpers.translator.find({ sourceLang:req.query.sourceLang, targetLang: req.query.targetLang })
+        .then(jsonData => {
+            var dict = {};
+            var units = jsonData.reduce((arr, item) => {
+                var unit = {
+                    id: item.id,
+                    source: {
+                        lang: item.sourceLang,
+                        content: item.source
+                    },
+                    target: {
+                        lang: item.targetLang,
+                        content: item.target
+                    }
+                };
+                var indexInArr = dict[unit.source.content];
+                if (indexInArr + 1) {
+                    arr[indexInArr].altTrans || (arr[indexInArr].altTrans = []);
+                    arr[indexInArr].altTrans.push(unit);
+                } else {
+                    arr.push(unit);
+                    dict[unit.source.content] = arr.length - 1;
+                }
+                return arr;
+            }, []);
 
-    return helpers.translator.findUnits(sourceLang, targetLang)
-        .then(units => units.map(unit => ({
-            id: ++segmentCounter,
-            source: {
-                lang: sourceLang,
-                content: unit
-            },
-            target: {
-                lang: targetLang
-            }
-        })))
-        .then(unitsArr => helpers.translator.getTM(targetLang, sourceLang, unitsArr))
-        .then(transUnits => {
-            console.log('***',helpers.json2xliff(sourceLang, targetLang, transUnits));
+            const xliffData = {
+                srcLang: req.query.sourceLang,
+                trgLang: req.query.targetLang,
+                units: units
+            };
+
             res
-                .set({ 'Content-Disposition': 'attachment; filename="TM.tmx"' })
-                .send(helpers.json2xliff(sourceLang, targetLang, transUnits));
-        });
+                .set({ 'Content-Disposition': 'attachment; filename="TM.xliff"' })
+                .send( json2xliff(xliffData))
+        })
+
 }
 
 module.exports = {

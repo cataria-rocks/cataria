@@ -144,21 +144,6 @@ provide(bemDom.declBlock(this.name, {
             console.error(err.responseText || err);
             InfoModal.show('The File Upload was not successful');
         });
-    },
-
-    downloadXliff: function(event, data) {
-        $.ajax({
-            url: '/downloadXliff',
-            data: data,
-            type: 'GET'
-        })
-        .then(function() {
-            InfoModal.show('File downloaded');
-        })
-        .fail(function(err) {
-            console.error(err.responseText || err);
-            InfoModal.show('ERROR');
-        });
     }
 }, {
     lazyInit: true,
@@ -171,7 +156,6 @@ provide(bemDom.declBlock(this.name, {
             .on('sendPR', ptp.sendPR)
             .on('updateTM', ptp.updateTM)
             .on('upload', ptp.uploadTM)
-            .on('downloadXliff', ptp.downloadXliff)
 
         this._events(Panel).on('toggleVerified', ptp.toggleVerified);
         this._events(Editor).on('showAltTrans', ptp.showAltTrans);
