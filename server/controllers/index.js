@@ -134,43 +134,40 @@ function uploadTM(req, res) {
 }
 
 function downloadXliff(req, res) {
-    return helpers.translator.find({ sourceLang:req.query.sourceLang, targetLang: req.query.targetLang })
+    return helpers.translator.find({ sourceLang: req.query.sourceLang, targetLang: req.query.targetLang })
         .then(jsonData => {
-            var dict = {};
-            var units = jsonData.reduce((arr, item) => {
-                var unit = {
-                    id: item.id,
-                    source: {
-                        lang: item.sourceLang,
-                        content: item.source
-                    },
-                    target: {
-                        lang: item.targetLang,
-                        content: item.target
-                    }
-                };
-                var indexInArr = dict[unit.source.content];
-                if (indexInArr + 1) {
-                    arr[indexInArr].altTrans || (arr[indexInArr].altTrans = []);
-                    arr[indexInArr].altTrans.push(unit);
-                } else {
-                    arr.push(unit);
-                    dict[unit.source.content] = arr.length - 1;
-                }
-                return arr;
-            }, []);
-
+            const dict = {};
             const xliffData = {
                 srcLang: req.query.sourceLang,
                 trgLang: req.query.targetLang,
-                units: units
+                units: jsonData.reduce((arr, item) => {
+                    var unit = {
+                        id: item.id,
+                        source: {
+                            lang: item.sourceLang,
+                            content: item.source
+                        },
+                        target: {
+                            lang: item.targetLang,
+                            content: item.target
+                        }
+                    };
+                    var indexInArr = dict[unit.source.content];
+                    if (typeof indexInArr !== 'undefined') {
+                        arr[indexInArr].altTrans || (arr[indexInArr].altTrans = []);
+                        arr[indexInArr].altTrans.push(unit);
+                    } else {
+                        arr.push(unit);
+                        dict[unit.source.content] = arr.length - 1;
+                    }
+                    return arr;
+                }, [])
             };
 
             res
                 .set({ 'Content-Disposition': 'attachment; filename="TM.xliff"' })
-                .send( json2xliff(xliffData))
-        })
-
+                .send(json2xliff(xliffData));
+        });
 }
 
 module.exports = {
