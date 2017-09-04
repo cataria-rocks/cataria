@@ -28,6 +28,7 @@ function getContent(req, res) {
         .then(function(docText) {
             const extract = md2xliff.extract(docText, filename, filename.replace(/\.md$/, '.skl'), query.sourceLang || 'en', query.targetLang);
             const { srcLang, trgLang, units } = extract.data;
+
             return helpers.translator.getTM(trgLang, srcLang, units)
                 .then(segments => {
                     renderer(req, res, {
