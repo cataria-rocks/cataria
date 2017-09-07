@@ -129,7 +129,6 @@ provide(bemDom.declBlock(this.name, {
 
     uploadTM: function(event, data) {
         var _this = this;
-
         $.ajax({
             url: '/uploadTM',
             data: data,
@@ -156,7 +155,7 @@ provide(bemDom.declBlock(this.name, {
             .on('translate', ptp.getTranslation)
             .on('sendPR', ptp.sendPR)
             .on('updateTM', ptp.updateTM)
-            .on('submit', ptp.uploadTM)
+            .on('upload', ptp.uploadTM)
 
         this._events(Panel).on('toggleVerified', ptp.toggleVerified);
         this._events(Editor).on('showAltTrans', ptp.showAltTrans);

@@ -1,29 +1,38 @@
-modules.define('toolbar', ['i-bem-dom', 'button', 'form'], function(provide, bemDom, Button, Form) {
+modules.define('toolbar', ['i-bem-dom', 'button', 'form', 'select', 'toolbar__form'],
+    function(provide, bemDom, Button, Form, Select, FormElem) {
 
 provide(bemDom.declBlock(this.name, {
     _onButtonClick: function(e) {
-        var action = e.bemTarget.getMod('toolbar-action');
-
-        this._emit(action);
+        const action = e.bemTarget.getMod('toolbar-action');
+        action && this._emit(action);
     },
-    _onSubmit: function(e) {
+    _onSubmitUpload: function(e) {
         e.preventDefault();
-        var form = e.bemTarget,
-            formData = new FormData(form.domElem[0]);
+        const form = e.bemTarget.findMixedBlock(Form);
+        const formData = new FormData(form.domElem[0]);
 
         form.findChildElem('button-upload').findMixedBlock(Button).setMod('disabled');
-        this._emit('submit', formData);
+        this._emit('upload', formData);
     },
-    _onChange: function(e) {
-        e.bemTarget.findChildElem('button-upload').findMixedBlock(Button).toggleMod('disabled');
+    _onChangeUpload: function(e) {
+        e.bemTarget.findMixedBlock(Form).findChildElem('button-upload').findMixedBlock(Button).toggleMod('disabled');
+    },
+    _onChangeDownload: function(e) {
+        const form = e.bemTarget.findParentBlock(Form);
+        const data = form.serializeToJson();
+        form.findChildElem('button-download').findMixedBlock(Button).setMod('disabled', data.sourceLang == data.targetLang);
     }
-
-}, {
+},  {
     lazyInit: true,
     onInit: function() {
-        this._events(Form).on('change', this.prototype._onChange);
-        this._events(Form).on('submit', this.prototype._onSubmit);
-        this._events(Button).on('click', this.prototype._onButtonClick);
+        var ptp = this.prototype;
+
+        this._events(FormElem)
+            .on('change-upload', ptp._onChangeUpload)
+            .on('submit-upload', ptp._onSubmitUpload)
+
+        this._events(Button).on('click', ptp._onButtonClick);
+        this._events(Select).on('change', ptp._onChangeDownload);
     }
 }));
 

@@ -30,6 +30,7 @@ router
     .post('/updateTM', controllers.updateTM)
     .post('/saveTM', ensureAuthenticated, controllers.saveMemory)
     .post('/uploadTM', upload, controllers.uploadTM)
-    .get('/downloadTrans', ensureAuthenticated, controllers.downloadTrans);
+    .get('/downloadTrans', ensureAuthenticated, controllers.downloadTrans)
+    .get('/downloadXliff', ensureAuthenticated, controllers.downloadXliff)
 
 module.exports = router;

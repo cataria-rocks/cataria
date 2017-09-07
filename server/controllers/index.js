@@ -1,5 +1,6 @@
 const parseGHUrl = require('parse-github-url');
 const md2xliff = require('md2xliff');
+const json2xliff = require('md2xliff/lib/xliff-serialize');
 
 const renderer = require('../renderer').render;
 const helpers = require('../helpers');
@@ -11,7 +12,6 @@ const { onError, onAjaxError } = helpers.errors;
 function getContent(req, res) {
     const query = req.query;
     const doc = query.doc;
-
     if (!doc) {
         return renderer(req, res, {
             view: 'blank',
@@ -118,7 +118,7 @@ function getYaTranslate(req, res) {
 }
 
 function downloadTrans(req, res) {
-    return helpers.translator.findAll().then(jsonData => {
+    return helpers.translator.find().then(jsonData => {
         res
             .set({ 'Content-Disposition': 'attachment; filename="TM.tmx"' })
             .send(helpers.json2tmx(jsonData));
@@ -133,6 +133,44 @@ function uploadTM(req, res) {
         })
         .catch(err => { onAjaxError(req, res, err); });
 }
+
+function downloadXliff(req, res) {
+    return helpers.translator.find({ sourceLang: req.query.sourceLang, targetLang: req.query.targetLang })
+        .then(jsonData => {
+            const dict = {};
+            const xliffData = {
+                srcLang: req.query.sourceLang,
+                trgLang: req.query.targetLang,
+                units: jsonData.reduce((arr, item) => {
+                    var unit = {
+                        id: item.id,
+                        source: {
+                            lang: item.sourceLang,
+                            content: item.source
+                        },
+                        target: {
+                            lang: item.targetLang,
+                            content: item.target
+                        }
+                    };
+                    var indexInArr = dict[unit.source.content];
+                    if (typeof indexInArr !== 'undefined') {
+                        arr[indexInArr].altTrans || (arr[indexInArr].altTrans = []);
+                        arr[indexInArr].altTrans.push(unit);
+                    } else {
+                        arr.push(unit);
+                        dict[unit.source.content] = arr.length - 1;
+                    }
+                    return arr;
+                }, [])
+            };
+
+            res
+                .set({ 'Content-Disposition': 'attachment; filename="TM.xliff"' })
+                .send(json2xliff(xliffData));
+        });
+}
+
 module.exports = {
     // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent,
@@ -141,5 +179,6 @@ module.exports = {
     updateTM,
     getYaTranslate,
     downloadTrans,
-    uploadTM
+    uploadTM,
+    downloadXliff
 };
