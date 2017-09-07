@@ -39,9 +39,9 @@ var techs = {
         { path: 'node_modules/bem-components/design/common.blocks', check: false },
         { path: 'node_modules/bem-components/design/desktop.blocks', check: false },
         { path: 'node_modules/bem-stat-counters/common.blocks', check: false },
-        'common.blocks',
-        'development.blocks'
+        'common.blocks'
     ];
+
 
 module.exports = function(config) {
     var isProd = process.env.YENV === 'production';
@@ -49,7 +49,7 @@ module.exports = function(config) {
     config.nodes('*.bundles/*', function(nodeConfig) {
         nodeConfig.addTechs([
             // essential
-            [enbBemTechs.levels, { levels: levels }],
+            [enbBemTechs.levels, { levels: isProd ? levels : levels.concat('development.blocks') }],
             [techs.fileProvider, { target: '?.bemdecl.js' }],
             [enbBemTechs.deps],
             [enbBemTechs.files],
