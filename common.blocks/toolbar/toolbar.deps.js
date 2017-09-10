@@ -2,9 +2,8 @@
     mustDeps: ['i-bem-dom'],
     shouldDeps: [
         {
-            elems: ['user', 'form']
+            elems: ['form']
         },
-        'user',
         'alternative-translation',
         'form',
         'heading',

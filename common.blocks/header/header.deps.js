@@ -1,5 +1,6 @@
 ({
     shouldDeps: [
-        'logo'
+        'logo',
+        'user'
     ]
 });
