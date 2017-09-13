@@ -1,0 +1,5 @@
+:block(form):elem(control-message):mod(size s) {
+    font-size: 13px;
+    line-height: 28px;
+    padding: 0 8px;
+}
