@@ -5,8 +5,17 @@
 		'heading',
 		'form',
 		{
+			block: 'form',
+			elem: 'validation-error'
+		},
+		{
+			block: 'form',
+			elem: 'control',
+			mods: { required: true, type: ['url'] }
+		},
+		{
 			block: 'input',
-			mods: { theme: 'islands', size: 'l', width: 'available', 'has-clear': true }
+			mods: { theme: 'islands', size: 'l', width: 'available', 'has-clear': true, error: true },
 		},
 		{
 			block: 'button',

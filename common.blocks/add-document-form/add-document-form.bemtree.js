@@ -1,4 +1,5 @@
 block('add-document-form')(
+    js()(true),
     content()({
         block: 'form',
         content: [
@@ -8,6 +9,7 @@ block('add-document-form')(
             },
             {
                 elem: 'item',
+                mix: { block: 'form', elem: 'control', elemMods: { required: true, type: 'url' } },
                 label: 'Source document URL',
                 name: 'doc',
                 placeholder: 'https://github.com/cataria-rocks/cataria/blob/master/README.md'
@@ -17,6 +19,7 @@ block('add-document-form')(
                 content: [
                     {
                         elem: 'item',
+                        mix: { block: 'form', elem: 'control', elemMods: { required: true } },
                         elemMods: { column: 2 },
                         label: 'Original language',
                         name: 'sourceLang',
@@ -24,6 +27,7 @@ block('add-document-form')(
                     },
                     {
                         elem: 'item',
+                        mix: { block: 'form', elem: 'control', elemMods: { required: true } },
                         elemMods: { column: 2 },
                         label: 'Target language',
                         name: 'targetLang',
@@ -33,9 +37,15 @@ block('add-document-form')(
             },
             {
                 elem: 'item',
+                mix: { block: 'form', elem: 'control', elemMods: { required: true } },
                 label: 'Target file',
                 name: 'target',
                 placeholder: 'README.ru.md'
+            },
+            {
+                block: 'form',
+                elem: 'validation-error',
+                mix: { block: 'add-document-form', elem: 'validation-error' }
             },
             {
                 elem: 'submit',
