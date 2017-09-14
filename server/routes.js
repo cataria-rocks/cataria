@@ -6,9 +6,7 @@ const multer  = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage }).single('file');
 
-const middleware = require('./middleware');
-const ensureAuthenticated = middleware.ensureAuthenticated;
-const keepRetpath = middleware.keepRetpath;
+const { keepRetpath, ensureAuthenticated } = require('./middleware');
 
 // Login routes
 router
@@ -19,7 +17,7 @@ router
     })
     .get('/logout', (req, res) => {
         req.logout();
-        res.redirect(req.session.retpath || '/');
+        res.redirect('/');
     });
 
 router
