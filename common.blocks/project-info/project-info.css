@@ -1,0 +1,21 @@
+:block(project-info) {
+    max-width: 850px;
+    margin: auto;
+    padding: 0 30px;
+
+    &:elem(content) {
+        width: 50%;
+    }
+
+    &:elem(title) {
+        margin-bottom: 20px;
+        font-size: 44px;
+        line-height: 50px;
+    }
+
+    &:elem(description) {
+        margin-bottom: 30px;
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
