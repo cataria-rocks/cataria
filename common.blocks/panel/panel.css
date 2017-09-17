@@ -21,9 +21,4 @@
         font-weight: 600;
         padding: 0 5px 0 10px;
     }
-
-    &:elem(toggle-verified) {
-        float: right;
-        padding-right: 10px;
-    }
 }

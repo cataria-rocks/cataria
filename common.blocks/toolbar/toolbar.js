@@ -21,11 +21,16 @@ provide(bemDom.declBlock(this.name, {
         const form = e.bemTarget.findParentBlock(Form);
         const data = form.serializeToJson();
         form.findChildElem('button-download').findMixedBlock(Button).setMod('disabled', data.sourceLang == data.targetLang);
+    },
+    _onToggleVerified: function() {
+        this._emit('toggleVerified');
     }
 },  {
     lazyInit: true,
     onInit: function() {
         var ptp = this.prototype;
+
+        this._domEvents('toggle-verified').on('change', this.prototype._onToggleVerified);
 
         this._events(FormElem)
             .on('change-upload', ptp._onChangeUpload)

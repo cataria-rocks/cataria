@@ -8,6 +8,7 @@
         'heading',
         { block: 'select', mods: { mode: 'radio', theme: 'islands', size: 'm'} },
         { block: 'button', mods: { theme: 'islands' } },
-        { block: 'attach', mods: { theme: 'islands', size: 'm' } }
+        { block: 'attach', mods: { theme: 'islands', size: 'm' } },
+        { block: 'checkbox', mods: { theme: 'islands', size: 'm', checked: true } }
     ]
 })

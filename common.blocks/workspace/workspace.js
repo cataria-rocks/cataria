@@ -1,7 +1,7 @@
 modules.define('workspace', [
     'i-bem-dom', 'uri__querystring', 'jquery', 'info-modal',
-    'editor', 'alternative-translation', 'spinner', 'toolbar', 'panel', 'attach'
-], function(provide, bemDom, qs, $, InfoModal, Editor, AlternativeTranslation, Spinner, Toolbar, Panel, Attach) {
+    'editor', 'alternative-translation', 'spinner', 'toolbar', 'attach'
+], function(provide, bemDom, qs, $, InfoModal, Editor, AlternativeTranslation, Spinner, Toolbar, Attach) {
 
 provide(bemDom.declBlock(this.name, {
     onSetMod: {
@@ -156,8 +156,8 @@ provide(bemDom.declBlock(this.name, {
             .on('sendPR', ptp.sendPR)
             .on('updateTM', ptp.updateTM)
             .on('upload', ptp.uploadTM)
+            .on('toggleVerified', ptp.toggleVerified);
 
-        this._events(Panel).on('toggleVerified', ptp.toggleVerified);
         this._events(Editor).on('showAltTrans', ptp.showAltTrans);
         this._events(AlternativeTranslation).on('applyAltTrans', ptp.applyAltTrans);
     }

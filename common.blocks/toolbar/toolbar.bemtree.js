@@ -3,6 +3,13 @@ block('toolbar').content()(function() {
 
     return [
         {
+            block: 'checkbox',
+            mods: { theme: 'islands', size: 'm', checked: true },
+            mix: { block, elem: 'toggle-verified' },
+            name: 'status',
+            text: 'Show unverified segments only'
+        },
+        {
             block: 'form',
             mix: { block, elem: 'form', elemMods: { type: 'upload' }, js: true },
             content: [

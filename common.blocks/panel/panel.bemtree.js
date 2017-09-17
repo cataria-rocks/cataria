@@ -10,14 +10,7 @@ block('panel').content()((node) => {
                     elem: 'info-title',
                     content: 'File path: '
                 },
-                repo,
-                {
-                    block: 'checkbox',
-                    mods: { checked: true },
-                    mix: { block: 'panel', elem: 'toggle-verified' },
-                    name: 'status',
-                    text: 'Show unverified segments only'
-                }
+                repo
             ]
         },
         {
