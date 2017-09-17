@@ -3,9 +3,6 @@ block('toolbar').content()(function() {
 
     return [
         {
-            block: 'alternative-translation'
-        },
-        {
             block: 'form',
             mix: { block, elem: 'form', elemMods: { type: 'upload' }, js: true },
             content: [

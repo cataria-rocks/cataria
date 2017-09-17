@@ -4,7 +4,6 @@
         {
             elems: ['form']
         },
-        'alternative-translation',
         'form',
         'heading',
         { block: 'select', mods: { mode: 'radio', theme: 'islands', size: 'm'} },
