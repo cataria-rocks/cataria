@@ -1,53 +1,7 @@
 :block(editor) {
-    width: 70%;
-    display: inline-block;
     box-sizing: border-box;
     font-size: 14px;
     line-height: 1.5;
-
-    &:elem(unit) {
-        position: relative;
-        display: table;
-        width: 100%;
-        border-bottom: 1px solid #079;
-
-        &:mod(focused) :block(editor):elem(source) {
-            background: #ffffe0;
-        }
-    }
-
-    &:elem(source) {
-        width: 45%;
-        padding: 10px;
-        box-sizing: border-box;
-        display: table-cell;
-        max-width: 1px;
-    }
-
-    &:elem(target) {
-        display: table-cell;
-        width: 45%;
-        padding: 0 10px;
-        box-sizing: border-box;
-        position: relative;
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    &:elem(status) {
-        display: table-cell;
-        width: 10%;
-        padding: 10px;
-        box-sizing: border-box;
-        text-align: center;
-    }
-
-    &:elem(textarea) {
-        vertical-align: middle;
-        border: 1px solid #079;
-        border-top: 0;
-        border-bottom: 0;
-    }
 }
 
 bpt, ept {

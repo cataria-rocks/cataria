@@ -1,0 +1,64 @@
+:block(editor-unit) {
+    position: relative;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+
+    &:mod(focused) {
+        background: #fff;
+        border: 1px solid #999;
+
+        :block(editor-unit):elem(footer),
+        :block(editor-unit):elem(status) {
+            display: inherit;
+        }
+
+        :block(editor-unit):elem(target) {
+            border: 2px solid #e5e5e5;
+            border-radius: 2px;
+        }
+    }
+
+    &:elem(body) {
+        display: table;
+        table-layout: fixed;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    &:elem(footer) {
+        display: none;
+        border-top: 1px solid #e5e5e5;
+    }
+
+    &:elem(item) {
+        padding: 10px;
+        width: 45%;
+        box-sizing: border-box;
+        display: table-cell;
+        word-wrap: break-word;
+        word-break: normal;
+    }
+
+    &:elem(source) {
+        padding-right: 26px;
+    }
+
+    &:elem(target) {
+        position: relative;
+        font-size: 14px;
+        line-height: 1.5;
+        vertical-align: top;
+        padding-left: 26px;
+        border: 2px solid rgba(0, 0, 0, 0);
+    }
+
+    &:elem(target):hover {
+        border: 2px solid #e5e5e5;
+        border-radius: 2px;
+    }
+
+    &:elem(status) {
+        display: none;
+    }
+}
