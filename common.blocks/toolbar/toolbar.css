@@ -1,27 +1,16 @@
 :block(toolbar) {
-    position: fixed;
+    position: sticky;
     top: 0;
-    right: 0;
-    bottom: 0;
-    width: 30%;
-    padding: 9px;
-    background: #079;
+    width: 25%;
+    padding: 20px;
+    background: #fff;
     box-sizing: border-box;
-
-    &:elem(buttons) {
-        position: absolute;
-        bottom: 10px;
-    }
+    border-left: 1px solid #e5e5e5;
+    display: inline-block;
+    vertical-align: top;
 
     &:elem(action)&:elem(action) {
-        margin-left: 5px;
-    }
-
-    &:elem(toggle-verified) {
-        color: #fff;
-    }
-
-    &:elem(button) {
-        float: right;
+        margin-top: 10px;
+        display: block;
     }
 }
