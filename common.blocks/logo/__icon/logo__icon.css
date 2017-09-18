@@ -1,0 +1,9 @@
+:block(logo):elem(icon) {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin-right: 10px;
+
+    background: url(logo.svg) no-repeat;
+    background-size: cover;
+}

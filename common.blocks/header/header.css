@@ -1,4 +1,8 @@
 :block(header) {
-    padding: 15px;
-    background: #079;
+    padding: 15px 30px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    
+    display: flex;
+    justify-content: space-between;
 }

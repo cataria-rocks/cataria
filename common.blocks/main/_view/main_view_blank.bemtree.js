@@ -1,8 +1,8 @@
 block('main')(
     mod('view', 'blank').content()(node => {
-    const block = node.block;
+        const block = node.block;
 
-    return !node.data.user ? { block: 'user' } : {
+        return !node.data.user ? '' : {
             block: 'form',
             content: [
                 {

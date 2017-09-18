@@ -3,10 +3,6 @@ block('toolbar').content()(function() {
 
     return [
         {
-            block: 'user',
-            mix: { block: 'toolbar', elem: 'user' }
-        },
-        {
             block: 'alternative-translation'
         },
         {
