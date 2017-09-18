@@ -1,10 +1,7 @@
 :block(panel) {
-    width: 70%;
-
     &:elem(header) {
         display: table;
         width: 100%;
-        border-bottom: 1px solid #079
     }
 
     &:elem(side) {

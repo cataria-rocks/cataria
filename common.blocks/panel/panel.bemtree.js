@@ -18,18 +18,13 @@ block('panel').content()((node) => {
             content: [
                 {
                     elem: 'side',
-                    mix: { block: 'editor', elem: 'source' },
+                    mix: { block: 'editor-unit', elem: 'item' },
                     content: 'Text in the original language: ' + data.sourceLang
                 },
                 {
                     elem: 'side',
-                    mix: { block: 'editor', elem: 'source' },
+                    mix: { block: 'editor-unit', elem: 'item' },
                     content: 'Text in the target language: ' + data.targetLang
-                },
-                {
-                    elem: 'side',
-                    mix: { block: 'editor', elem: 'status' },
-                    content: 'Verify:'
                 }
             ]
         }
