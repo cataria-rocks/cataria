@@ -3,7 +3,11 @@ block('toolbar').content()(function() {
 
     return [
         {
-            block: 'alternative-translation'
+            block: 'checkbox',
+            mods: { theme: 'islands', size: 'm', checked: true },
+            mix: { block, elem: 'toggle-verified' },
+            name: 'status',
+            text: 'Show unverified segments only'
         },
         {
             block: 'form',

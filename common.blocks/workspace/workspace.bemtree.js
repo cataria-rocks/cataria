@@ -1,8 +1,13 @@
 block('workspace')(
     content()(function() {
         return [
-            { block: 'panel' },
-            { block: 'editor' },
+            {
+                elem: 'centerblock',
+                content: [
+                    { block: 'panel' },
+                    { block: 'editor' }
+                ]
+            },
             { block: 'toolbar' },
             { block: 'spinner' }
         ];

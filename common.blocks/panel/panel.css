@@ -1,10 +1,8 @@
 :block(panel) {
-    width: 70%;
-
     &:elem(header) {
         display: table;
         width: 100%;
-        border-bottom: 1px solid #079
+        border-bottom: 1px solid #e5e5e5;
     }
 
     &:elem(side) {
@@ -20,10 +18,5 @@
         color: #079;
         font-weight: 600;
         padding: 0 5px 0 10px;
-    }
-
-    &:elem(toggle-verified) {
-        float: right;
-        padding-right: 10px;
     }
 }

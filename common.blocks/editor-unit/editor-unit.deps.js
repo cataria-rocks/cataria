@@ -6,8 +6,7 @@
             block: 'checkbox',
             mods: { theme: 'islands', size: 'm' }
         },
-        'textarea',
         'segments',
-        'editor-unit'
+        'alternative-translation'
     ]
 });

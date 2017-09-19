@@ -1,17 +1,15 @@
 modules.define('workspace', [
     'i-bem-dom', 'uri__querystring', 'jquery', 'info-modal',
-    'editor', 'alternative-translation', 'spinner', 'toolbar', 'panel', 'attach'
-], function(provide, bemDom, qs, $, InfoModal, Editor, AlternativeTranslation, Spinner, Toolbar, Panel, Attach) {
+    'editor', 'spinner', 'toolbar', 'attach'
+], function(provide, bemDom, qs, $, InfoModal, Editor, Spinner, Toolbar, Attach) {
 
 provide(bemDom.declBlock(this.name, {
     onSetMod: {
         js: {
             inited: function() {
                 this._editor = this.findChildBlock(Editor);
-                this._altTrans = this.findChildBlock(AlternativeTranslation);
                 this._spinner = this.findChildBlock(Spinner);
                 this._attach = this.findChildBlock(Attach);
-
             }
         }
     },
@@ -91,25 +89,6 @@ provide(bemDom.declBlock(this.name, {
         this.toggleMod('mode', 'unverified-only');
     },
 
-    showAltTrans: function(e, unit) {
-        var index = $(unit).data('index'),
-            content = window.segments[index].altTrans;
-
-        this._altTrans = this.findChildBlock('alternative-translation');
-        bemDom.replace(this._altTrans.domElem, content);
-        this._editorUnit = unit;
-    },
-
-    applyAltTrans: function(e, data) {
-        var translation = $(data).html(),
-            elem = $(this._editorUnit).eq(0),
-            index = elem.data('index');
-
-        elem.html(translation);
-
-        window.segments[index].target.content = translation;
-    },
-
     getData: function() {
         return window.segments.reduce(function(acc, segment) {
             segment.target.content && acc.push({
@@ -156,10 +135,8 @@ provide(bemDom.declBlock(this.name, {
             .on('sendPR', ptp.sendPR)
             .on('updateTM', ptp.updateTM)
             .on('upload', ptp.uploadTM)
+            .on('toggleVerified', ptp.toggleVerified);
 
-        this._events(Panel).on('toggleVerified', ptp.toggleVerified);
-        this._events(Editor).on('showAltTrans', ptp.showAltTrans);
-        this._events(AlternativeTranslation).on('applyAltTrans', ptp.applyAltTrans);
     }
 }));
 
