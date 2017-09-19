@@ -1,16 +1,3 @@
-:block(main) {
-    &:elem(item) {
-        margin: 10px 0;
-
-        &:mod(column 2) {
-            width:50%;
-
-            &:first-child {
-                padding-right: 20px;
-            }
-        }
-    }
-    &:elem(group) {
-        display:flex;
-    }
+:block(main):mod(view blank) {
+    display: flex;
 }

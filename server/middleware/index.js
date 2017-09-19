@@ -1,6 +1,6 @@
 module.exports = {
     keepRetpath: function(req, res, next) {
-        req.query.doc && (req.session.retpath = '/?doc=' + req.query.doc);
+        req.session.retpath = req.originalUrl;
         return next();
     },
     ensureAuthenticated: function(req, res, next) {
