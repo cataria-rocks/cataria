@@ -1,9 +1,32 @@
-modules.define('form', ['i-bem-dom', 'events'], function(provide, bemDom, events) {
+modules.define('form', ['i-bem-dom', 'events', 'form__control'],
+function(provide, bemDom, events, FormControl) {
 
     var Form = bemDom.declBlock(this.name, {
 
         serializeToJson: function() {
             return this.__self.serializeToJson(this.domElem);
+        },
+
+        validate(options = {}) {
+            const { show = true } = options;
+            const log = this.findChildElems(FormControl).map(ctrl => ctrl.validate());
+            const hasErrors = log.some(status => status.hasErrors);
+            const validationStatus = { hasErrors, log };
+
+            show && this.showValidationErrors(validationStatus);
+            return validationStatus;
+        },
+
+        showValidationErrors(validationStatus) {
+            const errView = this._elem('validation-error');
+            const hasErrors = validationStatus.hasErrors;
+
+            errView && errView.setMod('visible', hasErrors);
+            validationStatus.log.forEach(err => err.control.showError(err.log.map(e => e.message)));
+        },
+
+        clearValidationErrors() {
+            this.findChildElems(FormControl).forEach(ctrl => ctrl.clearError());
         },
 
         _onSubmit: function(e) {

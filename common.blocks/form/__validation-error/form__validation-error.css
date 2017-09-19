@@ -1,0 +1,12 @@
+:block(form):elem(validation-error) {
+    visibility: hidden;
+
+    margin-top: 5px;
+    margin-bottom: 20px;
+
+    color: #ff5858;
+
+    &_visible {
+        visibility: initial;
+    }
+}

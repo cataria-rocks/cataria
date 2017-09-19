@@ -1,0 +1,4 @@
+:block(form):elem(control-message):mod(theme error) {
+    color: #fff;
+    background: rgba(255,100,100,.9);
+}

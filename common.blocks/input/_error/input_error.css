@@ -1,0 +1,7 @@
+.input.input_theme_islands.input_error:not(.input_disabled) {
+    background-color: #ff5858;
+}
+
+.input_theme_islands.input_focused.input_error::before {
+    box-shadow: 0 0 0 1px #ff5858, inset 0 0 0 1px #ff5858;
+}

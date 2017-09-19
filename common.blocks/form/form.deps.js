@@ -1,7 +1,8 @@
 ({
     shouldDeps: [
+        'events',
         {
-            elems: ['label']
+            elems: ['label', 'control']
         }
     ]
 })

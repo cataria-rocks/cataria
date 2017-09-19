@@ -1,0 +1,25 @@
+:block(add-document-form) {
+    width: 530px;
+    margin: auto;
+
+    &:elem(label) {
+        font-weight: 700;
+        display: inline-block;
+        margin-bottom: 6px;
+    }
+    &:elem(item) {
+        margin-top: 20px;
+
+        &:mod(column 2) {
+            width: 48%;
+        }
+    }
+    &:elem(group) {
+        display:flex;
+        justify-content: space-between;
+    }
+    &:elem(submit) {
+        margin-top: 20px;
+        text-align: center;
+    }
+}
