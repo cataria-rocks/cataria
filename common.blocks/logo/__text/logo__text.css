@@ -1,0 +1,15 @@
+@font-face {
+    font-family: YandexSansText-Regular;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    src: url(https://yastatic.net/islands/_/zrCaXywpNCpSQgz7fQraUDzXumM.eot);
+    src: url(https://yastatic.net/islands/_/GEumJGdz6PuI2jZ6GhSq0paPvho.woff2);
+    src: url(https://yastatic.net/islands/_/6ht3TWbVtHpfxwRbEdAXAbwRBBk.woff);
+}
+
+:block(logo):elem(text) {
+    font-family: YandexSansText-Regular, sans-serif;
+    font-size: 30px;
+    color: #000;
+}

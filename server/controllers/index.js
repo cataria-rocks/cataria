@@ -1,8 +1,8 @@
 const parseGHUrl = require('parse-github-url');
 const md2xliff = require('md2xliff');
-const renderer = require('../renderer');
+const json2xliff = require('md2xliff/lib/xliff-serialize');
 
-const Segment = require('../db').Segment;
+const renderer = require('../renderer').render;
 const helpers = require('../helpers');
 
 const { env } = process;
@@ -12,11 +12,13 @@ const { onError, onAjaxError } = helpers.errors;
 function getContent(req, res) {
     const query = req.query;
     const doc = query.doc;
-
-    if (!doc) return renderer(req, res, {
-        view: 'blank',
-        pageTitle: 'cataria'
-    });
+    if (!doc) {
+        return renderer(req, res, {
+            view: 'blank',
+            pageTitle: 'cataria',
+            user: (req.session.passport || {}).user // TODO: move to renderer
+        });
+    }
 
     const filename = doc.split('/').pop();
     const passport = req.session.passport || {};
@@ -28,11 +30,11 @@ function getContent(req, res) {
             const { srcLang, trgLang, units } = extract.data;
 
             return helpers.translator.getTM(trgLang, srcLang, units)
-                .then(units => {
+                .then(segments => {
                     renderer(req, res, {
                         view: 'index-page',
                         pageTitle: 'cataria',
-                        segments: units,
+                        segments: segments,
                         sourceLang: srcLang,
                         targetLang: trgLang,
                         user: passport.user,
@@ -68,7 +70,7 @@ function createPullRequest(req, res) {
             content: translatedText,
             message: `Update translation for ${filename}`
         }))
-        .then(status => res.send(`<a href="${status.html_url}">Pull request</a> successfully created.`))
+        .then(status => res.send(status ? `<a href="${status.html_url}">Pull request</a> successfully created.` : 'Something went wrong!'))
         .catch(err => { onAjaxError(req, res, err); });
 }
 
@@ -115,11 +117,68 @@ function getYaTranslate(req, res) {
         .catch(err => { onAjaxError(req, res, err); });
 }
 
+function downloadTrans(req, res) {
+    return helpers.translator.find().then(jsonData => {
+        res
+            .set({ 'Content-Disposition': 'attachment; filename="TM.tmx"' })
+            .send(helpers.json2tmx(jsonData));
+    });
+}
+
+function uploadTM(req, res) {
+    helpers.tmx2json(req.file.buffer.toString())
+        .then(data => {
+            data.forEach(helpers.translator.saveTM);
+            res.send('File uploaded');
+        })
+        .catch(err => { onAjaxError(req, res, err); });
+}
+
+function downloadXliff(req, res) {
+    return helpers.translator.find({ sourceLang: req.query.sourceLang, targetLang: req.query.targetLang })
+        .then(jsonData => {
+            const dict = {};
+            const xliffData = {
+                srcLang: req.query.sourceLang,
+                trgLang: req.query.targetLang,
+                units: jsonData.reduce((arr, item) => {
+                    var unit = {
+                        id: item.id,
+                        source: {
+                            lang: item.sourceLang,
+                            content: item.source
+                        },
+                        target: {
+                            lang: item.targetLang,
+                            content: item.target
+                        }
+                    };
+                    var indexInArr = dict[unit.source.content];
+                    if (typeof indexInArr !== 'undefined') {
+                        arr[indexInArr].altTrans || (arr[indexInArr].altTrans = []);
+                        arr[indexInArr].altTrans.push(unit);
+                    } else {
+                        arr.push(unit);
+                        dict[unit.source.content] = arr.length - 1;
+                    }
+                    return arr;
+                }, [])
+            };
+
+            res
+                .set({ 'Content-Disposition': 'attachment; filename="TM.xliff"' })
+                .send(json2xliff(xliffData));
+        });
+}
+
 module.exports = {
     // /?doc=https://github.com/bem/bem-method/blob/bem-info-data/articles/bem-for-small-projects/bem-for-small-projects.ru.md
     getContent,
     createPullRequest,
     saveMemory,
     updateTM,
-    getYaTranslate
+    getYaTranslate,
+    downloadTrans,
+    uploadTM,
+    downloadXliff
 };

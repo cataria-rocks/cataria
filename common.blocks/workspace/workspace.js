@@ -1,12 +1,17 @@
-modules.define('workspace', ['i-bem__dom', 'querystring', 'jquery', 'info-modal'],
-    function(provide, BEMDOM, qs, $, InfoModal) {
-provide(BEMDOM.decl(this.name, {
+modules.define('workspace', [
+    'i-bem-dom', 'uri__querystring', 'jquery', 'info-modal',
+    'editor', 'alternative-translation', 'spinner', 'toolbar', 'panel', 'attach'
+], function(provide, bemDom, qs, $, InfoModal, Editor, AlternativeTranslation, Spinner, Toolbar, Panel, Attach) {
+
+provide(bemDom.declBlock(this.name, {
     onSetMod: {
         js: {
             inited: function() {
-                this._editor = this.findBlockInside('editor');
-                this._altTrans = this.findBlockInside('alternative-translation');
-                this._spinner = this.findBlockInside('spinner');
+                this._editor = this.findChildBlock(Editor);
+                this._altTrans = this.findChildBlock(AlternativeTranslation);
+                this._spinner = this.findChildBlock(Spinner);
+                this._attach = this.findChildBlock(Attach);
+
             }
         }
     },
@@ -55,8 +60,8 @@ provide(BEMDOM.decl(this.name, {
             data: JSON.stringify(window.segments)
         })
         .then(function(response) {
-            BEMDOM.replace(_this._editor.domElem, response);
-            _this._editor = _this.findBlockInside('editor');
+            bemDom.replace(_this._editor.domElem, response);
+            _this._editor = _this.findChildBlock(Editor);
             _this._spinner.delMod('visible');
         })
         .fail(function(err) {
@@ -68,13 +73,12 @@ provide(BEMDOM.decl(this.name, {
 
     getTranslation: function() {
         var _this = this;
-        // TODO: WTF?
-        this._spinner && this._spinner.setMod('visible');
+        this._spinner.setMod('visible');
 
         $.post('/translate', { data: JSON.stringify(window.segments) })
             .then(function(response) {
-                BEMDOM.replace(_this._editor.domElem, response);
-                _this._editor = _this.findBlockInside('editor');
+                bemDom.replace(_this._editor.domElem, response);
+                _this._editor = _this.findChildBlock(Editor);
                 _this._spinner.delMod('visible');
             })
             .fail(function(err) {
@@ -91,8 +95,8 @@ provide(BEMDOM.decl(this.name, {
         var index = $(unit).data('index'),
             content = window.segments[index].altTrans;
 
-        this._altTrans = this.findBlockInside('alternative-translation');
-        BEMDOM.replace(this._altTrans.domElem, content);
+        this._altTrans = this.findChildBlock('alternative-translation');
+        bemDom.replace(this._altTrans.domElem, content);
         this._editorUnit = unit;
     },
 
@@ -107,10 +111,8 @@ provide(BEMDOM.decl(this.name, {
     },
 
     getData: function() {
-        var data = [];
-
-        window.segments.map(function(segment) {
-            segment.target.content && data.push({
+        return window.segments.reduce(function(acc, segment) {
+            segment.target.content && acc.push({
                 target: segment.target.content,
                 targetLang: segment.target.lang,
                 // clear source of the tags for full-text search
@@ -120,22 +122,44 @@ provide(BEMDOM.decl(this.name, {
                 sourceLang: segment.source.lang,
                 status: segment.status
             });
+
+            return acc;
+        }, []);
+    },
+
+    uploadTM: function(event, data) {
+        var _this = this;
+        $.ajax({
+            url: '/uploadTM',
+            data: data,
+            type: 'POST',
+            contentType: false,
+            processData: false
+        })
+        .then(function(response) {
+            InfoModal.show(response);
+            _this._attach.clear();
+        })
+        .fail(function(err) {
+            console.error(err.responseText || err);
+            InfoModal.show('The File Upload was not successful');
         });
-
-        return data;
     }
-
 }, {
-    live: function() {
+    lazyInit: true,
+    onInit: function() {
         var ptp = this.prototype;
 
-        this.liveInitOnBlockInsideEvent('saveTm', 'toolbar', ptp.saveTm)
-            .liveInitOnBlockInsideEvent('translate', 'toolbar', ptp.getTranslation)
-            .liveInitOnBlockInsideEvent('sendPR', 'toolbar', ptp.sendPR)
-            .liveInitOnBlockInsideEvent('updateTM', 'toolbar', ptp.updateTM)
-            .liveInitOnBlockInsideEvent('toggleVerified', 'panel', ptp.toggleVerified)
-            .liveInitOnBlockInsideEvent('showAltTrans', 'editor', ptp.showAltTrans)
-            .liveInitOnBlockInsideEvent('applyAltTrans', 'alternative-translation', ptp.applyAltTrans);
+        this._events(Toolbar)
+            .on('saveTm', ptp.saveTm)
+            .on('translate', ptp.getTranslation)
+            .on('sendPR', ptp.sendPR)
+            .on('updateTM', ptp.updateTM)
+            .on('upload', ptp.uploadTM)
+
+        this._events(Panel).on('toggleVerified', ptp.toggleVerified);
+        this._events(Editor).on('showAltTrans', ptp.showAltTrans);
+        this._events(AlternativeTranslation).on('applyAltTrans', ptp.applyAltTrans);
     }
 }));
 

@@ -14,7 +14,7 @@
     }
 
     &:elem(action)&:elem(action) {
-       margin-left: 5px;
+        margin-left: 5px;
     }
 
     &:elem(toggle-verified) {

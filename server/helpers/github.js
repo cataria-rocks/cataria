@@ -14,7 +14,7 @@ function getContent(url) {
 function createPR(doc, newOwner, newBranch, update) {
     const { owner, name: repo, branch: sourceBranch } = parseGHUrl(doc);
 
-    return gna.fork(owner, repo)
+    return gna.fork(owner, repo, newOwner)
         .then(() => gna.branch(newOwner, repo, sourceBranch, newBranch)
             .catch(err => {
                 if (err.code === 422) {

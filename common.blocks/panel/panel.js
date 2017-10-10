@@ -1,13 +1,15 @@
-modules.define('panel', ['i-bem__dom'], function(provide, BEMDOM) {
-provide(BEMDOM.decl(this.name, {
-    toggleVerified: function() {
-        this.emit('toggleVerified');
-    }
+modules.define('panel', ['i-bem-dom'], function(provide, bemDom) {
 
-}, {
-    live: function() {
-        this.liveBindTo('toggle-verified', 'change', this.prototype.toggleVerified);
-    }
-}));
+    provide(bemDom.declBlock(this.name, {
+        toggleVerified: function() {
+            this._emit('toggleVerified');
+        }
+
+    }, {
+        lazyInit: true,
+        onInit: function() {
+            this._domEvents('toggle-verified').on('change', this.prototype.toggleVerified);
+        }
+    }));
 
 });

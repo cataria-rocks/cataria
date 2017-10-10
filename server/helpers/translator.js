@@ -13,6 +13,10 @@ function findSegment(targetLang, sourceLang, content) {
         .exec();
 }
 
+function find(predicat) {
+    return Segment.find(predicat).exec();
+}
+
 function getTM(trgLang, srcLang, units) {
     return Promise.all(units.map(unit => {
         const sourceHtml = unit.source.content;
@@ -56,7 +60,7 @@ function getTM(trgLang, srcLang, units) {
                     unit.altTrans = [];
                 }
 
-                unit.altTrans.map(result => {
+                unit.altTrans.forEach(result => {
                     if (result.source === source && result.date === lastDate) {
                         result.bestMatch = true;
                     }
@@ -111,5 +115,6 @@ module.exports = {
     findSegment,
     getTM,
     saveTM,
-    getYaTranslate
+    getYaTranslate,
+    find
 };

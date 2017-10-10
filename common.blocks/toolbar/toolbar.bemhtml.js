@@ -1,1 +1,1 @@
-block('toolbar').js()(true);
+block('toolbar').addJs()(true);

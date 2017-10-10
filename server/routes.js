@@ -1,6 +1,11 @@
 const router = require('express').Router();
 const controllers = require('./controllers');
 const passportGitHub = require('./auth');
+
+const multer  = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage }).single('file');
+
 const middleware = require('./middleware');
 const ensureAuthenticated = middleware.ensureAuthenticated;
 const keepRetpath = middleware.keepRetpath;
@@ -23,6 +28,9 @@ router
     .post('/sendPR', ensureAuthenticated, controllers.createPullRequest)
     .post('/translate', controllers.getYaTranslate)
     .post('/updateTM', controllers.updateTM)
-    .post('/saveTM', ensureAuthenticated, controllers.saveMemory);
+    .post('/saveTM', ensureAuthenticated, controllers.saveMemory)
+    .post('/uploadTM', upload, controllers.uploadTM)
+    .get('/downloadTrans', ensureAuthenticated, controllers.downloadTrans)
+    .get('/downloadXliff', ensureAuthenticated, controllers.downloadXliff)
 
 module.exports = router;

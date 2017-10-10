@@ -1,38 +1,80 @@
-const path = require('path');
+var fs = require('fs'),
+    path = require('path'),
+    nodeEval = require('node-eval'),
+    config = require('../config'),
 
-const bundleName = 'index';
-const pathToBundle = path.join(__dirname, '..', 'desktop.bundles', bundleName);
-const BEMHTML = require(path.join(pathToBundle, bundleName + '.bemhtml.js')).BEMHTML;
-const bemtrees = require(path.join(pathToBundle, bundleName + '.bemtree.js')).BEMTREE;
+    bundleName = 'index',
+    pathToBundle = path.resolve('desktop.bundles', bundleName),
+
+    isDev = process.env.NODE_ENV === 'development',
+    templates = getTemplates(),
+    useCache = !isDev,
+    cacheTTL = config.cacheTTL,
+    cache = {};
 
 function render(req, res, data, context) {
+    var query = req.query,
+        user = req.user,
+        cacheKey = req.originalUrl + (context ? JSON.stringify(context) : '') + (user ? JSON.stringify(user) : ''),
+        cached = cache[cacheKey];
 
-    let bemjson;
-
-    data.query = req.query || {};
-
-    if (req.query.hasOwnProperty('json')) return res.send('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
-
-    try {
-        bemjson = (bemtrees).apply({
-            block: 'root',
-            context: context,
-            staticRoot: '/',
-            data: data
-        });
-    } catch (err) {
-        console.log(err);
-        console.log(err.stack);
-        return res.send(err.toString()); // TODO: show err message just for dev env
-    } finally {
-
+    if (useCache && cached && (new Date() - cached.timestamp < cacheTTL)) {
+        return res.send(cached.html);
     }
 
-    if (req.query.hasOwnProperty('bemjson')) return res.send('<pre>' + JSON.stringify(bemjson, null, 4) + '</pre>');
+    if (isDev && query.json) return res.send('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
 
-    const html = BEMHTML.apply(bemjson);
+    var bemtreeCtx = {
+        block: 'root',
+        context: context,
+        staticRoot: '/',
+        // extend with data needed for all routes
+        data: data
+    };
 
-    return res.send(html);
+    if (isDev) templates = getTemplates();
+
+    try {
+        var bemjson = templates.BEMTREE.apply(bemtreeCtx);
+    } catch (err) {
+        console.error('BEMTREE error', err.stack);
+        console.trace('server stack');
+        return res.sendStatus(500);
+    }
+
+    if (isDev && query.bemjson) return res.send('<pre>' + JSON.stringify(bemjson, null, 4) + '</pre>');
+
+    try {
+        var html = templates.BEMHTML.apply(bemjson);
+    } catch (err) {
+        console.error('BEMHTML error', err.stack);
+        return res.sendStatus(500);
+    }
+
+    useCache && (cache[cacheKey] = {
+        timestamp: new Date(),
+        html: html
+    });
+
+    res.send(html);
 }
 
-module.exports = render;
+function dropCache() {
+    cache = {};
+}
+
+function evalFile(filename) {
+    return nodeEval(fs.readFileSync(filename, 'utf8'), filename);
+}
+
+function getTemplates() {
+    return {
+        BEMTREE: evalFile(path.join(pathToBundle, bundleName + '.bemtree.js')).BEMTREE,
+        BEMHTML: evalFile(path.join(pathToBundle, bundleName + '.bemhtml.js')).BEMHTML
+    };
+}
+
+module.exports = {
+    render: render,
+    dropCache: dropCache
+};

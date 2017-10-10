@@ -1,12 +1,12 @@
-modules.define('info-modal', ['i-bem__dom'], function(provide, BEMDOM) {
+modules.define('info-modal', ['i-bem-dom', 'modal'], function(provide, bemDom, Modal) {
 
-provide(BEMDOM.decl(this.name, {
+provide(bemDom.declBlock(this.name, {
     onSetMod: {
         js: {
             inited: function() {
                 if (this.__self.getModal()) return;
 
-                this.__self._modal = this.findBlockInside('modal');
+                this.__self._modal = this.findChildBlock(Modal);
             }
         }
     }

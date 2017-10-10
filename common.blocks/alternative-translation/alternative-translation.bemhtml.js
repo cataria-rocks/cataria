@@ -1,1 +1,1 @@
-block('alternative-translation').js()(true);
+block('alternative-translation').addJs()(true);
