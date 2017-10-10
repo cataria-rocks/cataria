@@ -2,6 +2,7 @@
     shouldDeps: [
         {
             elems: ['label']
-        }
+        },
+        'error'
     ]
 })
